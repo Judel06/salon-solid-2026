@@ -1,2 +1,15 @@
 [build]
   publish = "."
+  functions = "netlify/functions"
+
+[functions]
+  node_bundler = "esbuild"
+
+[functions."admin-update-status"]
+  included_files = ["netlify/lib/assets/**"]
+
+[functions."admin-resend-documents"]
+  included_files = ["netlify/lib/assets/**"]
+
+[functions."admin-bulk-generate"]
+  included_files = ["netlify/lib/assets/**"]

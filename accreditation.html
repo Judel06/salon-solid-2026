@@ -107,9 +107,7 @@
 <!-- TAB 1 — ORGANISATIONS EXPOSANTES (existant, inchangé)         -->
 <!-- ============================================================ -->
 <div class="tab-panel active" id="tab-exposants">
-<form name="inscription-exposant" method="POST" action="/merci-exposant.html" enctype="multipart/form-data" data-netlify="true" data-netlify-honeypot="bot-field" novalidate onsubmit="return validateAccredForm(event)">
-<input type="hidden" name="form-name" value="inscription-exposant">
-<p class="hp-field"><label>Ne pas remplir si humain : <input name="bot-field"></label></p>
+<form name="inscription-exposant" data-category="exposant" data-success-url="/merci-exposant.html" novalidate onsubmit="return validateAccredForm(event)">
 
 <div style="max-width:840px; margin:0 auto; padding:20px 24px 90px;">
 
@@ -280,9 +278,7 @@
 <!-- TAB 2 — JOURNALISTES ET MÉDIAS                                 -->
 <!-- ============================================================ -->
 <div class="tab-panel" id="tab-journalistes">
-<form name="accreditation-journalistes" method="POST" action="/merci-accreditation.html" enctype="multipart/form-data" data-netlify="true" data-netlify-honeypot="bot-field" novalidate onsubmit="return validateAccredForm(event)">
-<input type="hidden" name="form-name" value="accreditation-journalistes">
-<p class="hp-field"><label>Ne pas remplir si humain : <input name="bot-field"></label></p>
+<form name="accreditation-journalistes" data-category="journaliste" data-success-url="/merci-accreditation.html" novalidate onsubmit="return validateAccredForm(event)">
 
 <div style="max-width:840px; margin:0 auto; padding:20px 24px 90px;">
 
@@ -392,9 +388,7 @@
 <!-- TAB 3 — PARTENAIRES                                            -->
 <!-- ============================================================ -->
 <div class="tab-panel" id="tab-partenaires">
-<form name="accreditation-partenaires" method="POST" action="/merci-accreditation.html" enctype="multipart/form-data" data-netlify="true" data-netlify-honeypot="bot-field" novalidate onsubmit="return validateAccredForm(event)">
-<input type="hidden" name="form-name" value="accreditation-partenaires">
-<p class="hp-field"><label>Ne pas remplir si humain : <input name="bot-field"></label></p>
+<form name="accreditation-partenaires" data-category="partenaire" data-success-url="/merci-accreditation.html" novalidate onsubmit="return validateAccredForm(event)">
 
 <div style="max-width:840px; margin:0 auto; padding:20px 24px 90px;">
 
@@ -497,9 +491,7 @@
 <!-- TAB 4 — BAILLEURS ET SPONSORS OFFICIELS                        -->
 <!-- ============================================================ -->
 <div class="tab-panel" id="tab-bailleurs">
-<form name="accreditation-bailleurs" method="POST" action="/merci-accreditation.html" enctype="multipart/form-data" data-netlify="true" data-netlify-honeypot="bot-field" novalidate onsubmit="return validateAccredForm(event)">
-<input type="hidden" name="form-name" value="accreditation-bailleurs">
-<p class="hp-field"><label>Ne pas remplir si humain : <input name="bot-field"></label></p>
+<form name="accreditation-bailleurs" data-category="bailleur" data-success-url="/merci-accreditation.html" novalidate onsubmit="return validateAccredForm(event)">
 
 <div style="max-width:840px; margin:0 auto; padding:20px 24px 90px;">
 
@@ -612,9 +604,7 @@
 <!-- TAB 5 — ORGANISATEURS, LOGISTIQUE, SÉCURITÉ ET COORDINATION    -->
 <!-- ============================================================ -->
 <div class="tab-panel" id="tab-organisateurs">
-<form name="accreditation-organisateurs" method="POST" action="/merci-accreditation.html" enctype="multipart/form-data" data-netlify="true" data-netlify-honeypot="bot-field" novalidate onsubmit="return validateAccredForm(event)">
-<input type="hidden" name="form-name" value="accreditation-organisateurs">
-<p class="hp-field"><label>Ne pas remplir si humain : <input name="bot-field"></label></p>
+<form name="accreditation-organisateurs" data-category="organisateur" data-success-url="/merci-accreditation.html" novalidate onsubmit="return validateAccredForm(event)">
 
 <div style="max-width:840px; margin:0 auto; padding:20px 24px 90px;">
 
@@ -644,9 +634,11 @@
       </div>
     </div>
 
+    <div class="field"><label>Organisation ou département de rattachement</label><input type="text" name="organisation_rattachement"></div>
+
     <div class="grid-2">
-      <div class="field"><label>Organisation ou département de rattachement</label><input type="text" name="organisation_rattachement"></div>
       <div class="field"><label>Téléphone <span class="req">*</span></label><input type="tel" name="telephone" required></div>
+      <div class="field"><label>Email <span class="req">*</span></label><input type="email" name="email" required></div>
     </div>
 
     <div class="field">
@@ -856,11 +848,55 @@
     }
   });
 
+  function fileToBase64(file) {
+    return new Promise(function (resolve, reject) {
+      var reader = new FileReader();
+      reader.onload = function () {
+        var result = reader.result; // "data:<mime>;base64,<data>"
+        var commaIdx = result.indexOf(',');
+        resolve(result.slice(commaIdx + 1));
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+
+  function buildAccreditationPayload(form, category) {
+    var formData = new FormData(form);
+    var fields = {};
+    var fileEntries = [];
+
+    formData.forEach(function (value, key) {
+      if (value instanceof File) {
+        if (value.size > 0) fileEntries.push([key, value]);
+        return;
+      }
+      if (Object.prototype.hasOwnProperty.call(fields, key)) {
+        if (Array.isArray(fields[key])) fields[key].push(value);
+        else fields[key] = [fields[key], value];
+      } else {
+        fields[key] = value;
+      }
+    });
+
+    return Promise.all(fileEntries.map(function (entry) {
+      return fileToBase64(entry[1]).then(function (b64) {
+        return [entry[0], { name: entry[1].name, type: entry[1].type || 'application/octet-stream', data: b64 }];
+      });
+    })).then(function (encoded) {
+      var files = {};
+      encoded.forEach(function (pair) { files[pair[0]] = pair[1]; });
+      return { category: category, fields: fields, files: files };
+    });
+  }
+
   function validateAccredForm(e) {
+    e.preventDefault();
     var form = e.target;
     var errBox = form.querySelector('.form-error');
+    var submitBtn = form.querySelector('button[type="submit"]');
+
     if (!form.checkValidity()) {
-      e.preventDefault();
       var invalid = form.querySelector(':invalid');
       errBox.textContent = 'Merci de compléter tous les champs obligatoires (marqués d\'un *) avant de soumettre le formulaire.';
       errBox.style.display = 'block';
@@ -868,7 +904,36 @@
       return false;
     }
     errBox.style.display = 'none';
-    return true;
+
+    var category = form.getAttribute('data-category');
+    var successUrl = form.getAttribute('data-success-url');
+    var originalLabel = submitBtn.textContent;
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Envoi en cours…';
+
+    buildAccreditationPayload(form, category)
+      .then(function (payload) {
+        return fetch('/.netlify/functions/accreditation-submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+      })
+      .then(function (res) {
+        return res.json().then(function (data) {
+          if (!res.ok || !data.ok) throw new Error(data.error || 'Erreur lors de la soumission.');
+          window.location.href = successUrl;
+        });
+      })
+      .catch(function (err) {
+        errBox.textContent = err.message || 'Une erreur est survenue. Merci de réessayer.';
+        errBox.style.display = 'block';
+        errBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalLabel;
+      });
+
+    return false;
   }
 </script>
 </body>

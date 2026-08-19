@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Administration — Salon SOLID 2026</title>
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/img/favicon-32.png">
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+<div id="login-screen" class="login-screen">
+  <div class="login-card">
+    <h1>Administration</h1>
+    <p>SALON SOLID 2026 — accès réservé au comité</p>
+    <div class="login-error" id="login-error"></div>
+    <form id="login-form">
+      <div class="login-field"><label>Identifiant</label><input type="text" id="login-username" required autocomplete="username"></div>
+      <div class="login-field"><label>Mot de passe</label><input type="password" id="login-password" required autocomplete="current-password"></div>
+      <button type="submit" class="login-submit">Se connecter</button>
+    </form>
+  </div>
+</div>
+
+<div id="dashboard-screen" style="display:none;">
+  <header class="admin-header">
+    <div class="brand"><img src="../assets/img/adis-haiti-icon.png" alt="">Administration — SALON SOLID 2026</div>
+    <button class="logout-btn" id="logout-btn">Déconnexion</button>
+  </header>
+  <main class="admin-main">
+    <div class="stat-row" id="stat-row"></div>
+
+    <div class="toolbar">
+      <select id="filter-status">
+        <option value="">Tous les statuts</option>
+        <option>En attente d'approbation</option>
+        <option>Approuvé</option>
+        <option>Refusé</option>
+        <option>Accrédité</option>
+      </select>
+      <select id="filter-category">
+        <option value="">Toutes les catégories</option>
+        <option value="exposant">Organisation Exposante</option>
+        <option value="journaliste">Journaliste / Média</option>
+        <option value="partenaire">Partenaire</option>
+        <option value="bailleur">Bailleur / Sponsor</option>
+        <option value="organisateur">Organisateur / Logistique / Sécurité</option>
+      </select>
+      <input type="search" id="filter-search" placeholder="Rechercher (nom, email)…">
+      <div class="spacer"></div>
+      <button class="btn btn-outline" id="bulk-generate-btn">Générer badge + attestation (approuvées)</button>
+      <button class="btn btn-primary" id="export-btn">Exporter CSV</button>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th><th>Catégorie</th><th>Nom</th><th>Email</th><th>Statut</th><th>Matricule</th><th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="table-body"></tbody>
+      </table>
+      <div class="empty-state" id="empty-state" style="display:none;">Aucune candidature pour ce filtre.</div>
+    </div>
+  </main>
+</div>
+
+<div class="modal-backdrop" id="detail-modal">
+  <div class="modal">
+    <button class="modal-close" id="modal-close">×</button>
+    <h2 id="modal-title"></h2>
+    <p class="modal-sub" id="modal-sub"></p>
+    <div class="detail-grid" id="modal-detail-grid"></div>
+    <div>
+      <strong style="font-size:12.5px;">Données complètes du formulaire</strong>
+      <pre class="raw-json" id="modal-raw-json"></pre>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="admin.js"></script>
+</body>
+</html>

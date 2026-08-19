@@ -1,2 +1,6 @@
 # Local Netlify folder
 .netlify
+
+# Dependencies (Netlify installs these from package.json at deploy time)
+node_modules
+

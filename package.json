@@ -1,0 +1,10 @@
+{
+  "name": "salon-solid-2026-site",
+  "private": true,
+  "dependencies": {
+    "@netlify/blobs": "^8.1.0",
+    "@supabase/supabase-js": "^2.45.4",
+    "nodemailer": "^9.0.5",
+    "pdf-lib": "^1.17.1"
+  }
+}
