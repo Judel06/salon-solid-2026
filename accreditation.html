@@ -49,6 +49,10 @@
   .rep-remove{background:#fdf2f2; color:#8a2020; border:1px solid #f7c9c9; border-radius:8px; padding:0 14px; font-size:15px; cursor:pointer;}
   .add-rep-btn{background:#eef1fb; color:#16247d; border:1px dashed #b7c3ec; border-radius:9px; padding:9px 16px; font-size:12.5px; font-weight:700; cursor:pointer; margin-top:4px;}
 
+  .photo-preview-row{display:flex; align-items:center; gap:14px; margin-top:12px;}
+  .photo-preview-circle{width:88px; height:88px; border-radius:50%; object-fit:cover; border:3px solid #16247d; background:#f5f6fb; flex-shrink:0;}
+  .photo-preview-caption{color:#8b93b8; font-size:11.5px; font-style:italic; max-width:220px; line-height:1.5;}
+
   .tabs-bar{display:flex; gap:10px; overflow-x:auto; padding:4px 4px 12px;}
   .tab-btn{flex-shrink:0; padding:12px 20px; border-radius:10px; border:2px solid #e7e9f2; background:#fff; color:#3a4166; font-weight:700; font-size:13px; cursor:pointer; white-space:nowrap;}
   .tab-btn.active{background:#16247d; border-color:#16247d; color:#fff;}
@@ -163,9 +167,13 @@
     <div class="field"><label>Nom complet de la personne-ressource désignée</label><input type="text" name="nom_personne_ressource_designee"></div>
 
     <div class="field">
-      <label>Photographie officielle récente de la personne-ressource</label>
-      <input type="file" name="photo_personne_ressource" accept=".jpg,.jpeg,.png">
-      <div class="help">Format JPG ou PNG.</div>
+      <label>Photo de profil <span class="req">*</span></label>
+      <input type="file" name="photo_personne_ressource" id="photo-input-exposants" accept=".jpg,.jpeg,.png" required>
+      <div class="help">Cette photo sera utilisée pour votre badge de membre et votre attestation de participation. Format JPG ou PNG, 5 Mo maximum.</div>
+      <div class="photo-preview-row" id="photo-preview-row-exposants" style="display:none;">
+        <img class="photo-preview-circle" id="photo-preview-exposants" alt="Aperçu de la photo de profil">
+        <div class="photo-preview-caption">Rendu exact sur vos documents officiels</div>
+      </div>
     </div>
 
     <div class="field">
@@ -307,8 +315,13 @@
       <input type="file" name="carte_presse" accept=".pdf,.jpg,.jpeg,.png" required>
     </div>
     <div class="field">
-      <label>Photo d'identité récente <span class="req">*</span></label>
-      <input type="file" name="photo_identite" accept=".jpg,.jpeg,.png" required>
+      <label>Photo de profil <span class="req">*</span></label>
+      <input type="file" name="photo_identite" id="photo-input-journalistes" accept=".jpg,.jpeg,.png" required>
+      <div class="help">Cette photo sera utilisée pour votre badge de membre et votre attestation de participation. Format JPG ou PNG, 5 Mo maximum.</div>
+      <div class="photo-preview-row" id="photo-preview-row-journalistes" style="display:none;">
+        <img class="photo-preview-circle" id="photo-preview-journalistes" alt="Aperçu de la photo de profil">
+        <div class="photo-preview-caption">Rendu exact sur vos documents officiels</div>
+      </div>
     </div>
 
     <div class="grid-2">
@@ -410,6 +423,16 @@
     <div class="grid-2">
       <div class="field"><label>Téléphone <span class="req">*</span></label><input type="tel" name="telephone" required></div>
       <div class="field"><label>Email <span class="req">*</span></label><input type="email" name="email" required></div>
+    </div>
+
+    <div class="field">
+      <label>Photo de profil du contact désigné <span class="req">*</span></label>
+      <input type="file" name="photo_profil" id="photo-input-partenaires" accept=".jpg,.jpeg,.png" required>
+      <div class="help">Cette photo sera utilisée pour votre badge de membre et votre attestation de participation. Format JPG ou PNG, 5 Mo maximum.</div>
+      <div class="photo-preview-row" id="photo-preview-row-partenaires" style="display:none;">
+        <img class="photo-preview-circle" id="photo-preview-partenaires" alt="Aperçu de la photo de profil">
+        <div class="photo-preview-caption">Rendu exact sur vos documents officiels</div>
+      </div>
     </div>
 
     <div class="field">
@@ -523,6 +546,16 @@
     </div>
 
     <div class="field">
+      <label>Photo de profil du contact désigné <span class="req">*</span></label>
+      <input type="file" name="photo_profil" id="photo-input-bailleurs" accept=".jpg,.jpeg,.png" required>
+      <div class="help">Cette photo sera utilisée pour votre badge de membre et votre attestation de participation. Format JPG ou PNG, 5 Mo maximum.</div>
+      <div class="photo-preview-row" id="photo-preview-row-bailleurs" style="display:none;">
+        <img class="photo-preview-circle" id="photo-preview-bailleurs" alt="Aperçu de la photo de profil">
+        <div class="photo-preview-caption">Rendu exact sur vos documents officiels</div>
+      </div>
+    </div>
+
+    <div class="field">
       <label>Logo officiel haute résolution <span class="req">*</span></label>
       <input type="file" name="logo_organisation" accept=".png,.jpg,.jpeg,.svg" required>
     </div>
@@ -617,8 +650,13 @@
     </div>
 
     <div class="field">
-      <label>Photo d'identité récente (pour le badge) <span class="req">*</span></label>
-      <input type="file" name="photo_identite" accept=".jpg,.jpeg,.png" required>
+      <label>Photo de profil <span class="req">*</span></label>
+      <input type="file" name="photo_identite" id="photo-input-organisateurs" accept=".jpg,.jpeg,.png" required>
+      <div class="help">Cette photo sera utilisée pour votre badge de membre et votre attestation de participation. Format JPG ou PNG, 5 Mo maximum.</div>
+      <div class="photo-preview-row" id="photo-preview-row-organisateurs" style="display:none;">
+        <img class="photo-preview-circle" id="photo-preview-organisateurs" alt="Aperçu de la photo de profil">
+        <div class="photo-preview-caption">Rendu exact sur vos documents officiels</div>
+      </div>
     </div>
 
     <div class="field">
@@ -720,6 +758,58 @@
     document.getElementById('btn-' + id).classList.add('active');
     document.getElementById('tabs-anchor').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
+
+  var MAX_PHOTO_BYTES = 5 * 1024 * 1024;
+  var MAX_PHOTO_DIM = 1000;
+  var PHOTO_JPEG_QUALITY = 0.85;
+
+  function resizeImageFile(file, maxDim, quality, callback) {
+    var reader = new FileReader();
+    reader.onload = function (e) {
+      var img = new Image();
+      img.onload = function () {
+        var w = img.width, h = img.height;
+        if (w >= h && w > maxDim) { h = Math.round(h * maxDim / w); w = maxDim; }
+        else if (h > w && h > maxDim) { w = Math.round(w * maxDim / h); h = maxDim; }
+        var canvas = document.createElement('canvas');
+        canvas.width = w;
+        canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+        var dataUrl = canvas.toDataURL('image/jpeg', quality);
+        canvas.toBlob(function (blob) { callback(blob, dataUrl); }, 'image/jpeg', quality);
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function setupPhotoPreview(key) {
+    var input = document.getElementById('photo-input-' + key);
+    if (!input) return;
+    var row = document.getElementById('photo-preview-row-' + key);
+    var img = document.getElementById('photo-preview-' + key);
+    input.addEventListener('change', function () {
+      var file = input.files[0];
+      if (!file) { row.style.display = 'none'; return; }
+      if (file.size > MAX_PHOTO_BYTES) {
+        alert('Cette photo dépasse 5 Mo. Merci d\'en choisir une autre.');
+        input.value = '';
+        row.style.display = 'none';
+        return;
+      }
+      resizeImageFile(file, MAX_PHOTO_DIM, PHOTO_JPEG_QUALITY, function (blob, dataUrl) {
+        img.src = dataUrl;
+        row.style.display = 'flex';
+        var resizedName = file.name.replace(/\.[^.]+$/, '') + '.jpg';
+        var resizedFile = new File([blob], resizedName, { type: 'image/jpeg' });
+        var dt = new DataTransfer();
+        dt.items.add(resizedFile);
+        input.files = dt.files;
+      });
+    });
+  }
+
+  ['exposants', 'journalistes', 'partenaires', 'bailleurs', 'organisateurs'].forEach(setupPhotoPreview);
 
   function toggleElectrique(show) {
     var wrap = document.getElementById('electrique-detail-wrap');
