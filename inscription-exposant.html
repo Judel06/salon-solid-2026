@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Inscription Exposant — Salon SOLID 2026</title>
+<link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicon-16.png">
+<link rel="apple-touch-icon" href="assets/img/salon-solid-icon-180.png">
+<link rel="stylesheet" href="assets/style.css">
+<style>
+  .section-card{background:#fff; border:1px solid #e7e9f2; border-radius:16px; padding:32px; margin-bottom:24px;}
+  .section-num{display:inline-flex; align-items:center; justify-content:center; width:30px; height:30px; border-radius:50%; background:#16247d; color:#fff; font-weight:800; font-size:13px; flex-shrink:0;}
+  .section-title{color:#0a1440; font-size:18px; font-weight:800;}
+  .field{margin-bottom:16px;}
+  .grid-2{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  @media (max-width:700px){ .grid-2{grid-template-columns:1fr;} }
+  .req{color:#dc2626;}
+  .help{color:#8b93b8; font-size:12px; margin-top:4px; line-height:1.5;}
+  .callout{background:#fdf2f2; border:1px solid #f7c9c9; border-radius:10px; padding:16px 18px; color:#8a2020; font-size:13px; line-height:1.6; display:flex; gap:10px; align-items:flex-start;}
+  .info-note{background:#eef1fb; border:1px solid #d8e0f7; border-radius:10px; padding:14px 18px; color:#1a2a6b; font-size:13px; line-height:1.6;}
+
+  .radio-pill{display:inline-flex; align-items:center; gap:8px; border:2px solid #e7e9f2; border-radius:9px; padding:10px 18px; cursor:pointer; font-size:13.5px; font-weight:600; color:#3a4166;}
+  .radio-pill input{position:absolute; opacity:0; width:0; height:0;}
+  .radio-pill input:checked + span{color:#16247d;}
+  .radio-pill:has(input:checked){border-color:#16247d; background:#eef1fb;}
+
+  .price-option{display:block; cursor:pointer;}
+  .price-option input{position:absolute; opacity:0; width:0; height:0;}
+  .price-card{border:2px solid #e7e9f2; border-radius:14px; padding:18px 20px; display:flex; justify-content:space-between; align-items:center; gap:12px;}
+  .price-option input:checked + .price-card{border-color:#16247d; background:#eef1fb;}
+  .price-option input:focus-visible + .price-card{outline:2px solid #16247d; outline-offset:2px;}
+  .price-name{font-weight:700; color:#0a1440; font-size:14px;}
+  .price-amount{font-weight:800; color:#16247d; font-size:16px; white-space:nowrap;}
+
+  .checkline{display:flex; gap:10px; align-items:flex-start; font-size:13.5px; color:#1a2144; line-height:1.6; margin-bottom:14px;}
+  .checkline input{margin-top:3px; flex-shrink:0; width:16px; height:16px;}
+
+  input[type="file"]{padding:9px 10px; font-size:12.5px; background:#f9fafc;}
+  .hp-field{position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden;}
+</style>
+</head>
+<body>
+
+<header style="display:flex; align-items:center; justify-content:space-between; padding:16px 48px; background:linear-gradient(90deg, #16247d 0%, #1e3a8a 100%); box-shadow:0 2px 14px rgba(0,0,0,0.28); flex-wrap:wrap; gap:16px;">
+  <div style="display:flex; align-items:center; gap:12px;">
+    <div style="width:40px;height:40px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0; padding:4px;">
+      <img src="assets/img/adis-haiti-icon.png" alt="ADIS-HAÏTI" style="width:100%; height:100%; object-fit:contain;">
+    </div>
+    <span style="color:#fff; font-weight:800; font-size:18px; letter-spacing:0.5px;">ADIS-HAITI</span>
+  </div>
+  <nav style="display:flex; align-items:center; gap:26px; flex-wrap:wrap;">
+    <a href="index.html" style="font-size:14px; font-weight:500; color:#dbe1f7;">Accueil</a>
+    <a href="a-propos.html" style="font-size:14px; font-weight:500; color:#dbe1f7;">À propos</a>
+    <a href="organisations.html" style="font-size:14px; font-weight:500; color:#dbe1f7;">Organisations</a>
+    <a href="solid-2026.html" style="font-size:14px; font-weight:500; color:#dbe1f7;">SOLID 2026</a>
+    <a href="prix-2026.html" style="font-size:14px; font-weight:500; color:#dbe1f7;">Prix 2026</a>
+    <a href="partenaires.html" style="font-size:14px; font-weight:500; color:#dbe1f7;">Partenaires</a>
+    <a href="accreditation.html" style="font-size:14px; font-weight:500; color:#dbe1f7;">Accréditation</a>
+    <a href="contact.html" style="font-size:14px; font-weight:500; color:#dbe1f7;">Contact</a>
+  </nav>
+  <div style="display:flex; align-items:center; gap:18px;">
+    <a href="inscription.html" style="background:#dc2626; color:#fff; border:none; padding:10px 18px; border-radius:8px; font-size:13px; font-weight:700; white-space:nowrap;">Inscrire une Organisation</a>
+  </div>
+</header>
+
+<div style="background:linear-gradient(180deg, #16247d 0%, #0a1440 100%); padding:56px 24px; text-align:center;">
+  <div style="display:inline-block; padding:7px 16px; border-radius:999px; background:rgba(255,255,255,0.1); color:#dbe1f7; font-size:11px; font-weight:700; letter-spacing:1.5px; margin-bottom:16px;">SALON SOLID 2026 · 13-15 NOVEMBRE · PÉTION-VILLE</div>
+  <h1 style="color:#fff; font-size:30px; font-weight:800; margin:0 0 10px;">Formulaire d'Inscription — Exposant</h1>
+  <p style="color:#c7cff0; font-size:14px; max-width:600px; margin:0 auto;">Réservez votre kiosque au Salon des Organisations Locales et Internationales au Développement, organisé par ADIS-HAÏTI. Ce formulaire reprend le contenu du Guide de l'Exposant.</p>
+</div>
+
+<form name="inscription-exposant" method="POST" action="/merci-exposant.html" enctype="multipart/form-data" data-netlify="true" data-netlify-honeypot="bot-field" novalidate onsubmit="return validateExposantForm(event)">
+<input type="hidden" name="form-name" value="inscription-exposant">
+<p class="hp-field"><label>Ne pas remplir si humain : <input name="bot-field"></label></p>
+
+<div style="max-width:840px; margin:0 auto; padding:44px 24px 90px;">
+
+  <!-- SECTION 1 -->
+  <div class="section-card">
+    <div style="display:flex; align-items:center; gap:12px; margin-bottom:22px;">
+      <span class="section-num">1</span>
+      <span class="section-title">Identification de l'Exposant</span>
+    </div>
+
+    <div class="field"><label>Nom de l'Organisation <span class="req">*</span></label><input type="text" name="nom_organisation" required></div>
+    <div class="grid-2">
+      <div class="field"><label>Nom du Contact <span class="req">*</span></label><input type="text" name="nom_contact" required></div>
+      <div class="field"><label>Adresse <span class="req">*</span></label><input type="text" name="adresse" required></div>
+    </div>
+    <div class="grid-2">
+      <div class="field"><label>Téléphone <span class="req">*</span></label><input type="tel" name="telephone" required></div>
+      <div class="field"><label>Téléphone #2</label><input type="tel" name="telephone_2"></div>
+    </div>
+    <div class="grid-2">
+      <div class="field"><label>Courriel <span class="req">*</span></label><input type="email" name="courriel" required></div>
+      <div class="field">
+        <label>Secteur d'activité <span class="req">*</span></label>
+        <select name="secteur" id="secteur" required onchange="document.getElementById('secteur-autre-wrap').style.display = this.value==='Autre' ? 'block':'none'; document.getElementById('secteur-autre').required = this.value==='Autre';">
+          <option value="">Sélectionnez…</option>
+          <option>Organisation gouvernementale (OG)</option>
+          <option>ONG locale</option>
+          <option>Organisation internationale</option>
+          <option>Organisation communautaire</option>
+          <option>Entreprise sociale</option>
+          <option>Fondation</option>
+          <option>Réseau ou coalition</option>
+          <option>Recherche / Think tank</option>
+          <option>Organisation culturelle</option>
+          <option>Partenaire financier</option>
+          <option>Autre</option>
+        </select>
+        <div id="secteur-autre-wrap" style="display:none; margin-top:8px;">
+          <input type="text" id="secteur-autre" name="secteur_autre" placeholder="Précisez votre secteur d'activité">
+        </div>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="field"><label>Personne ressource lors du Salon <span class="req">*</span></label><input type="text" name="personne_ressource_salon" required></div>
+      <div class="field"><label>Téléphone cellulaire de la personne ressource <span class="req">*</span></label><input type="tel" name="telephone_personne_ressource" required></div>
+    </div>
+  </div>
+
+  <!-- SECTION 2 -->
+  <div class="section-card">
+    <div style="display:flex; align-items:center; gap:12px; margin-bottom:10px;">
+      <span class="section-num">2</span>
+      <span class="section-title">Documents à Fournir</span>
+    </div>
+    <div class="info-note" style="margin-bottom:22px;">Ces informations serviront à la préparation des outils de communication, des publications officielles et du répertoire des organisations participantes au SALON SOLID 2026.</div>
+
+    <div class="field"><label>Nom complet de la personne-ressource désignée</label><input type="text" name="nom_personne_ressource_designee"></div>
+
+    <div class="field">
+      <label>Photographie officielle récente de la personne-ressource</label>
+      <input type="file" name="photo_personne_ressource" accept=".jpg,.jpeg,.png">
+      <div class="help">Format JPG ou PNG.</div>
+    </div>
+
+    <div class="field">
+      <label>Notice biographique / présentation professionnelle de la personne-ressource</label>
+      <input type="file" name="notice_biographique_fichier" accept=".pdf,.doc,.docx" style="margin-bottom:8px;">
+      <textarea name="notice_biographique_texte" rows="3" placeholder="…ou rédigez directement la notice biographique ici"></textarea>
+      <div class="help">Téléversez un fichier (PDF/Word) ou rédigez directement le texte ci-dessus.</div>
+    </div>
+
+    <div class="field">
+      <label>Présentation de l'Organisation, incluant ses réalisations</label>
+      <input type="file" name="presentation_organisation_fichier" accept=".pdf,.doc,.docx" style="margin-bottom:8px;">
+      <textarea name="presentation_organisation_texte" rows="3" placeholder="…ou rédigez directement la présentation ici"></textarea>
+      <div class="help">Téléversez un fichier (PDF/Word) ou rédigez directement le texte ci-dessus.</div>
+    </div>
+
+    <div class="field">
+      <label>Logo officiel de l'Organisation</label>
+      <input type="file" name="logo_organisation" accept=".png,.jpg,.jpeg,.svg">
+      <div class="help">Format PNG, JPG ou SVG de préférence (haute résolution).</div>
+    </div>
+  </div>
+
+  <!-- SECTION 3 -->
+  <div class="section-card">
+    <div style="display:flex; align-items:center; gap:12px; margin-bottom:22px;">
+      <span class="section-num">3</span>
+      <span class="section-title">Besoins lors du Salon</span>
+    </div>
+
+    <div class="callout" style="margin-bottom:24px;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0; margin-top:1px;"><path d="M12 9v4M12 17h.01M10.3 3.9L1.8 18a2 2 0 001.7 3h17a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"></path></svg>
+      <div><strong>L'organisation du Salon ne fournit aucun matériel pour meubler votre kiosque.</strong> Possibilité de louer du matériel auprès de nos fournisseurs — contactez un conseiller.</div>
+    </div>
+
+    <div class="field">
+      <label>Avez-vous des besoins électriques particuliers autres qu'une prise standard ? <span class="req">*</span></label>
+      <div style="display:flex; gap:12px; margin-top:8px;">
+        <label class="radio-pill"><input type="radio" name="besoin_electrique" value="Oui" required onchange="toggleElectrique(true)"><span>Oui</span></label>
+        <label class="radio-pill"><input type="radio" name="besoin_electrique" value="Non" required onchange="toggleElectrique(false)"><span>Non</span></label>
+      </div>
+    </div>
+
+    <div class="field" id="electrique-detail-wrap" style="display:none;">
+      <label>Donnez des explications précises (nombre et type d'appareils énergivores, ampérage requis) <span class="req">*</span></label>
+      <textarea name="electrique_detail" id="electrique-detail" rows="3"></textarea>
+    </div>
+  </div>
+
+  <!-- SECTION 4 -->
+  <div class="section-card">
+    <div style="display:flex; align-items:center; gap:12px; margin-bottom:22px;">
+      <span class="section-num">4</span>
+      <span class="section-title">Frais de Participation et Autorisations</span>
+    </div>
+
+    <label style="display:block; margin-bottom:12px;">Catégorie de l'organisation <span class="req">*</span></label>
+    <div style="display:flex; flex-direction:column; gap:12px; margin-bottom:20px;">
+      <label class="price-option"><input type="radio" name="categorie" value="ONG et Organisations Internationales — 100 000 gourdes" required>
+        <div class="price-card"><span class="price-name">ONG et Organisations Internationales</span><span class="price-amount">100 000 gourdes</span></div>
+      </label>
+      <label class="price-option"><input type="radio" name="categorie" value="Organisations basées dans l'Ouest — 75 000 gourdes" required>
+        <div class="price-card"><span class="price-name">Organisations basées dans l'Ouest</span><span class="price-amount">75 000 gourdes</span></div>
+      </label>
+      <label class="price-option"><input type="radio" name="categorie" value="Organisations régionales — 50 000 gourdes" required>
+        <div class="price-card"><span class="price-name">Organisations régionales</span><span class="price-amount">50 000 gourdes</span></div>
+      </label>
+      <label class="price-option"><input type="radio" name="categorie" value="Associations et Organisations Communautaires — 40 000 gourdes" required>
+        <div class="price-card"><span class="price-name">Associations et Organisations Communautaires</span><span class="price-amount">40 000 gourdes</span></div>
+      </label>
+    </div>
+
+    <div class="info-note" style="margin-bottom:26px;">La réservation du kiosque est effective uniquement après paiement complet de la facture. Aucun remboursement en cas d'absence.</div>
+
+    <div class="checkline">
+      <input type="checkbox" name="accepte_guide" value="oui" required id="chk1">
+      <label for="chk1">J'ai lu et j'accepte les conditions décrites dans le Guide de l'exposant <span class="req">*</span></label>
+    </div>
+    <div class="checkline">
+      <input type="checkbox" name="accepte_photos" value="oui" required id="chk2">
+      <label for="chk2">J'autorise le Salon SOLID 2026 à prendre des photos de moi durant l'événement et à les diffuser (site web, page Facebook, outils promotionnels), avec possibilité de retrait en tout temps sur demande. <span class="req">*</span></label>
+    </div>
+
+    <div class="grid-2" style="margin-top:22px;">
+      <div class="field">
+        <label>Signature électronique (tapez votre nom complet) <span class="req">*</span></label>
+        <input type="text" name="signature" placeholder="Votre nom complet" required>
+      </div>
+      <div class="field">
+        <label>Date <span class="req">*</span></label>
+        <input type="date" name="date_signature" id="date-signature" required>
+      </div>
+    </div>
+  </div>
+
+  <div id="form-error" style="display:none; background:#fdf2f2; border:1px solid #f7c9c9; color:#8a2020; border-radius:10px; padding:14px 18px; font-size:13.5px; margin-bottom:18px;"></div>
+
+  <button type="submit" style="width:100%; background:#16247d; color:#fff; border:none; padding:16px; border-radius:10px; font-size:15px; font-weight:700;">Soumettre mon inscription →</button>
+  <p style="color:#9aa0c4; font-size:11.5px; text-align:center; margin-top:16px; line-height:1.6;">Places limitées — premier arrivé, premier servi. Le comité vous recontactera pour la facturation.</p>
+
+</div>
+</form>
+
+<footer style="background:#0a1024; padding:48px 48px 28px;">
+  <div style="max-width:1200px; margin:0 auto; display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:40px;">
+    <div>
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+        <div style="width:28px;height:28px;border-radius:50%;background:#16247d;border:2px solid #ffd24d;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ffd24d" stroke-width="1.6"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3c2.5 2.7 4 6 4 9s-1.5 6.3-4 9c-2.5-2.7-4-6-4-9s1.5-6.3 4-9z"></path></svg>
+        </div>
+        <span style="color:#fff; font-weight:800; font-size:16px;">ADIS-HAITI</span>
+      </div>
+      <div style="color:#8b93b8; font-size:13px; line-height:1.6;">Ensemble pour le développement durable d'Haïti.</div>
+    </div>
+    <div>
+      <div style="color:#fff; font-weight:700; font-size:13px; margin-bottom:14px;">Informations de Contact</div>
+      <div style="display:flex; flex-direction:column; gap:12px;">
+        <div style="color:#c7cff0; font-size:13px;"><span style="color:#8b93b8; display:block; font-size:11px; letter-spacing:0.5px;">EMAIL</span>admin@salonsolid.com</div>
+        <div style="color:#c7cff0; font-size:13px;"><span style="color:#8b93b8; display:block; font-size:11px; letter-spacing:0.5px;">TÉLÉPHONE</span>+509 4245-4545</div>
+        <div style="color:#c7cff0; font-size:13px;"><span style="color:#8b93b8; display:block; font-size:11px; letter-spacing:0.5px;">ADRESSE</span>Port-au-Prince, Haïti</div>
+      </div>
+    </div>
+    <div>
+      <div style="color:#fff; font-weight:700; font-size:13px; margin-bottom:14px;">Liens Rapides</div>
+      <div style="display:flex; flex-direction:column; gap:10px;">
+        <a href="a-propos.html" style="font-size:13px; color:#c7cff0;">À propos</a>
+        <a href="organisations.html" style="font-size:13px; color:#c7cff0;">Organisations</a>
+        <a href="solid-2026.html" style="font-size:13px; color:#c7cff0;">SOLID 2026</a>
+        <a href="contact.html" style="font-size:13px; color:#c7cff0;">Contact</a>
+      </div>
+    </div>
+  </div>
+  <div style="max-width:1200px; margin:34px auto 0; padding-top:20px; border-top:1px solid rgba(255,255,255,0.08); color:#5f6890; font-size:12px;">© 2026 ADIS-HAITI. Tous droits réservés.</div>
+</footer>
+
+<script>
+  function toggleElectrique(show) {
+    var wrap = document.getElementById('electrique-detail-wrap');
+    var field = document.getElementById('electrique-detail');
+    wrap.style.display = show ? 'block' : 'none';
+    field.required = show;
+    if (!show) field.value = '';
+  }
+
+  var dateField = document.getElementById('date-signature');
+  if (dateField && !dateField.value) {
+    var today = new Date();
+    var iso = today.getFullYear() + '-' + String(today.getMonth()+1).padStart(2,'0') + '-' + String(today.getDate()).padStart(2,'0');
+    dateField.value = iso;
+  }
+
+  function validateExposantForm(e) {
+    var form = e.target;
+    var errBox = document.getElementById('form-error');
+    if (!form.checkValidity()) {
+      e.preventDefault();
+      var invalid = form.querySelector(':invalid');
+      errBox.textContent = 'Merci de compléter tous les champs obligatoires (marqués d\'un *) avant de soumettre le formulaire.';
+      errBox.style.display = 'block';
+      if (invalid) invalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return false;
+    }
+    errBox.style.display = 'none';
+    return true;
+  }
+</script>
+</body>
+</html>
