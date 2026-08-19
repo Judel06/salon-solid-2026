@@ -9,18 +9,59 @@
 <link rel="apple-touch-icon" href="assets/img/salon-solid-icon-180.png">
 <link rel="stylesheet" href="assets/style.css">
 <style>
-  .acc{background:#fff;border:1px solid #e7e9f2;border-radius:14px;padding:24px;display:flex;flex-direction:column;}
-  .tag{color:#8b93b8;font-size:10.5px;font-weight:700;letter-spacing:0.6px;}
-  .li{display:flex;gap:8px;color:#3a4166;font-size:12.5px;line-height:1.5;margin-bottom:9px;}
-  .chk{flex-shrink:0;margin-top:2px;}
+  .section-card{background:#fff; border:1px solid #e7e9f2; border-radius:16px; padding:32px; margin-bottom:24px;}
+  .section-num{display:inline-flex; align-items:center; justify-content:center; width:30px; height:30px; border-radius:50%; background:#16247d; color:#fff; font-weight:800; font-size:13px; flex-shrink:0;}
+  .section-title{color:#0a1440; font-size:18px; font-weight:800;}
+  .field{margin-bottom:16px;}
+  .grid-2{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  @media (max-width:700px){ .grid-2{grid-template-columns:1fr;} }
+  .req{color:#dc2626;}
+  .help{color:#8b93b8; font-size:12px; margin-top:4px; line-height:1.5;}
+  .callout{background:#fdf2f2; border:1px solid #f7c9c9; border-radius:10px; padding:16px 18px; color:#8a2020; font-size:13px; line-height:1.6; display:flex; gap:10px; align-items:flex-start;}
+  .info-note{background:#eef1fb; border:1px solid #d8e0f7; border-radius:10px; padding:14px 18px; color:#1a2a6b; font-size:13px; line-height:1.6;}
+
+  .radio-pill{display:inline-flex; align-items:center; gap:8px; border:2px solid #e7e9f2; border-radius:9px; padding:10px 18px; cursor:pointer; font-size:13.5px; font-weight:600; color:#3a4166;}
+  .radio-pill input{position:absolute; opacity:0; width:0; height:0;}
+  .radio-pill input:checked + span{color:#16247d;}
+  .radio-pill:has(input:checked){border-color:#16247d; background:#eef1fb;}
+
+  .price-option{display:block; cursor:pointer;}
+  .price-option input{position:absolute; opacity:0; width:0; height:0;}
+  .price-card{border:2px solid #e7e9f2; border-radius:14px; padding:18px 20px; display:flex; justify-content:space-between; align-items:center; gap:12px;}
+  .price-option input:checked + .price-card{border-color:#16247d; background:#eef1fb;}
+  .price-option input:focus-visible + .price-card{outline:2px solid #16247d; outline-offset:2px;}
+  .price-name{font-weight:700; color:#0a1440; font-size:14px;}
+  .price-amount{font-weight:800; color:#16247d; font-size:16px; white-space:nowrap;}
+
+  .checkline{display:flex; gap:10px; align-items:flex-start; font-size:13.5px; color:#1a2144; line-height:1.6; margin-bottom:14px;}
+  .checkline input{margin-top:3px; flex-shrink:0; width:16px; height:16px;}
+
+  .chip-group{display:flex; flex-wrap:wrap;}
+  .chip-check{display:inline-flex; align-items:center; gap:8px; border:1px solid #e7e9f2; border-radius:9px; padding:9px 14px; font-size:13px; color:#3a4166; cursor:pointer; margin:0 8px 8px 0; background:#fff;}
+  .chip-check input{width:15px;height:15px; flex-shrink:0;}
+  .chip-check:has(input:checked){border-color:#16247d; background:#eef1fb; color:#16247d; font-weight:600;}
+
+  input[type="file"]{padding:9px 10px; font-size:12.5px; background:#f9fafc;}
+  .hp-field{position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden;}
+
+  .rep-row{display:flex; gap:8px; margin-bottom:8px;}
+  .rep-row input{flex:1;}
+  .rep-remove{background:#fdf2f2; color:#8a2020; border:1px solid #f7c9c9; border-radius:8px; padding:0 14px; font-size:15px; cursor:pointer;}
+  .add-rep-btn{background:#eef1fb; color:#16247d; border:1px dashed #b7c3ec; border-radius:9px; padding:9px 16px; font-size:12.5px; font-weight:700; cursor:pointer; margin-top:4px;}
+
+  .tabs-bar{display:flex; gap:10px; overflow-x:auto; padding:4px 4px 12px;}
+  .tab-btn{flex-shrink:0; padding:12px 20px; border-radius:10px; border:2px solid #e7e9f2; background:#fff; color:#3a4166; font-weight:700; font-size:13px; cursor:pointer; white-space:nowrap;}
+  .tab-btn.active{background:#16247d; border-color:#16247d; color:#fff;}
+  .tab-panel{display:none;}
+  .tab-panel.active{display:block;}
 </style>
 </head>
 <body>
 
 <header style="display:flex; align-items:center; justify-content:space-between; padding:16px 48px; background:linear-gradient(90deg, #16247d 0%, #1e3a8a 100%); box-shadow:0 2px 14px rgba(0,0,0,0.28); flex-wrap:wrap; gap:16px;">
   <div style="display:flex; align-items:center; gap:12px;">
-    <div style="width:36px;height:36px;border-radius:50%;background:#0a1440;border:2px solid #ffd24d;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ffd24d" stroke-width="1.6"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3c2.5 2.7 4 6 4 9s-1.5 6.3-4 9c-2.5-2.7-4-6-4-9s1.5-6.3 4-9z"></path></svg>
+    <div style="width:40px;height:40px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0; padding:4px;">
+      <img src="assets/img/adis-haiti-icon.png" alt="ADIS-HAÏTI" style="width:100%; height:100%; object-fit:contain;">
     </div>
     <span style="color:#fff; font-weight:800; font-size:18px; letter-spacing:0.5px;">ADIS-HAITI</span>
   </div>
@@ -35,171 +76,608 @@
     <a href="contact.html" style="font-size:14px; font-weight:500; color:#dbe1f7;">Contact</a>
   </nav>
   <div style="display:flex; align-items:center; gap:18px;">
-    <div style="display:flex; align-items:center; gap:5px; color:#dbe1f7; font-size:13px; font-weight:600;">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3a15 15 0 010 18M12 3a15 15 0 000 18"></path></svg>
-      Français
-      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M6 9l6 6 6-6"></path></svg>
-    </div>
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#dbe1f7" stroke-width="2"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"></path></svg>
     <a href="inscription.html" style="background:#dc2626; color:#fff; border:none; padding:10px 18px; border-radius:8px; font-size:13px; font-weight:700; white-space:nowrap;">Inscrire une Organisation</a>
   </div>
 </header>
 
-<div style="min-height:280px; background:linear-gradient(160deg, #0a0a12 0%, #1a1330 70%, #0a0a12 100%); display:flex; align-items:center; justify-content:center; text-align:center; padding:60px 24px;">
-  <div>
-    <div style="display:inline-block; padding:7px 16px; border-radius:999px; background:rgba(255,255,255,0.08); color:#dbe1f7; font-size:11px; font-weight:700; letter-spacing:1.5px; margin-bottom:16px;">SOLID 2026</div>
-    <h1 style="color:#fff; font-size:32px; font-weight:800; margin:0;">Accréditation</h1>
+<div style="background:linear-gradient(160deg, #0a0a12 0%, #1a1330 70%, #0a0a12 100%); padding:56px 24px; text-align:center;">
+  <div style="display:inline-block; padding:7px 16px; border-radius:999px; background:rgba(255,255,255,0.08); color:#dbe1f7; font-size:11px; font-weight:700; letter-spacing:1.5px; margin-bottom:16px;">SOLID 2026 · 12-15 NOVEMBRE · PÉTION-VILLE</div>
+  <h1 style="color:#fff; font-size:32px; font-weight:800; margin:0 0 10px;">Accréditation</h1>
+  <p style="color:#c7cff0; font-size:14px; max-width:600px; margin:0 auto;">Choisissez votre catégorie ci-dessous pour accéder au formulaire d'accréditation correspondant.</p>
+</div>
+
+<div style="max-width:900px; margin:0 auto; padding:36px 24px 0; text-align:center;">
+  <div style="color:#0a1440; font-weight:800; font-size:15px; margin-bottom:14px;">Je m'accrédite en tant que…</div>
+  <div class="tabs-bar">
+    <button type="button" class="tab-btn active" id="btn-tab-exposants" onclick="showAccredTab('tab-exposants')">Organisation Exposante</button>
+    <button type="button" class="tab-btn" id="btn-tab-journalistes" onclick="showAccredTab('tab-journalistes')">Journaliste / Média</button>
+    <button type="button" class="tab-btn" id="btn-tab-partenaires" onclick="showAccredTab('tab-partenaires')">Partenaire</button>
+    <button type="button" class="tab-btn" id="btn-tab-bailleurs" onclick="showAccredTab('tab-bailleurs')">Bailleur / Sponsor</button>
+    <button type="button" class="tab-btn" id="btn-tab-organisateurs" onclick="showAccredTab('tab-organisateurs')">Organisateur / Logistique / Sécurité</button>
   </div>
 </div>
 
-<div style="max-width:1160px; margin:-46px auto 0; padding:0 24px; position:relative; z-index:2; display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:18px;">
+<div id="tabs-anchor"></div>
 
-  <div class="acc">
-    <div class="tag">PUBLIC CIBLE</div>
-    <div style="font-weight:800; color:#0a1440; font-size:15px; margin:6px 0 14px;">VISITEUR PUBLIC</div>
-    <div style="color:#8b93b8; font-size:11.5px; margin-bottom:12px;">Grand public, étudiants, jeunes professionnels</div>
-    <div style="border-top:1px solid #f0f1f7; padding-top:14px; margin-bottom:8px; color:#8b93b8; font-size:10.5px; font-weight:700;">CE QUI EST INCLUS</div>
-    <div class="li"><svg class="chk" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5"><path d="M20 6L9 17l-5-5"></path></svg>Accès aux stands et foire des organisations</div>
-    <div class="li"><svg class="chk" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5"><path d="M20 6L9 17l-5-5"></path></svg>Documentation et informations officielles</div>
-    <div class="li"><svg class="chk" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5"><path d="M20 6L9 17l-5-5"></path></svg>Sessions de formation et panels</div>
-    <div class="li"><svg class="chk" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5"><path d="M20 6L9 17l-5-5"></path></svg>Networking et rencontres</div>
-    <div class="li"><svg class="chk" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5"><path d="M20 6L9 17l-5-5"></path></svg>Visibilité des initiatives d'inspiration</div>
-    <div style="margin-top:auto; padding-top:14px;">
-      <div class="tag">OBJECTIF</div>
-      <div style="color:#5b6280; font-size:12px; font-style:italic; margin:4px 0 16px;">"Sensibilisation, orientation, découverte"</div>
-      <a href="inscription.html" style="display:block; text-align:center; width:100%; background:#16247d; color:#fff; border:none; padding:11px; border-radius:8px; font-size:12.5px; font-weight:700;">SÉLECTIONNER</a>
+<!-- ============================================================ -->
+<!-- TAB 1 — ORGANISATIONS EXPOSANTES (existant, inchangé)         -->
+<!-- ============================================================ -->
+<div class="tab-panel active" id="tab-exposants">
+<form name="inscription-exposant" method="POST" action="/merci-exposant.html" enctype="multipart/form-data" data-netlify="true" data-netlify-honeypot="bot-field" novalidate onsubmit="return validateAccredForm(event)">
+<input type="hidden" name="form-name" value="inscription-exposant">
+<p class="hp-field"><label>Ne pas remplir si humain : <input name="bot-field"></label></p>
+
+<div style="max-width:840px; margin:0 auto; padding:20px 24px 90px;">
+
+  <div class="section-card">
+    <div style="display:flex; align-items:center; gap:12px; margin-bottom:22px;">
+      <span class="section-num">1</span>
+      <span class="section-title">Identification de l'Exposant</span>
     </div>
-  </div>
 
-  <div class="acc">
-    <div class="tag">PUBLIC CIBLE</div>
-    <div style="font-weight:800; color:#0a1440; font-size:15px; margin:6px 0 14px;">PARTICIPANT STANDARD</div>
-    <div style="color:#8b93b8; font-size:11.5px; margin-bottom:12px;">Membres d'organisations, professionnels</div>
-    <div style="border-top:1px solid #f0f1f7; padding-top:14px; margin-bottom:8px; color:#8b93b8; font-size:10.5px; font-weight:700;">CE QUI EST INCLUS</div>
-    <div class="li"><svg class="chk" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5"><path d="M20 6L9 17l-5-5"></path></svg>Accès complet à tous les stands et zones d'exposition</div>
-    <div class="li"><svg class="chk" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5"><path d="M20 6L9 17l-5-5"></path></svg>Participation aux ateliers spécialisés et formations thématiques</div>
-    <div class="li"><svg class="chk" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5"><path d="M20 6L9 17l-5-5"></path></svg>Rencontres privilégiées avec leaders et bailleurs</div>
-    <div class="li"><svg class="chk" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5"><path d="M20 6L9 17l-5-5"></path></svg>Opportunités de présenter ses projets et initiatives</div>
-    <div class="li"><svg class="chk" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5"><path d="M20 6L9 17l-5-5"></path></svg>Reconnaissance officielle et certifications de participation</div>
-    <div class="li"><svg class="chk" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5"><path d="M20 6L9 17l-5-5"></path></svg>Accès au Cocktail dinatoire</div>
-    <div style="margin-top:auto; padding-top:14px;">
-      <div class="tag">OBJECTIF</div>
-      <div style="color:#5b6280; font-size:12px; font-style:italic; margin:4px 0 16px;">"Apprentissage et réseautage"</div>
-      <a href="inscription.html" style="display:block; text-align:center; width:100%; background:#16247d; color:#fff; border:none; padding:11px; border-radius:8px; font-size:12.5px; font-weight:700;">SÉLECTIONNER</a>
+    <div class="field"><label>Nom de l'Organisation <span class="req">*</span></label><input type="text" name="nom_organisation" required></div>
+    <div class="grid-2">
+      <div class="field"><label>Nom du Contact <span class="req">*</span></label><input type="text" name="nom_contact" required></div>
+      <div class="field"><label>Adresse <span class="req">*</span></label><input type="text" name="adresse" required></div>
     </div>
-  </div>
-
-  <div class="acc">
-    <div class="tag">PUBLIC CIBLE</div>
-    <div style="font-weight:800; color:#0a1440; font-size:15px; margin:6px 0 14px;">ORGANISATION EXPOSANTE</div>
-    <div style="color:#8b93b8; font-size:11.5px; margin-bottom:12px;">Organisations locales et internationales</div>
-    <div style="border-top:1px solid #f0f1f7; padding-top:14px; margin-bottom:8px; color:#8b93b8; font-size:10.5px; font-weight:700;">CE QUI EST INCLUS</div>
-    <div class="li"><svg class="chk" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5"><path d="M20 6L9 17l-5-5"></path></svg>Stand dédié pour présenter leurs projets et activités</div>
-    <div class="li"><svg class="chk" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5"><path d="M20 6L9 17l-5-5"></path></svg>Visibilité sur la plateforme officielle du salon et les supports promotionnels</div>
-    <div class="li"><svg class="chk" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5"><path d="M20 6L9 17l-5-5"></path></svg>Accès à toutes les sessions de formation et panels</div>
-    <div class="li"><svg class="chk" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5"><path d="M20 6L9 17l-5-5"></path></svg>Possibilité de rencontrer directement les partenaires et bailleurs</div>
-    <div class="li"><svg class="chk" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5"><path d="M20 6L9 17l-5-5"></path></svg>Participation au vote annuel pour les meilleures organisations</div>
-    <div class="li"><svg class="chk" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5"><path d="M20 6L9 17l-5-5"></path></svg>Opportunité de recevoir financement ou appui pour leurs projets</div>
-    <div class="li"><svg class="chk" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5"><path d="M20 6L9 17l-5-5"></path></svg>Reconnaissance officielle et mentions lors de la cérémonie SOLID</div>
-    <div style="margin-top:auto; padding-top:14px;">
-      <div class="tag">OBJECTIF</div>
-      <div style="color:#5b6280; font-size:12px; font-style:italic; margin:4px 0 16px;">"Visibilité, partenariats, reconnaissance"</div>
-      <a href="inscription-exposant.html" style="display:block; text-align:center; width:100%; background:#16247d; color:#fff; border:none; padding:11px; border-radius:8px; font-size:12.5px; font-weight:700;">SÉLECTIONNER</a>
+    <div class="grid-2">
+      <div class="field"><label>Téléphone <span class="req">*</span></label><input type="tel" name="telephone" required></div>
+      <div class="field"><label>Téléphone #2</label><input type="tel" name="telephone_2"></div>
     </div>
-  </div>
-
-</div>
-
-<div style="max-width:1160px; margin:0 auto; padding:22px 24px 90px; display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:18px;">
-
-  <div class="acc">
-    <div class="tag">PUBLIC CIBLE</div>
-    <div style="font-weight:800; color:#0a1440; font-size:15px; margin:6px 0 14px;">LEADERSHIP &amp; PROJETS</div>
-    <div style="color:#8b93b8; font-size:11.5px; margin-bottom:12px;">Dirigeants, chefs de projets</div>
-    <div style="border-top:1px solid #f0f1f7; padding-top:14px; margin-bottom:8px; color:#8b93b8; font-size:10.5px; font-weight:700;">CE QUI EST INCLUS</div>
-    <div class="li"><svg class="chk" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5"><path d="M20 6L9 17l-5-5"></path></svg>Stand prioritaire pour présenter projets stratégiques</div>
-    <div class="li"><svg class="chk" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5"><path d="M20 6L9 17l-5-5"></path></svg>Visibilité renforcée sur la plateforme et supports officiels</div>
-    <div class="li"><svg class="chk" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5"><path d="M20 6L9 17l-5-5"></path></svg>Accès à toutes les formations, panels et ateliers</div>
-    <div class="li"><svg class="chk" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5"><path d="M20 6L9 17l-5-5"></path></svg>Rencontres privilégiées avec bailleurs, partenaires et leaders sectoriels</div>
-    <div class="li"><svg class="chk" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5"><path d="M20 6L9 17l-5-5"></path></svg>Opportunité de présenter projets devant des décideurs pour financement</div>
-    <div class="li"><svg class="chk" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5"><path d="M20 6L9 17l-5-5"></path></svg>Mentorat et conseils personnalisés de leaders expérimentés</div>
-    <div class="li"><svg class="chk" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5"><path d="M20 6L9 17l-5-5"></path></svg>Reconnaissance officielle et mentions lors de la cérémonie SOLID</div>
-    <div style="margin-top:auto; padding-top:14px;">
-      <div class="tag">OBJECTIF</div>
-      <div style="color:#5b6280; font-size:12px; font-style:italic; margin:4px 0 16px;">"Financement, influence, décision"</div>
-      <a href="inscription.html" style="display:block; text-align:center; width:100%; background:#16247d; color:#fff; border:none; padding:11px; border-radius:8px; font-size:12.5px; font-weight:700;">SÉLECTIONNER</a>
-    </div>
-  </div>
-
-  <div class="acc" style="background:#0f1123; border:1px solid #ffd24d;">
-    <div style="display:flex; justify-content:space-between; align-items:flex-start;">
-      <div class="tag" style="color:#9aa0c4;">PUBLIC CIBLE</div>
-      <div style="background:#ffd24d; color:#3a2a00; font-size:10px; font-weight:800; padding:3px 9px; border-radius:6px;">★ PREMIUM</div>
-    </div>
-    <div style="font-weight:800; color:#fff; font-size:15px; margin:6px 0 14px;">VIP &amp; PARTENAIRES</div>
-    <div style="color:#9aa0c4; font-size:11.5px; margin-bottom:12px;">Partenaires, sponsors, institutions</div>
-    <div style="border-top:1px solid rgba(255,255,255,0.1); padding-top:14px; margin-bottom:8px; color:#9aa0c4; font-size:10.5px; font-weight:700;">CE QUI EST INCLUS</div>
-    <div class="li" style="color:#dbe1f7;"><svg class="chk" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ffd24d" stroke-width="2.5"><path d="M20 6L9 17l-5-5"></path></svg>Stand premium avec emplacement central et espace élargi</div>
-    <div class="li" style="color:#dbe1f7;"><svg class="chk" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ffd24d" stroke-width="2.5"><path d="M20 6L9 17l-5-5"></path></svg>Visibilité maximale sur la plateforme et tous les supports officiels</div>
-    <div class="li" style="color:#dbe1f7;"><svg class="chk" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ffd24d" stroke-width="2.5"><path d="M20 6L9 17l-5-5"></path></svg>Accès à toutes les formations et panels avec priorité</div>
-    <div class="li" style="color:#dbe1f7;"><svg class="chk" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ffd24d" stroke-width="2.5"><path d="M20 6L9 17l-5-5"></path></svg>Rencontres exclusives avec tous les leaders, sponsors et bailleurs</div>
-    <div class="li" style="color:#dbe1f7;"><svg class="chk" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ffd24d" stroke-width="2.5"><path d="M20 6L9 17l-5-5"></path></svg>Participation aux décisions et jury pour le vote des meilleures organisations</div>
-    <div class="li" style="color:#dbe1f7;"><svg class="chk" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ffd24d" stroke-width="2.5"><path d="M20 6L9 17l-5-5"></path></svg>Invitation au cocktail VIP et événements privés SOLID</div>
-    <div class="li" style="color:#dbe1f7;"><svg class="chk" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ffd24d" stroke-width="2.5"><path d="M20 6L9 17l-5-5"></path></svg>Reconnaissance officielle, mentions spéciales et opportunités de parrainage</div>
-    <div style="margin-top:auto; padding-top:14px;">
-      <div class="tag" style="color:#9aa0c4;">OBJECTIF</div>
-      <div style="color:#c7cff0; font-size:12px; font-style:italic; margin:4px 0 16px;">"Image, prestige, impact stratégique"</div>
-      <a href="inscription.html" style="display:block; text-align:center; width:100%; background:#ffd24d; color:#3a2a00; border:none; padding:11px; border-radius:8px; font-size:12.5px; font-weight:700;">SÉLECTIONNER</a>
-    </div>
-  </div>
-
-</div>
-
-<div style="background:#f5f6fb; padding:64px 24px;">
-  <div style="max-width:1000px; margin:0 auto; text-align:center;">
-    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#16247d" stroke-width="1.7" style="margin-bottom:10px;"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect></svg>
-    <h2 style="color:#0a1440; font-size:24px; font-weight:800; margin:0 0 10px;">Plan des stands SOLID 2026</h2>
-    <p style="color:#5b6280; font-size:14px; max-width:640px; margin:0 auto 40px;">Les espaces d'exposition ont été soigneusement pensés pour maximiser votre visibilité, faciliter les interactions et mettre en valeur vos initiatives de développement.</p>
-
-    <div style="display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:18px; text-align:left; margin-bottom:26px;">
-      <div style="background:#fff; border:1px solid #e7e9f2; border-radius:14px; padding:22px;">
-        <div style="width:26px;height:26px;border-radius:50%;background:#eef1fb;color:#16247d;font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;">1</div>
-        <div style="font-weight:700; color:#0a1440; font-size:14.5px; margin-bottom:6px;">Jeunes Organisations</div>
-        <div style="color:#16247d; font-size:26px; font-weight:800;">2 m²</div>
-        <div style="color:#8b93b8; font-size:10.5px; font-weight:700; letter-spacing:0.5px; margin:2px 0 12px;">TAILLE DU STAND</div>
-        <div style="display:inline-block; background:#eef1fb; color:#16247d; font-size:11.5px; font-weight:600; padding:5px 10px; border-radius:7px; margin-bottom:10px;">93 stands</div>
-        <div style="color:#dc2626; font-size:11.5px; font-weight:700;">⚠ Places très limitées</div>
-      </div>
-      <div style="background:#fff; border:1px solid #e7e9f2; border-radius:14px; padding:22px;">
-        <div style="width:26px;height:26px;border-radius:50%;background:#eef1fb;color:#16247d;font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;">2</div>
-        <div style="font-weight:700; color:#0a1440; font-size:14.5px; margin-bottom:6px;">Leadership &amp; Projets</div>
-        <div style="color:#16247d; font-size:26px; font-weight:800;">4 m²</div>
-        <div style="color:#8b93b8; font-size:10.5px; font-weight:700; letter-spacing:0.5px; margin:2px 0 12px;">TAILLE DU STAND</div>
-        <div style="display:inline-block; background:#eef1fb; color:#16247d; font-size:11.5px; font-weight:600; padding:5px 10px; border-radius:7px; margin-bottom:10px;">30 stands</div>
-        <div style="color:#8b93b8; font-size:11.5px; font-weight:600;">Format standard recommandé</div>
-      </div>
-      <div style="background:#0f1123; border:1px solid #ffd24d; border-radius:14px; padding:22px;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
-          <div style="width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,0.12);color:#ffd24d;font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center;">3</div>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="#ffd24d" stroke="none"><path d="M12 2l2.9 6.3 6.9.6-5.2 4.6 1.6 6.8L12 16.9l-6.2 3.4 1.6-6.8L2.2 8.9l6.9-.6L12 2z"></path></svg>
+    <div class="grid-2">
+      <div class="field"><label>Courriel <span class="req">*</span></label><input type="email" name="courriel" required></div>
+      <div class="field">
+        <label>Secteur d'activité <span class="req">*</span></label>
+        <select name="secteur" id="secteur" required onchange="document.getElementById('secteur-autre-wrap').style.display = this.value==='Autre' ? 'block':'none'; document.getElementById('secteur-autre').required = this.value==='Autre';">
+          <option value="">Sélectionnez…</option>
+          <option>Organisation gouvernementale (OG)</option>
+          <option>ONG locale</option>
+          <option>Organisation internationale</option>
+          <option>Organisation communautaire</option>
+          <option>Entreprise sociale</option>
+          <option>Fondation</option>
+          <option>Réseau ou coalition</option>
+          <option>Recherche / Think tank</option>
+          <option>Organisation culturelle</option>
+          <option>Partenaire financier</option>
+          <option>Autre</option>
+        </select>
+        <div id="secteur-autre-wrap" style="display:none; margin-top:8px;">
+          <input type="text" id="secteur-autre" name="secteur_autre" placeholder="Précisez votre secteur d'activité">
         </div>
-        <div style="font-weight:700; color:#fff; font-size:14.5px; margin-bottom:6px;">VIP &amp; Partenaires</div>
-        <div style="color:#ffd24d; font-size:26px; font-weight:800;">6 m²</div>
-        <div style="color:#9aa0c4; font-size:10.5px; font-weight:700; letter-spacing:0.5px; margin:2px 0 12px;">TAILLE DU STAND</div>
-        <div style="display:inline-block; background:rgba(255,255,255,0.1); color:#fff; font-size:11.5px; font-weight:600; padding:5px 10px; border-radius:7px; margin-bottom:10px;">15 stands</div>
-        <div style="color:#ffd24d; font-size:11.5px; font-weight:700;">★ Visibilité exclusive garantie</div>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="field"><label>Personne ressource lors du Salon <span class="req">*</span></label><input type="text" name="personne_ressource_salon" required></div>
+      <div class="field"><label>Téléphone cellulaire de la personne ressource <span class="req">*</span></label><input type="tel" name="telephone_personne_ressource" required></div>
+    </div>
+  </div>
+
+  <div class="section-card">
+    <div style="display:flex; align-items:center; gap:12px; margin-bottom:10px;">
+      <span class="section-num">2</span>
+      <span class="section-title">Documents à Fournir</span>
+    </div>
+    <div class="info-note" style="margin-bottom:22px;">Ces informations serviront à la préparation des outils de communication, des publications officielles et du répertoire des organisations participantes au SALON SOLID 2026.</div>
+
+    <div class="field"><label>Nom complet de la personne-ressource désignée</label><input type="text" name="nom_personne_ressource_designee"></div>
+
+    <div class="field">
+      <label>Photographie officielle récente de la personne-ressource</label>
+      <input type="file" name="photo_personne_ressource" accept=".jpg,.jpeg,.png">
+      <div class="help">Format JPG ou PNG.</div>
+    </div>
+
+    <div class="field">
+      <label>Notice biographique / présentation professionnelle de la personne-ressource</label>
+      <input type="file" name="notice_biographique_fichier" accept=".pdf,.doc,.docx" style="margin-bottom:8px;">
+      <textarea name="notice_biographique_texte" rows="3" placeholder="…ou rédigez directement la notice biographique ici"></textarea>
+      <div class="help">Téléversez un fichier (PDF/Word) ou rédigez directement le texte ci-dessus.</div>
+    </div>
+
+    <div class="field">
+      <label>Présentation de l'Organisation, incluant ses réalisations</label>
+      <input type="file" name="presentation_organisation_fichier" accept=".pdf,.doc,.docx" style="margin-bottom:8px;">
+      <textarea name="presentation_organisation_texte" rows="3" placeholder="…ou rédigez directement la présentation ici"></textarea>
+      <div class="help">Téléversez un fichier (PDF/Word) ou rédigez directement le texte ci-dessus.</div>
+    </div>
+
+    <div class="field">
+      <label>Logo officiel de l'Organisation</label>
+      <input type="file" name="logo_organisation" accept=".png,.jpg,.jpeg,.svg">
+      <div class="help">Format PNG, JPG ou SVG de préférence (haute résolution).</div>
+    </div>
+  </div>
+
+  <div class="section-card">
+    <div style="display:flex; align-items:center; gap:12px; margin-bottom:22px;">
+      <span class="section-num">3</span>
+      <span class="section-title">Besoins lors du Salon</span>
+    </div>
+
+    <div class="callout" style="margin-bottom:24px;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0; margin-top:1px;"><path d="M12 9v4M12 17h.01M10.3 3.9L1.8 18a2 2 0 001.7 3h17a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"></path></svg>
+      <div><strong>L'organisation du Salon ne fournit aucun matériel pour meubler votre kiosque.</strong> Possibilité de louer du matériel auprès de nos fournisseurs — contactez un conseiller.</div>
+    </div>
+
+    <div class="field">
+      <label>Avez-vous des besoins électriques particuliers autres qu'une prise standard ? <span class="req">*</span></label>
+      <div style="display:flex; gap:12px; margin-top:8px;">
+        <label class="radio-pill"><input type="radio" name="besoin_electrique" value="Oui" required onchange="toggleElectrique(true)"><span>Oui</span></label>
+        <label class="radio-pill"><input type="radio" name="besoin_electrique" value="Non" required onchange="toggleElectrique(false)"><span>Non</span></label>
       </div>
     </div>
 
-    <div style="background:#fff; border-radius:14px; padding:26px;">
-      <div style="color:#0a1440; font-size:18px; font-weight:800; margin-bottom:4px;">Un total de 138 stands</div>
-      <div style="color:#5b6280; font-size:13px; margin-bottom:18px;">Offrant un espace d'exposition exceptionnel de 396 m².</div>
-      <div style="background:#fdf2f2; color:#b91c1c; font-size:12.5px; padding:12px 16px; border-radius:8px; display:inline-flex; align-items:center; gap:8px;">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;"><path d="M12 9v4M12 17h.01M10.3 3.9L1.8 18a2 2 0 001.7 3h17a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"></path></svg>
-        Réservez votre niveau d'accréditation dès maintenant ! Les espaces et stands sont strictement attribués selon le principe du premier arrivé, premier servi.
+    <div class="field" id="electrique-detail-wrap" style="display:none;">
+      <label>Donnez des explications précises (nombre et type d'appareils énergivores, ampérage requis) <span class="req">*</span></label>
+      <textarea name="electrique_detail" id="electrique-detail" rows="3"></textarea>
+    </div>
+  </div>
+
+  <div class="section-card">
+    <div style="display:flex; align-items:center; gap:12px; margin-bottom:22px;">
+      <span class="section-num">4</span>
+      <span class="section-title">Frais de Participation et Autorisations</span>
+    </div>
+
+    <label style="display:block; margin-bottom:12px;">Catégorie de l'organisation <span class="req">*</span></label>
+    <div style="display:flex; flex-direction:column; gap:12px; margin-bottom:20px;">
+      <label class="price-option"><input type="radio" name="categorie" value="ONG et Organisations Internationales — 100 000 gourdes" required>
+        <div class="price-card"><span class="price-name">ONG et Organisations Internationales</span><span class="price-amount">100 000 gourdes</span></div>
+      </label>
+      <label class="price-option"><input type="radio" name="categorie" value="Organisations basées dans l'Ouest — 75 000 gourdes" required>
+        <div class="price-card"><span class="price-name">Organisations basées dans l'Ouest</span><span class="price-amount">75 000 gourdes</span></div>
+      </label>
+      <label class="price-option"><input type="radio" name="categorie" value="Organisations régionales — 50 000 gourdes" required>
+        <div class="price-card"><span class="price-name">Organisations régionales</span><span class="price-amount">50 000 gourdes</span></div>
+      </label>
+      <label class="price-option"><input type="radio" name="categorie" value="Associations et Organisations Communautaires — 40 000 gourdes" required>
+        <div class="price-card"><span class="price-name">Associations et Organisations Communautaires</span><span class="price-amount">40 000 gourdes</span></div>
+      </label>
+    </div>
+
+    <div class="info-note" style="margin-bottom:26px;">La réservation du kiosque est effective uniquement après paiement complet de la facture. Aucun remboursement en cas d'absence.</div>
+
+    <div class="checkline">
+      <input type="checkbox" name="accepte_guide" value="oui" required id="chk1">
+      <label for="chk1">J'ai lu et j'accepte les conditions décrites dans le Guide de l'exposant <span class="req">*</span></label>
+    </div>
+    <div class="checkline">
+      <input type="checkbox" name="accepte_photos" value="oui" required id="chk2">
+      <label for="chk2">J'autorise le Salon SOLID 2026 à prendre des photos de moi durant l'événement et à les diffuser (site web, page Facebook, outils promotionnels), avec possibilité de retrait en tout temps sur demande. <span class="req">*</span></label>
+    </div>
+
+    <div class="grid-2" style="margin-top:22px;">
+      <div class="field">
+        <label>Signature électronique (tapez votre nom complet) <span class="req">*</span></label>
+        <input type="text" name="signature" placeholder="Votre nom complet" required>
+      </div>
+      <div class="field">
+        <label>Date <span class="req">*</span></label>
+        <input type="date" name="date_signature" class="date-signature" required>
       </div>
     </div>
   </div>
+
+  <div class="form-error" style="display:none; background:#fdf2f2; border:1px solid #f7c9c9; color:#8a2020; border-radius:10px; padding:14px 18px; font-size:13.5px; margin-bottom:18px;"></div>
+
+  <button type="submit" style="width:100%; background:#16247d; color:#fff; border:none; padding:16px; border-radius:10px; font-size:15px; font-weight:700;">Soumettre mon inscription →</button>
+  <p style="color:#9aa0c4; font-size:11.5px; text-align:center; margin-top:16px; line-height:1.6;">Places limitées — premier arrivé, premier servi. Le comité vous recontactera pour la facturation.</p>
+
+</div>
+</form>
+</div>
+
+<!-- ============================================================ -->
+<!-- TAB 2 — JOURNALISTES ET MÉDIAS                                 -->
+<!-- ============================================================ -->
+<div class="tab-panel" id="tab-journalistes">
+<form name="accreditation-journalistes" method="POST" action="/merci-accreditation.html" enctype="multipart/form-data" data-netlify="true" data-netlify-honeypot="bot-field" novalidate onsubmit="return validateAccredForm(event)">
+<input type="hidden" name="form-name" value="accreditation-journalistes">
+<p class="hp-field"><label>Ne pas remplir si humain : <input name="bot-field"></label></p>
+
+<div style="max-width:840px; margin:0 auto; padding:20px 24px 90px;">
+
+  <div class="section-card">
+    <div style="display:flex; align-items:center; gap:12px; margin-bottom:22px;">
+      <span class="section-title">Journalistes et Médias</span>
+    </div>
+
+    <div class="grid-2">
+      <div class="field"><label>Nom du média / organe de presse <span class="req">*</span></label><input type="text" name="nom_media" required></div>
+      <div class="field"><label>Nom complet du journaliste <span class="req">*</span></label><input type="text" name="nom_journaliste" required></div>
+    </div>
+    <div class="grid-2">
+      <div class="field"><label>Fonction (journaliste, photographe, cameraman, animateur…) <span class="req">*</span></label><input type="text" name="fonction" required></div>
+      <div class="field">
+        <label>Type de média</label>
+        <select name="type_media">
+          <option value="">Sélectionnez…</option>
+          <option>Presse écrite</option>
+          <option>Radio</option>
+          <option>Télévision</option>
+          <option>Web / Blog</option>
+          <option>Réseaux sociaux</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Carte de presse ou lettre d'accréditation de l'employeur <span class="req">*</span></label>
+      <input type="file" name="carte_presse" accept=".pdf,.jpg,.jpeg,.png" required>
+    </div>
+    <div class="field">
+      <label>Photo d'identité récente <span class="req">*</span></label>
+      <input type="file" name="photo_identite" accept=".jpg,.jpeg,.png" required>
+    </div>
+
+    <div class="grid-2">
+      <div class="field"><label>Téléphone <span class="req">*</span></label><input type="tel" name="telephone" required></div>
+      <div class="field"><label>Email <span class="req">*</span></label><input type="email" name="email" required></div>
+    </div>
+
+    <div class="field">
+      <label>Équipement à apporter</label>
+      <div class="chip-group">
+        <label class="chip-check"><input type="checkbox" name="equipement" value="Caméra">Caméra</label>
+        <label class="chip-check"><input type="checkbox" name="equipement" value="Micro">Micro</label>
+        <label class="chip-check"><input type="checkbox" name="equipement" value="Trépied">Trépied</label>
+        <label class="chip-check"><input type="checkbox" name="equipement" value="Drone" onchange="document.getElementById('drone-warning').style.display = this.checked ? 'flex' : 'none';">Drone</label>
+      </div>
+      <div class="callout" id="drone-warning" style="display:none; margin-top:12px;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0; margin-top:1px;"><path d="M12 9v4M12 17h.01M10.3 3.9L1.8 18a2 2 0 001.7 3h17a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"></path></svg>
+        <div>Autorisation spéciale requise — contactez le comité avant l'événement.</div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Jour(s) de présence</label>
+      <div class="chip-group">
+        <label class="chip-check"><input type="checkbox" name="jours_presence" value="13 novembre 2026">13 novembre</label>
+        <label class="chip-check"><input type="checkbox" name="jours_presence" value="14 novembre 2026">14 novembre</label>
+        <label class="chip-check"><input type="checkbox" name="jours_presence" value="15 novembre 2026">15 novembre</label>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Souhait d'interview ou d'accès VIP</label>
+      <div style="display:flex; gap:12px; margin-top:8px;">
+        <label class="radio-pill"><input type="radio" name="interview_vip" value="Oui" onchange="toggleConditional('interview-detail-wrap','interview-detail',true)"><span>Oui</span></label>
+        <label class="radio-pill"><input type="radio" name="interview_vip" value="Non" onchange="toggleConditional('interview-detail-wrap','interview-detail',false)"><span>Non</span></label>
+      </div>
+    </div>
+    <div class="field" id="interview-detail-wrap" style="display:none;">
+      <label>Précisez votre demande</label>
+      <textarea name="interview_detail" id="interview-detail" rows="3"></textarea>
+    </div>
+
+    <div class="checkline" style="margin-top:10px;">
+      <input type="checkbox" name="accepte_diffusion" value="oui" required id="chk-journ">
+      <label for="chk-journ">J'autorise le Salon SOLID 2026 à diffuser mes images/contenus captés durant l'événement dans ses publications officielles <span class="req">*</span></label>
+    </div>
+
+    <div class="grid-2" style="margin-top:22px;">
+      <div class="field">
+        <label>Signature électronique (tapez votre nom complet) <span class="req">*</span></label>
+        <input type="text" name="signature" placeholder="Votre nom complet" required>
+      </div>
+      <div class="field">
+        <label>Date <span class="req">*</span></label>
+        <input type="date" name="date_signature" class="date-signature" required>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-error" style="display:none; background:#fdf2f2; border:1px solid #f7c9c9; color:#8a2020; border-radius:10px; padding:14px 18px; font-size:13.5px; margin-bottom:18px;"></div>
+  <button type="submit" style="width:100%; background:#16247d; color:#fff; border:none; padding:16px; border-radius:10px; font-size:15px; font-weight:700;">Soumettre ma demande d'accréditation →</button>
+  <p style="color:#9aa0c4; font-size:11.5px; text-align:center; margin-top:16px; line-height:1.6;">Votre badge d'accréditation vous sera remis lors du retrait au Salon (12–15 novembre 2026).</p>
+</div>
+</form>
+</div>
+
+<!-- ============================================================ -->
+<!-- TAB 3 — PARTENAIRES                                            -->
+<!-- ============================================================ -->
+<div class="tab-panel" id="tab-partenaires">
+<form name="accreditation-partenaires" method="POST" action="/merci-accreditation.html" enctype="multipart/form-data" data-netlify="true" data-netlify-honeypot="bot-field" novalidate onsubmit="return validateAccredForm(event)">
+<input type="hidden" name="form-name" value="accreditation-partenaires">
+<p class="hp-field"><label>Ne pas remplir si humain : <input name="bot-field"></label></p>
+
+<div style="max-width:840px; margin:0 auto; padding:20px 24px 90px;">
+
+  <div class="section-card">
+    <div style="display:flex; align-items:center; gap:12px; margin-bottom:22px;">
+      <span class="section-title">Partenaires</span>
+    </div>
+
+    <div class="grid-2">
+      <div class="field"><label>Nom de l'organisation partenaire <span class="req">*</span></label><input type="text" name="nom_organisation" required></div>
+      <div class="field">
+        <label>Type de partenariat</label>
+        <select name="type_partenariat">
+          <option value="">Sélectionnez…</option>
+          <option>Institutionnel</option>
+          <option>Technique</option>
+          <option>Média</option>
+          <option>Stratégique</option>
+          <option>Autre</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field"><label>Nom et fonction du contact désigné <span class="req">*</span></label><input type="text" name="contact_designe" required></div>
+
+    <div class="grid-2">
+      <div class="field"><label>Téléphone <span class="req">*</span></label><input type="tel" name="telephone" required></div>
+      <div class="field"><label>Email <span class="req">*</span></label><input type="email" name="email" required></div>
+    </div>
+
+    <div class="field">
+      <label>Logo officiel de l'organisation <span class="req">*</span></label>
+      <input type="file" name="logo_organisation" accept=".png,.jpg,.jpeg,.svg" required>
+    </div>
+
+    <div class="field">
+      <label>Description de la contribution / nature du partenariat</label>
+      <textarea name="description_contribution" rows="3"></textarea>
+    </div>
+
+    <div class="field">
+      <label>Visibilité souhaitée</label>
+      <div class="chip-group">
+        <label class="chip-check"><input type="checkbox" name="visibilite" value="Bannière sur site">Bannière sur site</label>
+        <label class="chip-check"><input type="checkbox" name="visibilite" value="Kiosque">Kiosque</label>
+        <label class="chip-check"><input type="checkbox" name="visibilite" value="Mention au programme">Mention au programme</label>
+        <label class="chip-check"><input type="checkbox" name="visibilite" value="Mention sur réseaux sociaux">Mention sur réseaux sociaux</label>
+        <label class="chip-check"><input type="checkbox" name="visibilite" value="Autre" onchange="document.getElementById('visibilite-autre-wrap-p').style.display=this.checked?'block':'none';">Autre</label>
+      </div>
+      <div id="visibilite-autre-wrap-p" style="display:none; margin-top:8px;">
+        <input type="text" name="visibilite_autre" placeholder="Précisez">
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Nombre de représentants à accréditer</label>
+      <input type="number" name="nombre_representants" min="0" style="max-width:140px;">
+    </div>
+    <div class="field">
+      <label>Nom complet de chaque représentant</label>
+      <div id="reps-partenaires"></div>
+      <button type="button" class="add-rep-btn" onclick="addRepresentant('reps-partenaires','representant')">+ Ajouter un représentant</button>
+    </div>
+
+    <div class="checkline" style="margin-top:10px;">
+      <input type="checkbox" name="accepte_conditions" value="oui" required id="chk-part">
+      <label for="chk-part">J'ai lu et j'accepte les conditions de partenariat du Salon SOLID 2026 <span class="req">*</span></label>
+    </div>
+
+    <div class="grid-2" style="margin-top:22px;">
+      <div class="field">
+        <label>Signature électronique (tapez votre nom complet) <span class="req">*</span></label>
+        <input type="text" name="signature" placeholder="Votre nom complet" required>
+      </div>
+      <div class="field">
+        <label>Date <span class="req">*</span></label>
+        <input type="date" name="date_signature" class="date-signature" required>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-error" style="display:none; background:#fdf2f2; border:1px solid #f7c9c9; color:#8a2020; border-radius:10px; padding:14px 18px; font-size:13.5px; margin-bottom:18px;"></div>
+  <button type="submit" style="width:100%; background:#16247d; color:#fff; border:none; padding:16px; border-radius:10px; font-size:15px; font-weight:700;">Soumettre ma demande d'accréditation →</button>
+  <p style="color:#9aa0c4; font-size:11.5px; text-align:center; margin-top:16px; line-height:1.6;">Votre badge d'accréditation vous sera remis lors du retrait au Salon (12–15 novembre 2026).</p>
+</div>
+</form>
+</div>
+
+<!-- ============================================================ -->
+<!-- TAB 4 — BAILLEURS ET SPONSORS OFFICIELS                        -->
+<!-- ============================================================ -->
+<div class="tab-panel" id="tab-bailleurs">
+<form name="accreditation-bailleurs" method="POST" action="/merci-accreditation.html" enctype="multipart/form-data" data-netlify="true" data-netlify-honeypot="bot-field" novalidate onsubmit="return validateAccredForm(event)">
+<input type="hidden" name="form-name" value="accreditation-bailleurs">
+<p class="hp-field"><label>Ne pas remplir si humain : <input name="bot-field"></label></p>
+
+<div style="max-width:840px; margin:0 auto; padding:20px 24px 90px;">
+
+  <div class="section-card">
+    <div style="display:flex; align-items:center; gap:12px; margin-bottom:22px;">
+      <span class="section-title">Bailleurs et Sponsors Officiels</span>
+    </div>
+
+    <div class="field"><label>Nom de l'organisation / bailleur <span class="req">*</span></label><input type="text" name="nom_organisation" required></div>
+
+    <div class="grid-2">
+      <div class="field">
+        <label>Type de soutien</label>
+        <select name="type_soutien">
+          <option value="">Sélectionnez…</option>
+          <option>Financier</option>
+          <option>Matériel</option>
+          <option>En nature</option>
+          <option>Mixte</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Niveau de sponsoring</label>
+        <select name="niveau_sponsoring">
+          <option value="">Sélectionnez…</option>
+          <option>Platine</option>
+          <option>Or</option>
+          <option>Argent</option>
+          <option>Bronze</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Montant ou description de la contribution</label>
+      <textarea name="contribution" rows="2"></textarea>
+    </div>
+
+    <div class="field"><label>Nom et fonction du contact désigné <span class="req">*</span></label><input type="text" name="contact_designe" required></div>
+
+    <div class="grid-2">
+      <div class="field"><label>Téléphone <span class="req">*</span></label><input type="tel" name="telephone" required></div>
+      <div class="field"><label>Email <span class="req">*</span></label><input type="email" name="email" required></div>
+    </div>
+
+    <div class="field">
+      <label>Logo officiel haute résolution <span class="req">*</span></label>
+      <input type="file" name="logo_organisation" accept=".png,.jpg,.jpeg,.svg" required>
+    </div>
+
+    <div class="field">
+      <label>Avantages et visibilité attendus</label>
+      <div class="chip-group">
+        <label class="chip-check"><input type="checkbox" name="avantages" value="Mention sur supports imprimés">Mention sur supports imprimés</label>
+        <label class="chip-check"><input type="checkbox" name="avantages" value="Kiosque VIP">Kiosque VIP</label>
+        <label class="chip-check"><input type="checkbox" name="avantages" value="Prise de parole / discours">Prise de parole / discours</label>
+        <label class="chip-check"><input type="checkbox" name="avantages" value="Logo sur bannière principale">Logo sur bannière principale</label>
+        <label class="chip-check"><input type="checkbox" name="avantages" value="Autre" onchange="document.getElementById('avantages-autre-wrap').style.display=this.checked?'block':'none';">Autre</label>
+      </div>
+      <div id="avantages-autre-wrap" style="display:none; margin-top:8px;">
+        <input type="text" name="avantages_autre" placeholder="Précisez">
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Nombre de représentants à accréditer</label>
+      <input type="number" name="nombre_representants" min="0" style="max-width:140px;">
+    </div>
+    <div class="field">
+      <label>Nom complet de chaque représentant</label>
+      <div id="reps-bailleurs"></div>
+      <button type="button" class="add-rep-btn" onclick="addRepresentant('reps-bailleurs','representant')">+ Ajouter un représentant</button>
+    </div>
+
+    <div class="checkline" style="margin-top:10px;">
+      <input type="checkbox" name="accepte_conditions" value="oui" required id="chk-bail">
+      <label for="chk-bail">J'ai lu et j'accepte les conditions de sponsoring du Salon SOLID 2026 <span class="req">*</span></label>
+    </div>
+
+    <div class="grid-2" style="margin-top:22px;">
+      <div class="field">
+        <label>Signature électronique (tapez votre nom complet) <span class="req">*</span></label>
+        <input type="text" name="signature" placeholder="Votre nom complet" required>
+      </div>
+      <div class="field">
+        <label>Date <span class="req">*</span></label>
+        <input type="date" name="date_signature" class="date-signature" required>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-error" style="display:none; background:#fdf2f2; border:1px solid #f7c9c9; color:#8a2020; border-radius:10px; padding:14px 18px; font-size:13.5px; margin-bottom:18px;"></div>
+  <button type="submit" style="width:100%; background:#16247d; color:#fff; border:none; padding:16px; border-radius:10px; font-size:15px; font-weight:700;">Soumettre ma demande d'accréditation →</button>
+  <p style="color:#9aa0c4; font-size:11.5px; text-align:center; margin-top:16px; line-height:1.6;">Votre badge d'accréditation vous sera remis lors du retrait au Salon (12–15 novembre 2026).</p>
+</div>
+</form>
+</div>
+
+<!-- ============================================================ -->
+<!-- TAB 5 — ORGANISATEURS, LOGISTIQUE, SÉCURITÉ ET COORDINATION    -->
+<!-- ============================================================ -->
+<div class="tab-panel" id="tab-organisateurs">
+<form name="accreditation-organisateurs" method="POST" action="/merci-accreditation.html" enctype="multipart/form-data" data-netlify="true" data-netlify-honeypot="bot-field" novalidate onsubmit="return validateAccredForm(event)">
+<input type="hidden" name="form-name" value="accreditation-organisateurs">
+<p class="hp-field"><label>Ne pas remplir si humain : <input name="bot-field"></label></p>
+
+<div style="max-width:840px; margin:0 auto; padding:20px 24px 90px;">
+
+  <div class="section-card">
+    <div style="display:flex; align-items:center; gap:12px; margin-bottom:8px;">
+      <span class="section-title">Organisateurs, Logistique, Sécurité et Coordination</span>
+    </div>
+    <div class="info-note" style="margin-bottom:22px;">Réservé au personnel interne, bénévoles, agents de sécurité et équipe logistique.</div>
+
+    <div class="grid-2">
+      <div class="field"><label>Nom complet <span class="req">*</span></label><input type="text" name="nom_complet" required></div>
+      <div class="field">
+        <label>Rôle</label>
+        <select name="role" id="role-organisateur" onchange="document.getElementById('role-autre-wrap').style.display = this.value==='Autre' ? 'block':'none';">
+          <option value="">Sélectionnez…</option>
+          <option>Organisateur</option>
+          <option>Coordination</option>
+          <option>Logistique</option>
+          <option>Sécurité</option>
+          <option>Bénévole</option>
+          <option>Technicien</option>
+          <option>Autre</option>
+        </select>
+        <div id="role-autre-wrap" style="display:none; margin-top:8px;">
+          <input type="text" name="role_autre" placeholder="Précisez le rôle">
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="field"><label>Organisation ou département de rattachement</label><input type="text" name="organisation_rattachement"></div>
+      <div class="field"><label>Téléphone <span class="req">*</span></label><input type="tel" name="telephone" required></div>
+    </div>
+
+    <div class="field">
+      <label>Photo d'identité récente (pour le badge) <span class="req">*</span></label>
+      <input type="file" name="photo_identite" accept=".jpg,.jpeg,.png" required>
+    </div>
+
+    <div class="field">
+      <label>Zone(s) d'accès requise(s)</label>
+      <div class="chip-group">
+        <label class="chip-check"><input type="checkbox" name="zones_acces" value="Kiosques">Kiosques</label>
+        <label class="chip-check"><input type="checkbox" name="zones_acces" value="Scène">Scène</label>
+        <label class="chip-check"><input type="checkbox" name="zones_acces" value="Coulisses">Coulisses</label>
+        <label class="chip-check"><input type="checkbox" name="zones_acces" value="Parking">Parking</label>
+        <label class="chip-check"><input type="checkbox" name="zones_acces" value="Entrée VIP">Entrée VIP</label>
+        <label class="chip-check"><input type="checkbox" name="zones_acces" value="Régie technique">Régie technique</label>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Dates et horaires de service</label>
+      <div class="chip-group">
+        <label class="chip-check"><input type="checkbox" name="dates_service" value="Montage — 12 novembre">Montage (12 nov.)</label>
+        <label class="chip-check"><input type="checkbox" name="dates_service" value="13 novembre 2026">13 novembre</label>
+        <label class="chip-check"><input type="checkbox" name="dates_service" value="14 novembre 2026">14 novembre</label>
+        <label class="chip-check"><input type="checkbox" name="dates_service" value="15 novembre 2026">15 novembre</label>
+        <label class="chip-check"><input type="checkbox" name="dates_service" value="Démontage — 15 novembre">Démontage (15 nov.)</label>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Véhicule personnel à accréditer pour le parking</label>
+      <div style="display:flex; gap:12px; margin-top:8px;">
+        <label class="radio-pill"><input type="radio" name="vehicule" value="Oui" onchange="toggleConditional('plaque-wrap','plaque',true)"><span>Oui</span></label>
+        <label class="radio-pill"><input type="radio" name="vehicule" value="Non" onchange="toggleConditional('plaque-wrap','plaque',false)"><span>Non</span></label>
+      </div>
+    </div>
+    <div class="field" id="plaque-wrap" style="display:none;">
+      <label>Numéro de plaque</label>
+      <input type="text" name="plaque" id="plaque">
+    </div>
+
+    <div class="grid-2">
+      <div class="field"><label>Contact d'urgence — Nom</label><input type="text" name="urgence_nom"></div>
+      <div class="field"><label>Contact d'urgence — Téléphone</label><input type="tel" name="urgence_telephone"></div>
+    </div>
+
+    <div class="grid-2" style="margin-top:22px;">
+      <div class="field">
+        <label>Signature du responsable de service (tapez le nom complet) <span class="req">*</span></label>
+        <input type="text" name="signature" placeholder="Nom complet du responsable" required>
+      </div>
+      <div class="field">
+        <label>Date <span class="req">*</span></label>
+        <input type="date" name="date_signature" class="date-signature" required>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-error" style="display:none; background:#fdf2f2; border:1px solid #f7c9c9; color:#8a2020; border-radius:10px; padding:14px 18px; font-size:13.5px; margin-bottom:18px;"></div>
+  <button type="submit" style="width:100%; background:#16247d; color:#fff; border:none; padding:16px; border-radius:10px; font-size:15px; font-weight:700;">Soumettre l'accréditation →</button>
+  <p style="color:#9aa0c4; font-size:11.5px; text-align:center; margin-top:16px; line-height:1.6;">Votre badge d'accréditation vous sera remis lors du retrait au Salon (12–15 novembre 2026).</p>
+</div>
+</form>
 </div>
 
 <footer style="background:#0a1024; padding:48px 48px 28px;">
@@ -234,5 +712,74 @@
   <div style="max-width:1200px; margin:34px auto 0; padding-top:20px; border-top:1px solid rgba(255,255,255,0.08); color:#5f6890; font-size:12px;">© 2026 ADIS-HAITI. Tous droits réservés.</div>
 </footer>
 
+<script>
+  function showAccredTab(id) {
+    document.querySelectorAll('.tab-panel').forEach(function(p){ p.classList.remove('active'); });
+    document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('active'); });
+    document.getElementById(id).classList.add('active');
+    document.getElementById('btn-' + id).classList.add('active');
+    document.getElementById('tabs-anchor').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function toggleElectrique(show) {
+    var wrap = document.getElementById('electrique-detail-wrap');
+    var field = document.getElementById('electrique-detail');
+    wrap.style.display = show ? 'block' : 'none';
+    field.required = show;
+    if (!show) field.value = '';
+  }
+
+  function toggleConditional(wrapId, fieldId, show) {
+    var wrap = document.getElementById(wrapId);
+    var field = document.getElementById(fieldId);
+    wrap.style.display = show ? 'block' : 'none';
+    if (field) { if (!show) field.value = ''; }
+  }
+
+  var repCounters = {};
+  function addRepresentant(containerId, prefix) {
+    var container = document.getElementById(containerId);
+    repCounters[containerId] = (repCounters[containerId] || 0) + 1;
+    var idx = repCounters[containerId];
+    var row = document.createElement('div');
+    row.className = 'rep-row';
+    var input = document.createElement('input');
+    input.type = 'text';
+    input.name = prefix + '_' + idx;
+    input.placeholder = 'Nom complet du représentant ' + idx;
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'rep-remove';
+    btn.textContent = '✕';
+    btn.onclick = function () { row.remove(); };
+    row.appendChild(input);
+    row.appendChild(btn);
+    container.appendChild(row);
+  }
+  addRepresentant('reps-partenaires', 'representant');
+  addRepresentant('reps-bailleurs', 'representant');
+
+  document.querySelectorAll('.date-signature').forEach(function (field) {
+    if (!field.value) {
+      var today = new Date();
+      field.value = today.getFullYear() + '-' + String(today.getMonth()+1).padStart(2,'0') + '-' + String(today.getDate()).padStart(2,'0');
+    }
+  });
+
+  function validateAccredForm(e) {
+    var form = e.target;
+    var errBox = form.querySelector('.form-error');
+    if (!form.checkValidity()) {
+      e.preventDefault();
+      var invalid = form.querySelector(':invalid');
+      errBox.textContent = 'Merci de compléter tous les champs obligatoires (marqués d\'un *) avant de soumettre le formulaire.';
+      errBox.style.display = 'block';
+      if (invalid) invalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return false;
+    }
+    errBox.style.display = 'none';
+    return true;
+  }
+</script>
 </body>
 </html>
