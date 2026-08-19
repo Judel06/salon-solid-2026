@@ -39,15 +39,15 @@ alter table public.accreditations enable row level security;
 -- RLS est correctement configuree.
 grant all on table public.accreditations to service_role;
 
--- Matricule sequentiel, format SOLID-<annee>-00001. Une sequence Postgres garantit l'unicite meme
--- en cas d'approbations concurrentes.
-create sequence if not exists public.accreditation_matricule_seq start 1;
+-- Matricule sequentiel, format SOLID<annee><numero> (ex. SOLID2026454544), demarre a 454544 sur
+-- demande. Une sequence Postgres garantit l'unicite meme en cas d'approbations concurrentes.
+create sequence if not exists public.accreditation_matricule_seq start with 454544;
 
 create or replace function public.next_accreditation_matricule()
 returns text
 language sql
 as $$
-  select 'SOLID-' || to_char(now(), 'YYYY') || '-' || lpad(nextval('public.accreditation_matricule_seq')::text, 5, '0');
+  select 'SOLID' || to_char(now(), 'YYYY') || lpad(nextval('public.accreditation_matricule_seq')::text, 6, '0');
 $$;
 
 -- Une fonction `language sql` simple (pas `security definer`) s'execute avec les droits de

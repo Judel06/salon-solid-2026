@@ -18,9 +18,10 @@ function centeredText(page, text, { font, size, y, color }) {
   page.drawText(text, { x: (PAGE_W - textWidth) / 2, y, size, font, color });
 }
 
-// SOLID-2026-00001 -> SOLID-ATT-2026-00001 (insère ATT- juste après le préfixe).
+// SOLID2026454544 -> SOLID-ATT-2026454544 (insère -ATT- entre le préfixe alphabétique et le
+// reste du matricule, qui n'a lui-même pas de séparateur).
 function toAttestationRef(matricule) {
-  return String(matricule || '').replace(/^([A-Za-z]+)-/, '$1-ATT-');
+  return String(matricule || '').replace(/^([A-Za-z]+)(\d+)$/, '$1-ATT-$2');
 }
 
 async function generateAttestationPdf({ fullName, roleLabel, matricule, issueDate, logoPngBuffer, signataireNom, signataireTitre }) {
@@ -112,9 +113,9 @@ async function generateAttestationPdf({ fullName, roleLabel, matricule, issueDat
   sigY -= 16;
   page.drawText('Signature', { x: sigX, y: sigY, size: 9.5, font: helvetica, color: SLATE });
   sigY -= 26;
-  page.drawText(signataireNom || 'Pedlaire Judel Joseph', { x: sigX, y: sigY, size: 12, font: helveticaBold, color: NAVY });
+  page.drawText(signataireNom || 'Bernice Néré Charles', { x: sigX, y: sigY, size: 12, font: helveticaBold, color: NAVY });
   sigY -= 15;
-  page.drawText(signataireTitre || 'Président et Fondateur, ADIS-HAÏTI', { x: sigX, y: sigY, size: 9.5, font: helvetica, color: SLATE });
+  page.drawText(signataireTitre || 'Directrice du SALON SOLID 2026', { x: sigX, y: sigY, size: 9.5, font: helvetica, color: SLATE });
 
   // Pied de page.
   centeredText(page, 'ADIS-HAÏTI · www.salonsolid.com · admin@salonsolid.com', { font: helvetica, size: 8.5, y: 34, color: SLATE });
