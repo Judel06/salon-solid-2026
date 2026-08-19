@@ -15,7 +15,9 @@ exports.handler = async (event) => {
 
   const params = event.queryStringParameters || {};
   const admin = getAdminClient();
-  let query = admin.from('accreditations').select('*').order('created_at', { ascending: false });
+  // Limite explicite généreuse (au lieu de compter sur le plafond par défaut de PostgREST) —
+  // le dashboard doit rester fiable même avec plusieurs centaines de candidatures accumulées.
+  let query = admin.from('accreditations').select('*').order('created_at', { ascending: false }).limit(5000);
 
   if (params.status && VALID_STATUSES.includes(params.status)) {
     query = query.eq('status', params.status);

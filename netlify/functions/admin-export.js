@@ -29,7 +29,7 @@ exports.handler = async (event) => {
 
   const params = event.queryStringParameters || {};
   const admin = getAdminClient();
-  let query = admin.from('accreditations').select('*').order('created_at', { ascending: false });
+  let query = admin.from('accreditations').select('*').order('created_at', { ascending: false }).limit(5000);
   if (params.status && VALID_STATUSES.includes(params.status)) {
     query = query.eq('status', params.status);
   }

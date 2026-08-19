@@ -25,6 +25,8 @@
   var toast = document.getElementById('toast');
 
   var allRows = [];
+  var currentPage = 1;
+  var PAGE_SIZE = 50;
 
   function showToast(msg) {
     toast.textContent = msg;
@@ -96,6 +98,7 @@
       .then(function (data) {
         allRows = data.accreditations || [];
         renderStats(allRows);
+        currentPage = 1;
         renderTable();
       })
       .catch(function (err) { showToast('Erreur de chargement : ' + err.message); });
@@ -103,7 +106,10 @@
 
   document.getElementById('filter-status').addEventListener('change', loadList);
   document.getElementById('filter-category').addEventListener('change', loadList);
-  document.getElementById('filter-search').addEventListener('input', renderTable);
+  document.getElementById('filter-search').addEventListener('input', function () {
+    currentPage = 1;
+    renderTable();
+  });
 
   function renderStats(rows) {
     var counts = { total: rows.length };
@@ -126,14 +132,19 @@
 
   function renderTable() {
     var search = document.getElementById('filter-search').value.trim().toLowerCase();
-    var rows = allRows.filter(function (r) {
+    var filtered = allRows.filter(function (r) {
       if (!search) return true;
       return (r.nom_complet || '').toLowerCase().indexOf(search) !== -1 ||
         (r.email || '').toLowerCase().indexOf(search) !== -1;
     });
 
+    var totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+    if (currentPage > totalPages) currentPage = totalPages;
+    var startIdx = (currentPage - 1) * PAGE_SIZE;
+    var rows = filtered.slice(startIdx, startIdx + PAGE_SIZE);
+
     tableBody.innerHTML = '';
-    emptyState.style.display = rows.length === 0 ? 'block' : 'none';
+    emptyState.style.display = filtered.length === 0 ? 'block' : 'none';
 
     rows.forEach(function (row) {
       var tr = document.createElement('tr');
@@ -180,6 +191,38 @@
 
       tableBody.appendChild(tr);
     });
+
+    renderPagination(filtered.length, totalPages);
+  }
+
+  function renderPagination(totalCount, totalPages) {
+    var container = document.getElementById('pagination');
+    if (!container) return;
+    container.innerHTML = '';
+    if (totalCount === 0) return;
+
+    var startIdx = (currentPage - 1) * PAGE_SIZE;
+    var endIdx = Math.min(totalCount, startIdx + PAGE_SIZE);
+
+    var info = document.createElement('span');
+    info.textContent = (startIdx + 1) + '–' + endIdx + ' sur ' + totalCount;
+    container.appendChild(info);
+
+    var prevBtn = document.createElement('button');
+    prevBtn.textContent = '← Précédent';
+    prevBtn.disabled = currentPage <= 1;
+    prevBtn.addEventListener('click', function () { currentPage -= 1; renderTable(); });
+    container.appendChild(prevBtn);
+
+    var pageInfo = document.createElement('span');
+    pageInfo.textContent = 'Page ' + currentPage + ' / ' + totalPages;
+    container.appendChild(pageInfo);
+
+    var nextBtn = document.createElement('button');
+    nextBtn.textContent = 'Suivant →';
+    nextBtn.disabled = currentPage >= totalPages;
+    nextBtn.addEventListener('click', function () { currentPage += 1; renderTable(); });
+    container.appendChild(nextBtn);
   }
 
   function changeStatus(id, status, selectEl) {
@@ -216,15 +259,45 @@
 
   document.getElementById('bulk-generate-btn').addEventListener('click', function () {
     var btn = this;
+    var originalLabel = btn.textContent;
     btn.disabled = true;
-    btn.textContent = 'Génération en cours…';
-    api('/.netlify/functions/admin-bulk-generate', { method: 'POST' })
-      .then(function (data) {
-        showToast(data.succeeded + '/' + data.processed + ' candidature(s) traitée(s).');
-        loadList();
-      })
-      .catch(function (err) { showToast('Erreur : ' + err.message); })
-      .then(function () { btn.disabled = false; btn.textContent = 'Générer badge + attestation (approuvées)'; });
+
+    // La fonction serveur traite un petit paquet à la fois (voir admin-bulk-generate.js) — on la
+    // rappelle en boucle jusqu'à ce qu'il ne reste plus rien, pour pouvoir traiter un gros volume
+    // (ex. 500 candidatures approuvées d'un coup) sans risquer l'expiration d'une seule invocation.
+    var totalProcessed = 0;
+    var totalSucceeded = 0;
+
+    function runBatch() {
+      btn.textContent = 'Génération en cours… (' + totalProcessed + ' traité' + (totalProcessed > 1 ? 's' : '') + ')';
+      api('/.netlify/functions/admin-bulk-generate', { method: 'POST' })
+        .then(function (data) {
+          totalProcessed += data.processed;
+          totalSucceeded += data.succeeded;
+          if (data.processed === 0) {
+            showToast(totalProcessed === 0 ? 'Aucune candidature à traiter.' : totalSucceeded + '/' + totalProcessed + ' candidature(s) traitée(s) au total.');
+            btn.disabled = false;
+            btn.textContent = originalLabel;
+            loadList();
+            return;
+          }
+          loadList();
+          if (data.remaining > 0) {
+            runBatch();
+          } else {
+            showToast(totalSucceeded + '/' + totalProcessed + ' candidature(s) traitée(s) au total.');
+            btn.disabled = false;
+            btn.textContent = originalLabel;
+          }
+        })
+        .catch(function (err) {
+          showToast('Erreur après ' + totalProcessed + ' traité(s) : ' + err.message);
+          btn.disabled = false;
+          btn.textContent = originalLabel;
+        });
+    }
+
+    runBatch();
   });
 
   document.getElementById('export-btn').addEventListener('click', function () {
