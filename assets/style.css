@@ -19,3 +19,36 @@ button{font-family:inherit;cursor:pointer;}
 input,textarea,select{font-family:inherit;font-size:13px;padding:10px 12px;border:1px solid #dfe2ee;border-radius:8px;width:100%;color:#1a2144;background:#fff;}
 label{font-size:12.5px;font-weight:600;color:#3a4166;display:block;margin-bottom:6px;}
 img{max-width:100%;display:block;}
+
+/* Menu mobile (hamburger) partagé par l'en-tête de toutes les pages. Sur desktop, .nav-toggle-btn
+   reste caché et le nav/actions du header s'affichent normalement en ligne. Sous 880px, ils sont
+   masqués par défaut et ne réapparaissent (empilés, en pleine largeur) que lorsque le header porte
+   la classe .is-open, basculée par le bouton hamburger. */
+.nav-toggle-btn{display:none;background:transparent;border:none;padding:6px;margin:0 0 0 auto;cursor:pointer;flex-shrink:0;}
+.nav-toggle-btn svg{display:block;}
+
+@media (max-width:880px){
+  .nav-toggle-btn{display:flex;align-items:center;justify-content:center;}
+  header.site-header-bar > nav,
+  header.site-header-bar > .site-header-actions{
+    display:none !important;
+    width:100%;
+    flex-direction:column !important;
+    align-items:flex-start !important;
+    gap:0 !important;
+  }
+  header.site-header-bar.is-open > nav,
+  header.site-header-bar.is-open > .site-header-actions{
+    display:flex !important;
+  }
+  header.site-header-bar > nav{padding-top:14px;}
+  header.site-header-bar > nav a{display:block;width:100%;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.1) !important;}
+  header.site-header-bar > .site-header-actions{
+    flex-direction:row !important;
+    flex-wrap:wrap;
+    gap:14px !important;
+    padding:16px 0 4px;
+    margin-top:6px;
+    border-top:1px solid rgba(255,255,255,0.14);
+  }
+}

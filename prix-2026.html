@@ -15,13 +15,16 @@
 </head>
 <body>
 
-<header style="display:flex; align-items:center; justify-content:space-between; padding:16px 48px; background:linear-gradient(90deg, #16247d 0%, #1e3a8a 100%); box-shadow:0 2px 14px rgba(0,0,0,0.28); flex-wrap:wrap; gap:16px;">
+<header class="site-header-bar" style="display:flex; align-items:center; justify-content:space-between; padding:16px 48px; background:linear-gradient(90deg, #16247d 0%, #1e3a8a 100%); box-shadow:0 2px 14px rgba(0,0,0,0.28); flex-wrap:wrap; gap:16px;">
   <div style="display:flex; align-items:center; gap:12px;">
     <div style="width:36px;height:36px;border-radius:50%;background:#0a1440;border:2px solid #ffd24d;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ffd24d" stroke-width="1.6"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3c2.5 2.7 4 6 4 9s-1.5 6.3-4 9c-2.5-2.7-4-6-4-9s1.5-6.3 4-9z"></path></svg>
     </div>
     <span style="color:#fff; font-weight:800; font-size:18px; letter-spacing:0.5px;">ADIS-HAITI</span>
   </div>
+  <button class="nav-toggle-btn" aria-label="Menu" aria-expanded="false" onclick="var h=this.closest('header'); var open=h.classList.toggle('is-open'); this.setAttribute('aria-expanded', open);">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"></path></svg>
+  </button>
   <nav style="display:flex; align-items:center; gap:26px; flex-wrap:wrap;">
     <a href="index.html" style="font-size:14px; font-weight:500; color:#dbe1f7;">Accueil</a>
     <a href="a-propos.html" style="font-size:14px; font-weight:500; color:#dbe1f7;">À propos</a>
@@ -32,7 +35,7 @@
     <a href="accreditation.html" style="font-size:14px; font-weight:500; color:#dbe1f7;">Accréditation</a>
     <a href="contact.html" style="font-size:14px; font-weight:500; color:#dbe1f7;">Contact</a>
   </nav>
-  <div style="display:flex; align-items:center; gap:18px;">
+  <div class="site-header-actions" style="display:flex; align-items:center; gap:18px;">
     <div style="display:flex; align-items:center; gap:5px; color:#dbe1f7; font-size:13px; font-weight:600;">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3a15 15 0 010 18M12 3a15 15 0 000 18"></path></svg>
       Français
