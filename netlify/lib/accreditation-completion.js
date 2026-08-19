@@ -89,6 +89,7 @@ async function finalizeAccreditation(accreditation) {
     attestationBuffer = await generateAttestationPdf({
       fullName: accreditation.nom_complet,
       roleLabel: accreditation.role_label,
+      civilite: accreditation.civilite,
       matricule,
       issueDate: formatDate(new Date()),
       logoPngBuffer: readLogoBuffer()

@@ -153,7 +153,10 @@
       </div>
     </div>
     <div class="grid-2">
+      <div class="field"><label>Civilité <span class="req">*</span></label><select name="civilite" required><option value="">Sélectionner…</option><option value="M.">M.</option><option value="Mme">Mme</option></select></div>
       <div class="field"><label>Personne ressource lors du Salon <span class="req">*</span></label><input type="text" name="personne_ressource_salon" required></div>
+    </div>
+    <div class="grid-2">
       <div class="field"><label>Téléphone cellulaire de la personne ressource <span class="req">*</span></label><input type="tel" name="telephone_personne_ressource" required></div>
     </div>
   </div>
@@ -292,6 +295,9 @@
 
     <div class="grid-2">
       <div class="field"><label>Nom du média / organe de presse <span class="req">*</span></label><input type="text" name="nom_media" required></div>
+      <div class="field"><label>Civilité <span class="req">*</span></label><select name="civilite" required><option value="">Sélectionner…</option><option value="M.">M.</option><option value="Mme">Mme</option></select></div>
+    </div>
+    <div class="grid-2">
       <div class="field"><label>Nom complet du journaliste <span class="req">*</span></label><input type="text" name="nom_journaliste" required></div>
     </div>
     <div class="grid-2">
@@ -415,7 +421,10 @@
       </div>
     </div>
 
-    <div class="field"><label>Nom et fonction du contact désigné <span class="req">*</span></label><input type="text" name="contact_designe" required></div>
+    <div class="grid-2">
+      <div class="field"><label>Civilité <span class="req">*</span></label><select name="civilite" required><option value="">Sélectionner…</option><option value="M.">M.</option><option value="Mme">Mme</option></select></div>
+      <div class="field"><label>Nom et fonction du contact désigné <span class="req">*</span></label><input type="text" name="contact_designe" required></div>
+    </div>
 
     <div class="grid-2">
       <div class="field"><label>Téléphone <span class="req">*</span></label><input type="tel" name="telephone" required></div>
@@ -533,7 +542,10 @@
       <textarea name="contribution" rows="2"></textarea>
     </div>
 
-    <div class="field"><label>Nom et fonction du contact désigné <span class="req">*</span></label><input type="text" name="contact_designe" required></div>
+    <div class="grid-2">
+      <div class="field"><label>Civilité <span class="req">*</span></label><select name="civilite" required><option value="">Sélectionner…</option><option value="M.">M.</option><option value="Mme">Mme</option></select></div>
+      <div class="field"><label>Nom et fonction du contact désigné <span class="req">*</span></label><input type="text" name="contact_designe" required></div>
+    </div>
 
     <div class="grid-2">
       <div class="field"><label>Téléphone <span class="req">*</span></label><input type="tel" name="telephone" required></div>
@@ -618,7 +630,10 @@
     <div class="info-note" style="margin-bottom:22px;">Réservé au personnel interne, bénévoles, agents de sécurité et équipe logistique.</div>
 
     <div class="grid-2">
+      <div class="field"><label>Civilité <span class="req">*</span></label><select name="civilite" required><option value="">Sélectionner…</option><option value="M.">M.</option><option value="Mme">Mme</option></select></div>
       <div class="field"><label>Nom complet <span class="req">*</span></label><input type="text" name="nom_complet" required></div>
+    </div>
+    <div class="grid-2">
       <div class="field">
         <label>Rôle</label>
         <select name="role" id="role-organisateur" onchange="document.getElementById('role-autre-wrap').style.display = this.value==='Autre' ? 'block':'none';">

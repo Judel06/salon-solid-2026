@@ -25,35 +25,40 @@ const CATEGORY_CONFIG = {
     getNom: (f) => f.personne_ressource_salon,
     getEmail: (f) => f.courriel,
     getTelephone: (f) => f.telephone_personne_ressource || f.telephone,
-    getRole: (f) => `Exposant — ${f.nom_organisation || ''}`.trim()
+    getRole: (f) => `Exposant — ${f.nom_organisation || ''}`.trim(),
+    getCivilite: (f) => f.civilite
   },
   journaliste: {
     photoField: 'photo_identite',
     getNom: (f) => f.nom_journaliste,
     getEmail: (f) => f.email,
     getTelephone: (f) => f.telephone,
-    getRole: (f) => `${f.fonction || 'Journaliste'} — ${f.nom_media || ''}`.trim()
+    getRole: (f) => `${f.fonction || 'Journaliste'} — ${f.nom_media || ''}`.trim(),
+    getCivilite: (f) => f.civilite
   },
   partenaire: {
     photoField: 'photo_profil',
     getNom: (f) => f.contact_designe,
     getEmail: (f) => f.email,
     getTelephone: (f) => f.telephone,
-    getRole: (f) => `Partenaire${f.type_partenariat ? ' ' + f.type_partenariat : ''} — ${f.nom_organisation || ''}`.trim()
+    getRole: (f) => `Partenaire${f.type_partenariat ? ' ' + f.type_partenariat : ''} — ${f.nom_organisation || ''}`.trim(),
+    getCivilite: (f) => f.civilite
   },
   bailleur: {
     photoField: 'photo_profil',
     getNom: (f) => f.contact_designe,
     getEmail: (f) => f.email,
     getTelephone: (f) => f.telephone,
-    getRole: (f) => `Bailleur/Sponsor${f.niveau_sponsoring ? ' ' + f.niveau_sponsoring : ''} — ${f.nom_organisation || ''}`.trim()
+    getRole: (f) => `Bailleur/Sponsor${f.niveau_sponsoring ? ' ' + f.niveau_sponsoring : ''} — ${f.nom_organisation || ''}`.trim(),
+    getCivilite: (f) => f.civilite
   },
   organisateur: {
     photoField: 'photo_identite',
     getNom: (f) => f.nom_complet,
     getEmail: (f) => f.email,
     getTelephone: (f) => f.telephone,
-    getRole: (f) => (f.role === 'Autre' ? f.role_autre : f.role) || 'Organisateur'
+    getRole: (f) => (f.role === 'Autre' ? f.role_autre : f.role) || 'Organisateur',
+    getCivilite: (f) => f.civilite
   }
 };
 
@@ -86,6 +91,8 @@ exports.handler = async (event) => {
   const email = String(config.getEmail(fields) || '').trim().toLowerCase();
   const telephone = String(config.getTelephone(fields) || '').trim();
   const roleLabel = String(config.getRole(fields) || category).trim();
+  const civiliteRaw = String(config.getCivilite(fields) || '').trim();
+  const civilite = civiliteRaw === 'Mme' ? 'Mme' : 'M.';
 
   if (!nomComplet) {
     return { statusCode: 400, body: JSON.stringify({ ok: false, error: 'Nom complet manquant.' }) };
@@ -137,6 +144,7 @@ exports.handler = async (event) => {
   const row = {
     category,
     nom_complet: nomComplet,
+    civilite,
     email,
     telephone: telephone || null,
     role_label: roleLabel || category,

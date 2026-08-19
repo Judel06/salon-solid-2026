@@ -14,6 +14,7 @@ create table if not exists public.accreditations (
   category text not null check (category in ('exposant', 'journaliste', 'partenaire', 'bailleur', 'organisateur')),
   status text not null default 'En attente d''approbation' check (status in ('En attente d''approbation', 'Approuvé', 'Refusé', 'Accrédité')),
   nom_complet text not null,
+  civilite text not null default 'M.' check (civilite in ('M.', 'Mme')), -- accord automatique "accrédité"/"accréditée" sur l'attestation
   email text,
   telephone text,
   role_label text not null, -- ex. "Exposant", "Journaliste — Radio Test", "Partenaire Institutionnel" : utilise dans le corps de l'attestation
@@ -58,4 +59,14 @@ grant usage, select on sequence public.accreditation_matricule_seq to service_ro
 
 -- Necessaire apres toute migration de schema pour que PostgREST (l'API Supabase) prenne en compte
 -- les nouvelles tables/fonctions/colonnes sans attendre son propre cycle de rafraichissement.
+notify pgrst, 'reload schema';
+
+-- ============================================================================================
+-- MIGRATION — ajout de `civilite` (accord automatique "accrédité"/"accréditée" sur l'attestation)
+-- A executer une seule fois dans le SQL Editor Supabase si la table `accreditations` existe deja
+-- (le `create table if not exists` ci-dessus n'ajoute pas de colonne a une table existante).
+-- ============================================================================================
+alter table public.accreditations
+  add column if not exists civilite text not null default 'M.' check (civilite in ('M.', 'Mme'));
+
 notify pgrst, 'reload schema';

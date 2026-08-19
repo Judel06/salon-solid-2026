@@ -21,6 +21,13 @@ const OFFWHITE = rgb(0.961, 0.965, 0.984); // #f5f6fb
 const SLATE = rgb(0.545, 0.576, 0.722); // #8b93b8
 const INK = rgb(0.102, 0.129, 0.267); // #1a2144
 
+// Palette "certificat" (attestation) : creme + or, distincte de la charte bleu marine/rouge du
+// site (reservee au badge et au web) — voir netlify/lib/attestation-generator.js.
+const CREAM = rgb(0.980, 0.976, 0.965); // #faf9f6
+const GOLD = rgb(0.694, 0.545, 0.180); // #b18b2e
+const GOLD_LIGHT = rgb(0.796, 0.663, 0.318); // #cba951
+const CERT_INK = rgb(0.157, 0.129, 0.078); // #282114, quasi-noir chaud (plus doux que le noir pur sur fond creme)
+
 const KAPPA = 0.5522847498307936; // constante standard d'approximation d'un cercle par 4 courbes de Bézier
 
 // IMPORTANT — contourne un bug de pdf-lib 1.17.1 : JpegEmbedder lit `imageData.buffer` (l'
@@ -39,11 +46,15 @@ function isolateImageBytes(buffer) {
 }
 
 async function embedThemeFonts(pdfDoc) {
-  const [helvetica, helveticaBold] = await Promise.all([
+  const [helvetica, helveticaBold, helveticaOblique, timesRoman, timesBold, timesItalic] = await Promise.all([
     pdfDoc.embedFont(StandardFonts.Helvetica),
-    pdfDoc.embedFont(StandardFonts.HelveticaBold)
+    pdfDoc.embedFont(StandardFonts.HelveticaBold),
+    pdfDoc.embedFont(StandardFonts.HelveticaOblique),
+    pdfDoc.embedFont(StandardFonts.TimesRoman),
+    pdfDoc.embedFont(StandardFonts.TimesRomanBold),
+    pdfDoc.embedFont(StandardFonts.TimesRomanItalic)
   ]);
-  return { helvetica, helveticaBold };
+  return { helvetica, helveticaBold, helveticaOblique, timesRoman, timesBold, timesItalic };
 }
 
 function tracked(text, spaces = 1) {
@@ -142,6 +153,7 @@ function drawParagraph(page, text, { font, size, y, lineHeight, color, maxWidth,
 
 module.exports = {
   NAVY, NAVY_DEEP, RED, WHITE, OFFWHITE, SLATE, INK,
+  CREAM, GOLD, GOLD_LIGHT, CERT_INK,
   embedThemeFonts, tracked, isolateImageBytes,
   popClip, pushClipRoundedRect, pushClipCircle, drawRoundedRect, drawCoverImageCircle,
   wrapParagraph, drawParagraph
