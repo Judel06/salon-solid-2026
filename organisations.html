@@ -175,12 +175,12 @@
 
 <div style="background:#f5f6fb; padding:64px 24px;" id="suivi-secteurs">
   <div style="max-width:1160px; margin:0 auto;">
-    <div style="text-align:center; margin-bottom:36px;">
-      <h2 style="color:#0a1440; font-size:24px; font-weight:800; margin:0 0 12px;">Organisations Exposantes — suivi par secteur</h2>
-      <p style="color:#5b6280; font-size:14px; max-width:640px; margin:0 auto;">25 secteurs de la vie nationale, 8 organisations exposantes par secteur — 200 places au total. Suivez en temps réel les places encore disponibles.</p>
+    <div style="text-align:center; margin-bottom:14px;">
+      <h2 style="color:#0a1440; font-size:24px; font-weight:800; margin:0 0 12px;">Organisations Exposantes — 25 secteurs de la vie nationale</h2>
+      <p style="color:#5b6280; font-size:14px; max-width:640px; margin:0 auto;">Chaque secteur accueille un nombre limité d'organisations exposantes. Suivez en direct les secteurs qui recrutent activement.</p>
     </div>
 
-    <div id="secteurs-resume" style="display:flex; justify-content:center; gap:22px; flex-wrap:wrap; margin-bottom:28px; font-size:13px; color:#3a4166; font-weight:700;"></div>
+    <div id="compteur-global" style="text-align:center; margin:20px 0 40px;"></div>
 
     <div id="secteurs-loading" style="text-align:center; color:#8b93b8; font-size:13px; padding:20px;">Chargement du suivi par secteur…</div>
     <div id="secteurs-grid" class="gallery-grid" style="gap:16px;"></div>
@@ -232,11 +232,17 @@
 
 <script>
 (function () {
+  // Confidentialité : le compteur par secteur (X/8) n'est jamais affiché ici — uniquement une
+  // couleur + un court message d'incitation (voir netlify/lib/secteurs.js pour les seuils). Les
+  // chiffres exacts restent réservés au tableau de bord /admin (admin-sectors-status.js).
   var COULEUR_STYLE = {
-    vert: { bg: '#eafaf0', border: '#bbf0ce', dot: '#16a34a', text: '#15803d' },
-    jaune: { bg: '#fff8e6', border: '#f5dfa3', dot: '#eab308', text: '#92650a' },
-    rouge: { bg: '#fdf2f2', border: '#f7c9c9', dot: '#dc2626', text: '#b91c1c' }
+    vert: { bg: '#eafaf0', border: '#bbf0ce', text: '#15803d' },
+    jaune: { bg: '#fff8e6', border: '#f5dfa3', text: '#92650a' },
+    rouge: { bg: '#fdf2f2', border: '#f7c9c9', text: '#b91c1c' }
   };
+
+  var POLL_INTERVAL_MS = 30000; // "temps réel" via rafraîchissement périodique (pas de websocket)
+  var compteurActuel = null;
 
   function escapeHtml(str) {
     return String(str == null ? '' : str)
@@ -244,40 +250,66 @@
       .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
   }
 
-  fetch('/.netlify/functions/sectors-status')
-    .then(function (res) { return res.json(); })
-    .then(function (data) {
-      if (!data.ok) throw new Error(data.error || 'Erreur');
-      renderSecteurs(data);
-    })
-    .catch(function () {
-      document.getElementById('secteurs-loading').textContent = "Suivi par secteur temporairement indisponible.";
-    });
+  function chargerEtAfficher() {
+    fetch('/.netlify/functions/sectors-status')
+      .then(function (res) { return res.json(); })
+      .then(function (data) {
+        if (!data.ok) throw new Error(data.error || 'Erreur');
+        renderCompteur(data.totalConfirme, data.objectifTotal);
+        renderSecteurs(data.secteurs);
+      })
+      .catch(function () {
+        document.getElementById('secteurs-loading').textContent = 'Suivi par secteur temporairement indisponible.';
+      });
+  }
 
-  function renderSecteurs(data) {
+  chargerEtAfficher();
+  setInterval(chargerEtAfficher, POLL_INTERVAL_MS);
+
+  // Ne jamais figer le compteur sur "0" : tant qu'aucune candidature n'est confirmée, un message
+  // d'incitation remplace le chiffre. Dès la première confirmation, un chiffre animé (montée
+  // progressive) apparaît et se réanime à chaque nouvelle valeur reçue.
+  function renderCompteur(total, objectif) {
+    var el = document.getElementById('compteur-global');
+    if (!total || total <= 0) {
+      el.innerHTML = '<div style="display:inline-block; padding:12px 22px; border-radius:999px; background:#eef1fb; color:#16247d; font-weight:700; font-size:14px;">🚀 Les candidatures sont ouvertes — soyez parmi les premières organisations confirmées !</div>';
+      compteurActuel = 0;
+      return;
+    }
+    if (compteurActuel === null) {
+      el.innerHTML =
+        '<div style="font-size:44px; font-weight:800; color:#0a1440;" id="compteur-chiffre">0</div>' +
+        '<div style="color:#5b6280; font-size:13.5px; font-weight:600;">organisations exposantes déjà confirmées · objectif ' + objectif + '</div>';
+    }
+    animerCompteur(compteurActuel || 0, total);
+    compteurActuel = total;
+  }
+
+  function animerCompteur(depart, arrivee) {
+    var chiffreEl = document.getElementById('compteur-chiffre');
+    if (!chiffreEl || depart === arrivee) { if (chiffreEl) chiffreEl.textContent = arrivee; return; }
+    var duree = 1200;
+    var debut = performance.now();
+    function step(now) {
+      var progres = Math.min(1, (now - debut) / duree);
+      var valeur = Math.round(depart + (arrivee - depart) * progres);
+      chiffreEl.textContent = valeur;
+      if (progres < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  function renderSecteurs(secteurs) {
     document.getElementById('secteurs-loading').style.display = 'none';
-
-    var resume = document.getElementById('secteurs-resume');
-    resume.innerHTML =
-      '<span style="color:#15803d;">● ' + data.resume.vert + ' secteur(s) complet(s)</span>' +
-      '<span style="color:#92650a;">● ' + data.resume.jaune + ' secteur(s) ouvert(s)</span>' +
-      '<span style="color:#b91c1c;">● ' + data.resume.rouge + ' secteur(s) vide(s)</span>' +
-      '<span style="color:#16247d;">' + data.resume.totalConfirme + ' / ' + data.resume.objectifTotal + ' organisations confirmées</span>';
-
     var grid = document.getElementById('secteurs-grid');
     grid.innerHTML = '';
-    data.secteurs.forEach(function (s) {
+    secteurs.forEach(function (s) {
       var style = COULEUR_STYLE[s.couleur];
       var card = document.createElement('div');
       card.style.cssText = 'background:' + style.bg + ';border:1px solid ' + style.border + ';border-radius:12px;padding:16px 18px;';
-      var orgsHtml = s.organisations.length
-        ? '<div style="color:#5b6280;font-size:11.5px;margin-top:8px;line-height:1.5;">' + s.organisations.map(escapeHtml).join(', ') + '</div>'
-        : '';
       card.innerHTML =
-        '<div style="display:flex; align-items:center; justify-content:space-between; gap:8px;">' +
-          '<span style="font-weight:700;color:#0a1440;font-size:13.5px;">' + escapeHtml(s.secteur) + '</span>' +
-          '<span style="color:' + style.text + ';font-weight:800;font-size:13px;white-space:nowrap;">' + s.count + '/' + s.quota + '</span>' +
-        '</div>' + orgsHtml;
+        '<div style="font-weight:700;color:#0a1440;font-size:13.5px;margin-bottom:6px;">' + escapeHtml(s.secteur) + '</div>' +
+        '<div style="color:' + style.text + ';font-weight:700;font-size:12.5px;">' + escapeHtml(s.message) + '</div>';
       grid.appendChild(card);
     });
   }

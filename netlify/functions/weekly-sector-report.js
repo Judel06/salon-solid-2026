@@ -5,7 +5,7 @@
 // tester (POST /.netlify/functions/weekly-sector-report).
 
 const { getAdminClient } = require('../lib/supabase-admin');
-const { SECTEURS_NATIONAUX, QUOTA_PAR_SECTEUR, OBJECTIF_TOTAL, STATUTS_ACCEPTES, couleurSecteur } = require('../lib/secteurs');
+const { SECTEURS_NATIONAUX, QUOTA_PAR_SECTEUR, OBJECTIF_TOTAL, STATUTS_ACCEPTES, evaluerSecteur } = require('../lib/secteurs');
 const nodemailer = require('nodemailer');
 
 const TEAM_NOTIFICATION_EMAILS = ['admin@salonsolid.com', 'salonsolid2030@gmail.com'];
@@ -29,7 +29,10 @@ async function computeSectorReport() {
   SECTEURS_NATIONAUX.forEach((s) => { counts[s] = 0; });
   (data || []).forEach((row) => { if (counts[row.secteur_national] !== undefined) counts[row.secteur_national] += 1; });
 
-  const secteurs = SECTEURS_NATIONAUX.map((nom) => ({ secteur: nom, count: counts[nom], couleur: couleurSecteur(counts[nom]) }));
+  const secteurs = SECTEURS_NATIONAUX.map((nom) => {
+    const { couleur, restantes } = evaluerSecteur(counts[nom]);
+    return { secteur: nom, count: counts[nom], restantes, couleur };
+  });
   const rouges = secteurs.filter((s) => s.couleur === 'rouge');
   const jaunes = secteurs.filter((s) => s.couleur === 'jaune');
   const verts = secteurs.filter((s) => s.couleur === 'vert');

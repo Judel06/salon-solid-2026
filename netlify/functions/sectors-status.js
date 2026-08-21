@@ -1,10 +1,11 @@
-// SALON SOLID 2026 — Suivi public des candidatures "Organisations Exposantes" par secteur de la
-// vie nationale (25 secteurs x 8 organisations = 200 visées). Lecture seule, aucune donnée
-// sensible exposée (uniquement le nom des organisations déjà acceptées, jamais email/téléphone) —
-// utilisé par organisations.html (section publique) et par le tableau de bord /admin.
+// SALON SOLID 2026 — Suivi PUBLIC des candidatures "Organisations Exposantes" par secteur.
+// Confidentialité : ne renvoie JAMAIS de chiffre exact par secteur (ni compte accepté, ni places
+// restantes, ni noms d'organisations) — uniquement une couleur + un message d'incitation par
+// secteur, plus le total global confirmé (affiché comme compteur dynamique, jamais figé à 0).
+// Pour les chiffres exacts par secteur : voir admin-sectors-status.js (protégé, session admin).
 
 const { getAdminClient } = require('../lib/supabase-admin');
-const { SECTEURS_NATIONAUX, QUOTA_PAR_SECTEUR, OBJECTIF_TOTAL, STATUTS_ACCEPTES, couleurSecteur } = require('../lib/secteurs');
+const { SECTEURS_NATIONAUX, OBJECTIF_TOTAL, STATUTS_ACCEPTES, evaluerSecteur } = require('../lib/secteurs');
 
 exports.handler = async () => {
   if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
@@ -14,7 +15,7 @@ exports.handler = async () => {
   const admin = getAdminClient();
   const { data, error } = await admin
     .from('accreditations')
-    .select('secteur_national, data, status')
+    .select('secteur_national')
     .eq('category', 'exposant')
     .in('status', STATUTS_ACCEPTES);
 
@@ -22,31 +23,20 @@ exports.handler = async () => {
     return { statusCode: 500, body: JSON.stringify({ ok: false, error: 'Erreur de lecture.' }) };
   }
 
-  const bySecteur = {};
-  SECTEURS_NATIONAUX.forEach((s) => { bySecteur[s] = []; });
-  (data || []).forEach((row) => {
-    if (!bySecteur[row.secteur_national]) return; // secteur inconnu/orphelin, ignoré du suivi
-    const nom = (row.data && row.data.nom_organisation) ? String(row.data.nom_organisation).trim() : null;
-    if (nom) bySecteur[row.secteur_national].push(nom);
+  const counts = {};
+  SECTEURS_NATIONAUX.forEach((s) => { counts[s] = 0; });
+  (data || []).forEach((row) => { if (counts[row.secteur_national] !== undefined) counts[row.secteur_national] += 1; });
+
+  const secteurs = SECTEURS_NATIONAUX.map((nom) => {
+    const { couleur, message } = evaluerSecteur(counts[nom]);
+    return { secteur: nom, couleur, message };
   });
 
-  let vert = 0, jaune = 0, rouge = 0, totalConfirme = 0;
-  const secteurs = SECTEURS_NATIONAUX.map((nom) => {
-    const organisations = bySecteur[nom];
-    const count = organisations.length;
-    const couleur = couleurSecteur(count);
-    if (couleur === 'vert') vert += 1; else if (couleur === 'jaune') jaune += 1; else rouge += 1;
-    totalConfirme += count;
-    return { secteur: nom, count, quota: QUOTA_PAR_SECTEUR, couleur, organisations };
-  });
+  const totalConfirme = Object.values(counts).reduce((sum, n) => sum + n, 0);
 
   return {
     statusCode: 200,
-    headers: { 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=60' },
-    body: JSON.stringify({
-      ok: true,
-      secteurs,
-      resume: { vert, jaune, rouge, totalConfirme, objectifTotal: OBJECTIF_TOTAL, nombreSecteurs: SECTEURS_NATIONAUX.length }
-    })
+    headers: { 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=30' },
+    body: JSON.stringify({ ok: true, secteurs, totalConfirme, objectifTotal: OBJECTIF_TOTAL })
   };
 };

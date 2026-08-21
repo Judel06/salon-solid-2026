@@ -70,12 +70,8 @@
   // ---------- Suivi par secteur (Organisations Exposantes) ----------
 
   function loadSectorStatus() {
-    fetch('/.netlify/functions/sectors-status')
-      .then(function (res) { return res.json(); })
-      .then(function (data) {
-        if (!data.ok) throw new Error(data.error || 'Erreur');
-        renderSectorStatus(data);
-      })
+    api('/.netlify/functions/admin-sectors-status')
+      .then(function (data) { renderSectorStatus(data); })
       .catch(function () {
         document.getElementById('sector-table-body').innerHTML = '<tr><td colspan="3" style="color:var(--muted);">Suivi par secteur indisponible pour le moment.</td></tr>';
       });
@@ -96,7 +92,7 @@
       var orgsList = s.organisations.length ? s.organisations.map(escapeHtml).join(', ') : '—';
       tr.innerHTML =
         '<td><span class="sector-badge ' + s.couleur + '"></span>' + escapeHtml(s.secteur) + '</td>' +
-        '<td>' + s.count + ' / ' + s.quota + '</td>' +
+        '<td>' + s.count + ' / ' + s.quota + ' <span style="color:var(--muted);">(' + escapeHtml(s.message) + ')</span></td>' +
         '<td class="sector-orgs">' + orgsList + '</td>';
       body.appendChild(tr);
     });
