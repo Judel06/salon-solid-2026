@@ -42,7 +42,7 @@ const OBJECTIF_TOTAL = SECTEURS_NATIONAUX.length * QUOTA_PAR_SECTEUR; // 200
 const STATUTS_ACCEPTES = ['Approuvé', 'Accrédité'];
 
 // Logique "feu de circulation" (3 états, pas de seuil intermédiaire) :
-//   - 0 candidature acceptée        -> vert  (clignotant), "En attente des premières candidatures"
+//   - 0 candidature acceptée        -> vert  (clignotant), "Candidatures attendues"
 //   - 1 à QUOTA-1 candidatures      -> jaune (clignotant), "Candidatures en cours — places disponibles"
 //   - QUOTA candidatures ou plus    -> rouge (fixe),       "Secteur complet"
 // Le vert clignotant signale un secteur encore inactif (pas "beaucoup de place" comme dans une
@@ -50,7 +50,7 @@ const STATUTS_ACCEPTES = ['Approuvé', 'Accrédité'];
 // candidat accepté jusqu'à la veille du complet, sans jamais révéler combien de places restent.
 function evaluerSecteur(count) {
   const restantes = Math.max(0, QUOTA_PAR_SECTEUR - count);
-  if (count <= 0) return { couleur: 'vert', message: 'En attente des premières candidatures', restantes };
+  if (count <= 0) return { couleur: 'vert', message: 'Candidatures attendues', restantes };
   if (count < QUOTA_PAR_SECTEUR) return { couleur: 'jaune', message: 'Candidatures en cours — places disponibles', restantes };
   return { couleur: 'rouge', message: 'Secteur complet', restantes };
 }
