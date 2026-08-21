@@ -65,7 +65,60 @@
     dashboardScreen.style.display = 'block';
     loadList();
     loadSectorStatus();
+    loadUrgence();
   }
+
+  // ---------- Mode "Dernière ligne droite" ----------
+
+  var RAISON_LABEL = { date: 'date limite proche', taux: 'taux de remplissage atteint', manuel: 'interrupteur manuel' };
+
+  function loadUrgence() {
+    api('/.netlify/functions/admin-urgence')
+      .then(function (data) { renderUrgencePanel(data); })
+      .catch(function (err) {
+        document.getElementById('urgence-etat').textContent = 'Indisponible : ' + err.message;
+      });
+  }
+
+  function renderUrgencePanel(data) {
+    document.getElementById('urgence-mode').value = data.config.mode;
+    document.getElementById('urgence-date').value = data.config.dateLimiteInscription;
+    document.getElementById('urgence-jours').value = data.config.joursAvantDeclenchement;
+    document.getElementById('urgence-seuil').value = data.config.seuilPourcentage;
+
+    var pourcentage = data.objectifTotal ? Math.round((data.totalConfirme / data.objectifTotal) * 1000) / 10 : 0;
+    var etatEl = document.getElementById('urgence-etat');
+    if (data.etat.actif) {
+      var raison = RAISON_LABEL[data.etat.raison] || data.etat.raison;
+      etatEl.innerHTML = '<span style="color:#c2410c; font-weight:700;">● Mode actif</span> (' + raison + ') — ' +
+        data.totalConfirme + ' / ' + data.objectifTotal + ' confirmées (' + pourcentage + '%)' +
+        (data.etat.joursRestants !== null ? ' · ' + data.etat.joursRestants + ' jour(s) avant la date limite' : '');
+    } else {
+      etatEl.innerHTML = '<span style="color:var(--muted); font-weight:700;">○ Mode inactif</span> — ' +
+        data.totalConfirme + ' / ' + data.objectifTotal + ' confirmées (' + pourcentage + '%)' +
+        (data.etat.joursRestants !== null ? ' · ' + data.etat.joursRestants + ' jour(s) avant la date limite' : '');
+    }
+  }
+
+  document.getElementById('urgence-save-btn').addEventListener('click', function () {
+    var btn = this;
+    btn.disabled = true;
+    var originalLabel = btn.textContent;
+    btn.textContent = 'Enregistrement…';
+    api('/.netlify/functions/admin-urgence', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        mode: document.getElementById('urgence-mode').value,
+        dateLimiteInscription: document.getElementById('urgence-date').value,
+        joursAvantDeclenchement: Number(document.getElementById('urgence-jours').value),
+        seuilPourcentage: Number(document.getElementById('urgence-seuil').value)
+      })
+    })
+      .then(function (data) { renderUrgencePanel(data); showToast('Configuration enregistrée.'); })
+      .catch(function (err) { showToast('Erreur : ' + err.message); })
+      .then(function () { btn.disabled = false; btn.textContent = originalLabel; });
+  });
 
   // ---------- Suivi par secteur (Organisations Exposantes) ----------
 

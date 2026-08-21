@@ -29,6 +29,35 @@
     <button class="logout-btn" id="logout-btn">Déconnexion</button>
   </header>
   <main class="admin-main">
+    <div class="sector-panel" id="urgence-panel">
+      <h2>Mode « Dernière ligne droite »</h2>
+      <p class="sub">Bannière + compte à rebours publics à l'approche de la clôture des inscriptions.</p>
+      <div id="urgence-etat" style="margin-bottom:16px; font-size:13px;"></div>
+      <div style="display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:14px; align-items:end;">
+        <div>
+          <label style="display:block; font-size:11.5px; font-weight:600; color:#3a4166; margin-bottom:5px;">Interrupteur</label>
+          <select id="urgence-mode">
+            <option value="auto">Automatique (date/taux)</option>
+            <option value="force_on">Forcer activé</option>
+            <option value="force_off">Forcer désactivé</option>
+          </select>
+        </div>
+        <div>
+          <label style="display:block; font-size:11.5px; font-weight:600; color:#3a4166; margin-bottom:5px;">Date limite d'inscription</label>
+          <input type="date" id="urgence-date">
+        </div>
+        <div>
+          <label style="display:block; font-size:11.5px; font-weight:600; color:#3a4166; margin-bottom:5px;">Jours avant déclenchement</label>
+          <input type="number" id="urgence-jours" min="0" max="120">
+        </div>
+        <div>
+          <label style="display:block; font-size:11.5px; font-weight:600; color:#3a4166; margin-bottom:5px;">Seuil de remplissage (%)</label>
+          <input type="number" id="urgence-seuil" min="0" max="100">
+        </div>
+      </div>
+      <button class="btn btn-primary" id="urgence-save-btn" style="margin-top:16px;">Enregistrer</button>
+    </div>
+
     <div class="sector-panel">
       <h2>Suivi des Organisations Exposantes par secteur</h2>
       <p class="sub">25 secteurs de la vie nationale · 8 organisations acceptées par secteur · 200 visées au total</p>

@@ -27,6 +27,17 @@ img{max-width:100%;display:block;}
 .nav-toggle-btn{display:none;background:transparent;border:none;padding:6px;margin:0 0 0 auto;cursor:pointer;flex-shrink:0;}
 .nav-toggle-btn svg{display:block;}
 
+/* Bannière "Dernière ligne droite" (urgence mobilisatrice de fin d'inscriptions) : accent doré
+   (distinct du bleu marine/rouge de la charte, pour ne pas se confondre avec une alerte d'erreur),
+   légère pulsation d'attention — jamais agressive, voir @keyframes urgence-pulse. */
+.urgence-banniere{background:linear-gradient(90deg, #fde68a 0%, #fbbf24 50%, #fde68a 100%);background-size:200% 100%;animation:urgence-pulse 5s ease-in-out infinite;border-bottom:1px solid #f5c563;}
+@keyframes urgence-pulse{0%,100%{background-position:0% 50%;}50%{background-position:100% 50%;}}
+#urgence-message{transition:opacity 0.6s ease-in-out;}
+#urgence-message.fade-out{opacity:0;}
+@media (prefers-reduced-motion: reduce){
+  .urgence-banniere{animation:none;}
+}
+
 /* Feu de circulation (Organisations Exposantes, suivi par secteur) : 3 pastilles empilées
    (rouge/jaune/verte), une seule allumée à la fois selon l'état du secteur. Vert et jaune
    clignotent doucement (secteur encore actif) ; le rouge reste fixe (secteur fermé). Ne révèle

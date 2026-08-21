@@ -173,6 +173,14 @@
   </div>
 </div>
 
+<div id="urgence-banniere" class="urgence-banniere" style="display:none;">
+  <div style="max-width:1160px; margin:0 auto; padding:16px 24px; display:flex; align-items:center; justify-content:center; gap:16px; flex-wrap:wrap; text-align:center;">
+    <span style="font-size:20px;">⏳</span>
+    <span id="urgence-message" style="font-weight:800; font-size:15px; color:#7c2d12;"></span>
+    <span id="urgence-compte-a-rebours" style="display:none; background:rgba(124,45,18,0.1); color:#7c2d12; font-weight:800; font-size:13px; padding:6px 14px; border-radius:999px; white-space:nowrap;"></span>
+  </div>
+</div>
+
 <div style="background:#f5f6fb; padding:64px 24px;" id="suivi-secteurs">
   <div style="max-width:1160px; margin:0 auto;">
     <div style="text-align:center; margin-bottom:14px;">
@@ -265,6 +273,55 @@
 
   chargerEtAfficher();
   setInterval(chargerEtAfficher, POLL_INTERVAL_MS);
+
+  // ---------- Mode "Dernière ligne droite" ----------
+
+  var variantesRotation = [];
+  var indexVariante = 0;
+  var rotationDemarree = false;
+
+  function chargerUrgence() {
+    fetch('/.netlify/functions/urgence-status')
+      .then(function (res) { return res.json(); })
+      .then(function (data) {
+        if (!data.ok) throw new Error(data.error || 'Erreur');
+        renderUrgence(data);
+      })
+      .catch(function () { /* pas de bannière si indisponible — dégradation silencieuse */ });
+  }
+
+  function renderUrgence(data) {
+    var banniere = document.getElementById('urgence-banniere');
+    if (!data.actif) { banniere.style.display = 'none'; return; }
+    banniere.style.display = 'block';
+
+    variantesRotation = (data.variantesBanniere && data.variantesBanniere.length) ? data.variantesBanniere : ['Dernière ligne droite pour rejoindre le SALON SOLID 2026 !'];
+    var messageEl = document.getElementById('urgence-message');
+    messageEl.textContent = variantesRotation[0];
+    if (!rotationDemarree) {
+      rotationDemarree = true;
+      setInterval(function () {
+        messageEl.classList.add('fade-out');
+        setTimeout(function () {
+          indexVariante = (indexVariante + 1) % variantesRotation.length;
+          messageEl.textContent = variantesRotation[indexVariante];
+          messageEl.classList.remove('fade-out');
+        }, 600);
+      }, 6000);
+    }
+
+    var countdownEl = document.getElementById('urgence-compte-a-rebours');
+    if (data.joursRestants !== null && data.joursRestants !== undefined && data.joursRestants >= 0) {
+      var jours = data.joursRestants;
+      countdownEl.textContent = jours === 0 ? "Dernier jour pour candidater" : jours === 1 ? "Plus qu'1 jour" : 'Plus que ' + jours + ' jours';
+      countdownEl.style.display = 'inline-block';
+    } else {
+      countdownEl.style.display = 'none';
+    }
+  }
+
+  chargerUrgence();
+  setInterval(chargerUrgence, POLL_INTERVAL_MS);
 
   // Ne jamais figer le compteur sur "0" : tant qu'aucune candidature n'est confirmée, un message
   // d'incitation remplace le chiffre. Dès la première confirmation, un chiffre animé (montée
