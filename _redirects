@@ -1,0 +1,6 @@
+# Raccourcis d'URL probables -> page réelle correspondante (évite les 404 "page not found").
+/solid       /solid-2026.html   301
+/solid2026   /solid-2026.html   301
+/prix        /prix-2026.html    301
+/apropos     /a-propos.html     301
+/accueil     /index.html        301
