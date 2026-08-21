@@ -89,3 +89,20 @@ alter table public.accreditations
 create index if not exists accreditations_secteur_national_idx on public.accreditations (secteur_national);
 
 notify pgrst, 'reload schema';
+
+-- ============================================================================================
+-- MIGRATION — paiement en ligne des frais de participation Exposant (Stripe Checkout, 184,99 USD).
+-- Ajoute le statut "En attente de paiement" (bascule automatique lors de l'approbation d'une
+-- candidature Exposant, avant génération badge/attestation — voir admin-update-status.js) et les
+-- colonnes de suivi du paiement Stripe.
+-- ============================================================================================
+alter table public.accreditations
+  add column if not exists stripe_session_id text,
+  add column if not exists paid_at timestamptz;
+
+alter table public.accreditations drop constraint if exists accreditations_status_check;
+alter table public.accreditations
+  add constraint accreditations_status_check
+  check (status in ('En attente d''approbation', 'Approuvé', 'Refusé', 'Accrédité', 'Liste d''attente', 'En attente de paiement'));
+
+notify pgrst, 'reload schema';

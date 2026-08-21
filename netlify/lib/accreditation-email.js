@@ -104,7 +104,7 @@ async function sendAccreditationApprovedEmail(accreditation, badgeBuffer, attest
     <p style="line-height:1.6;margin:0 0 16px;">Bonjour ${escapeHtml(accreditation.nom_complet)},</p>
     <p style="line-height:1.6;margin:0 0 18px;">Félicitations, votre candidature a été approuvée par notre comité.</p>
     <p style="line-height:1.6;margin:0 0 18px;">Veuillez trouver ci-joint votre badge officiel de membre et votre attestation de participation.</p>
-    <p style="line-height:1.6;margin:0 0 18px;">Votre badge d'accréditation vous sera remis lors du retrait au Salon, du 12 au 15 novembre 2026.</p>
+    <p style="line-height:1.6;margin:0 0 18px;">Votre badge d'accréditation vous sera remis lors du retrait au Salon, du 13 au 15 novembre 2026.</p>
     <p style="line-height:1.6;margin:0;">Bienvenue au SALON SOLID 2026.<br/>L'équipe SALON SOLID 2026</p>
   `);
 
@@ -128,6 +128,26 @@ async function sendAccreditationApprovedEmail(accreditation, badgeBuffer, attest
   });
 }
 
+async function sendPaymentRequestEmail(accreditation, checkoutUrl, feeLabel) {
+  const html = wrap('Votre candidature est approuvée — finalisez votre inscription', `
+    <p style="line-height:1.6;margin:0 0 16px;">Bonjour ${escapeHtml(accreditation.nom_complet)},</p>
+    <p style="line-height:1.6;margin:0 0 18px;">Félicitations, votre candidature comme organisation exposante a été approuvée par notre comité.</p>
+    <p style="line-height:1.6;margin:0 0 18px;">Il ne reste qu'une étape : régler les frais de participation (${escapeHtml(feeLabel)}) pour confirmer votre place. Votre badge officiel et votre attestation de participation vous seront envoyés automatiquement dès le paiement reçu.</p>
+    <p style="text-align:center;margin:0 0 18px;"><a href="${checkoutUrl}" style="display:inline-block;background:#16247d;color:#fff;padding:13px 28px;border-radius:9px;font-size:14px;font-weight:700;text-decoration:none;">Régler les frais de participation →</a></p>
+    <p style="line-height:1.6;margin:0;color:#8b93b8;font-size:12.5px;">Paiement sécurisé par carte bancaire (Stripe).</p>
+  `);
+
+  if (!accreditation.email) {
+    throw new Error('Candidature sans adresse e-mail — impossible d\'envoyer le lien de paiement');
+  }
+
+  await sendMail({
+    to: accreditation.email,
+    subject: 'Plus qu\'une étape — réglez vos frais de participation SALON SOLID 2026',
+    html
+  });
+}
+
 function slug(str) {
   return String(str || 'candidat')
     .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
@@ -138,5 +158,6 @@ module.exports = {
   sendAccreditationAdminNotification,
   sendAccreditationAcknowledgment,
   sendAccreditationApprovedEmail,
+  sendPaymentRequestEmail,
   CATEGORY_LABELS
 };

@@ -4,7 +4,7 @@
 const { verifySession } = require('../lib/admin-auth');
 const { getAdminClient } = require('../lib/supabase-admin');
 
-const VALID_STATUSES = ["En attente d'approbation", 'Approuvé', 'Refusé', 'Accrédité', "Liste d'attente"];
+const VALID_STATUSES = ["En attente d'approbation", 'Approuvé', 'Refusé', 'Accrédité', "Liste d'attente", 'En attente de paiement'];
 const VALID_CATEGORIES = ['exposant', 'journaliste', 'partenaire', 'bailleur', 'organisateur'];
 
 exports.handler = async (event) => {

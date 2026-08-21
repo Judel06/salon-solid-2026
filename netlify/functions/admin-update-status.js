@@ -1,13 +1,21 @@
-// SALON SOLID 2026 — Change le statut d'une candidature. Le passage à "Approuvé" déclenche
-// IMMÉDIATEMENT et automatiquement (sans étape de paiement intermédiaire) la génération du badge
-// et de l'attestation, l'envoi des deux documents par courriel, puis le passage direct au statut
-// "Accrédité" — voir netlify/lib/accreditation-completion.js.
+// SALON SOLID 2026 — Change le statut d'une candidature.
+//
+// Catégorie "exposant" : le passage à "Approuvé" NE génère PLUS badge/attestation immédiatement —
+// il crée une session de paiement Stripe (184,99 USD, voir netlify/lib/paiement.js), passe le
+// statut à "En attente de paiement" et envoie le lien de paiement par courriel. La génération du
+// badge/attestation est déclenchée uniquement par la confirmation du paiement (voir
+// stripe-webhook.js), jamais à la simple approbation.
+//
+// Toutes les autres catégories (journaliste, partenaire, bailleur, organisateur) gardent le
+// comportement d'origine : passage direct à "Approuvé" -> génération immédiate -> "Accrédité".
 
 const { verifySession } = require('../lib/admin-auth');
 const { getAdminClient } = require('../lib/supabase-admin');
 const { finalizeAccreditation } = require('../lib/accreditation-completion');
+const { creerSessionPaiement, EXPOSANT_FEE_LABEL } = require('../lib/paiement');
+const { sendPaymentRequestEmail } = require('../lib/accreditation-email');
 
-const VALID_STATUSES = ["En attente d'approbation", 'Approuvé', 'Refusé', 'Accrédité', "Liste d'attente"];
+const VALID_STATUSES = ["En attente d'approbation", 'Approuvé', 'Refusé', 'Accrédité', "Liste d'attente", 'En attente de paiement'];
 
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') {
@@ -31,6 +39,61 @@ exports.handler = async (event) => {
   }
 
   const admin = getAdminClient();
+
+  if (data.status === 'Approuvé') {
+    const { data: current, error: fetchError } = await admin.from('accreditations').select('*').eq('id', data.id).single();
+    if (fetchError || !current) {
+      return { statusCode: 404, body: JSON.stringify({ ok: false, error: 'Candidature introuvable.' }) };
+    }
+
+    if (current.category === 'exposant') {
+      let checkoutUrl;
+      try {
+        const siteUrl = (process.env.URL || 'https://www.salonsolid.com').replace(/\/$/, '');
+        const paymentSession = await creerSessionPaiement({
+          accreditationId: current.id,
+          nomOrganisation: current.nom_complet,
+          email: current.email,
+          siteUrl
+        });
+        checkoutUrl = paymentSession.url;
+
+        const { data: updated, error: updateError } = await admin
+          .from('accreditations')
+          .update({ status: 'En attente de paiement', stripe_session_id: paymentSession.id })
+          .eq('id', data.id)
+          .select('*')
+          .single();
+        if (updateError) throw updateError;
+
+        await sendPaymentRequestEmail(updated, checkoutUrl, EXPOSANT_FEE_LABEL);
+
+        return { statusCode: 200, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ok: true, accreditation: updated, checkoutUrl }) };
+      } catch (err) {
+        console.error('admin-update-status: échec création session de paiement', err);
+        return { statusCode: 500, body: JSON.stringify({ ok: false, error: "Échec de la création du paiement : " + err.message }) };
+      }
+    }
+
+    const { data: updated, error } = await admin
+      .from('accreditations')
+      .update({ status: data.status })
+      .eq('id', data.id)
+      .select('*')
+      .single();
+    if (error) {
+      return { statusCode: 500, body: JSON.stringify({ ok: false, error: 'Erreur lors de la mise à jour.' }) };
+    }
+
+    const result = await finalizeAccreditation(updated);
+    const { data: finalRow } = await admin.from('accreditations').select('*').eq('id', data.id).single();
+    return {
+      statusCode: 200,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ok: true, accreditation: finalRow || updated, generation: result })
+    };
+  }
+
   const { data: updated, error } = await admin
     .from('accreditations')
     .update({ status: data.status })
@@ -40,16 +103,6 @@ exports.handler = async (event) => {
 
   if (error) {
     return { statusCode: 500, body: JSON.stringify({ ok: false, error: 'Erreur lors de la mise à jour.' }) };
-  }
-
-  if (data.status === 'Approuvé') {
-    const result = await finalizeAccreditation(updated);
-    const { data: finalRow } = await admin.from('accreditations').select('*').eq('id', data.id).single();
-    return {
-      statusCode: 200,
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ok: true, accreditation: finalRow || updated, generation: result })
-    };
   }
 
   return { statusCode: 200, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ok: true, accreditation: updated }) };

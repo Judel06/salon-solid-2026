@@ -13,9 +13,10 @@
     'Approuvé': 'status-approved',
     'Refusé': 'status-refused',
     'Accrédité': 'status-active',
-    "Liste d'attente": 'status-waitlist'
+    "Liste d'attente": 'status-waitlist',
+    'En attente de paiement': 'status-payment'
   };
-  var ALL_STATUSES = ["En attente d'approbation", 'Approuvé', 'Refusé', 'Accrédité', "Liste d'attente"];
+  var ALL_STATUSES = ["En attente d'approbation", 'Approuvé', 'Refusé', 'Accrédité', "Liste d'attente", 'En attente de paiement'];
 
   var loginScreen = document.getElementById('login-screen');
   var dashboardScreen = document.getElementById('dashboard-screen');
@@ -221,7 +222,8 @@
       { label: "EN ATTENTE D'APPROBATION", num: counts["En attente d'approbation"] },
       { label: 'APPROUVÉ', num: counts['Approuvé'] },
       { label: 'ACCRÉDITÉ', num: counts['Accrédité'] },
-      { label: "LISTE D'ATTENTE", num: counts["Liste d'attente"] }
+      { label: "LISTE D'ATTENTE", num: counts["Liste d'attente"] },
+      { label: 'EN ATTENTE DE PAIEMENT', num: counts['En attente de paiement'] }
     ].forEach(function (s) {
       var card = document.createElement('div');
       card.className = 'stat-card';
@@ -287,6 +289,14 @@
         resendBtn.textContent = 'Renvoyer les documents';
         resendBtn.addEventListener('click', function () { resendDocuments(row.id, resendBtn); });
         actionsCell.appendChild(resendBtn);
+      }
+
+      if (row.status === 'En attente de paiement') {
+        var resendPaymentBtn = document.createElement('button');
+        resendPaymentBtn.className = 'btn btn-outline';
+        resendPaymentBtn.textContent = 'Renvoyer le lien de paiement';
+        resendPaymentBtn.addEventListener('click', function () { resendPaymentLink(row.id, resendPaymentBtn); });
+        actionsCell.appendChild(resendPaymentBtn);
       }
 
       tableBody.appendChild(tr);
@@ -356,6 +366,19 @@
       .then(function () { showToast('Documents renvoyés.'); })
       .catch(function (err) { showToast('Erreur : ' + err.message); })
       .then(function () { btn.disabled = false; btn.textContent = 'Renvoyer les documents'; });
+  }
+
+  function resendPaymentLink(id, btn) {
+    btn.disabled = true;
+    btn.textContent = 'Envoi…';
+    api('/.netlify/functions/admin-resend-payment-link', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: id })
+    })
+      .then(function () { showToast('Lien de paiement renvoyé.'); })
+      .catch(function (err) { showToast('Erreur : ' + err.message); })
+      .then(function () { btn.disabled = false; btn.textContent = 'Renvoyer le lien de paiement'; });
   }
 
   document.getElementById('bulk-generate-btn').addEventListener('click', function () {
