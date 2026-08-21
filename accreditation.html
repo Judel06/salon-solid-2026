@@ -17,6 +17,7 @@
   .grid-2{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
   @media (max-width:700px){ .grid-2{grid-template-columns:1fr;} }
   .req{color:#dc2626;}
+  .opt{color:#8b93b8; font-weight:500; font-size:11px; letter-spacing:0.3px;}
   .help{color:#8b93b8; font-size:12px; margin-top:4px; line-height:1.5;}
   .callout{background:#fdf2f2; border:1px solid #f7c9c9; border-radius:10px; padding:16px 18px; color:#8a2020; font-size:13px; line-height:1.6; display:flex; gap:10px; align-items:flex-start;}
   .info-note{background:#eef1fb; border:1px solid #d8e0f7; border-radius:10px; padding:14px 18px; color:#1a2a6b; font-size:13px; line-height:1.6;}
@@ -121,6 +122,16 @@
     <a href="tarifs-exposants.html" style="color:#16247d; font-weight:700; font-size:13px; white-space:nowrap;">Voir les tarifs →</a>
   </div>
 
+  <div style="display:flex; align-items:center; justify-content:center; gap:6px; margin-bottom:26px; flex-wrap:wrap;">
+    <div style="display:flex; align-items:center; gap:6px;"><span style="width:22px; height:22px; border-radius:50%; background:#16247d; color:#fff; font-size:11px; font-weight:800; display:flex; align-items:center; justify-content:center; flex-shrink:0;">1</span><span style="font-size:12px; font-weight:700; color:#16247d;">Identification</span></div>
+    <span style="color:#d8dcec; font-size:12px;">—</span>
+    <div style="display:flex; align-items:center; gap:6px;"><span style="width:22px; height:22px; border-radius:50%; background:#e7e9f2; color:#5b6280; font-size:11px; font-weight:800; display:flex; align-items:center; justify-content:center; flex-shrink:0;">2</span><span style="font-size:12px; font-weight:600; color:#5b6280;">Documents</span></div>
+    <span style="color:#d8dcec; font-size:12px;">—</span>
+    <div style="display:flex; align-items:center; gap:6px;"><span style="width:22px; height:22px; border-radius:50%; background:#e7e9f2; color:#5b6280; font-size:11px; font-weight:800; display:flex; align-items:center; justify-content:center; flex-shrink:0;">3</span><span style="font-size:12px; font-weight:600; color:#5b6280;">Besoins</span></div>
+    <span style="color:#d8dcec; font-size:12px;">—</span>
+    <div style="display:flex; align-items:center; gap:6px;"><span style="width:22px; height:22px; border-radius:50%; background:#e7e9f2; color:#5b6280; font-size:11px; font-weight:800; display:flex; align-items:center; justify-content:center; flex-shrink:0;">4</span><span style="font-size:12px; font-weight:600; color:#5b6280;">Tarifs</span></div>
+  </div>
+
   <div class="section-card">
     <div style="display:flex; align-items:center; gap:12px; margin-bottom:22px;">
       <span class="section-num">1</span>
@@ -134,7 +145,7 @@
     </div>
     <div class="grid-2">
       <div class="field"><label>Téléphone <span class="req">*</span></label><input type="tel" name="telephone" required></div>
-      <div class="field"><label>Téléphone #2</label><input type="tel" name="telephone_2"></div>
+      <div class="field"><label>Téléphone #2 <span class="opt">(Optionnel)</span></label><input type="tel" name="telephone_2"></div>
     </div>
     <div class="grid-2">
       <div class="field"><label>Courriel <span class="req">*</span></label><input type="email" name="courriel" required></div>
@@ -207,7 +218,7 @@
     </div>
     <div class="info-note" style="margin-bottom:22px;">Ces informations serviront à la préparation des outils de communication, des publications officielles et du répertoire des organisations exposantes au SALON SOLID 2026.</div>
 
-    <div class="field"><label>Nom complet de la personne-ressource désignée</label><input type="text" name="nom_personne_ressource_designee"></div>
+    <div class="field"><label>Nom complet de la personne-ressource désignée <span class="opt">(Optionnel)</span></label><input type="text" name="nom_personne_ressource_designee"></div>
 
     <div class="field">
       <label>Photo de profil <span class="req">*</span></label>
@@ -220,21 +231,21 @@
     </div>
 
     <div class="field">
-      <label>Notice biographique / présentation professionnelle de la personne-ressource</label>
+      <label>Notice biographique / présentation professionnelle de la personne-ressource <span class="opt">(Optionnel)</span></label>
       <input type="file" name="notice_biographique_fichier" accept=".pdf,.doc,.docx" style="margin-bottom:8px;">
       <textarea name="notice_biographique_texte" rows="3" placeholder="…ou rédigez directement la notice biographique ici"></textarea>
       <div class="help">Téléversez un fichier (PDF/Word) ou rédigez directement le texte ci-dessus.</div>
     </div>
 
     <div class="field">
-      <label>Présentation de l'Organisation, incluant ses réalisations</label>
+      <label>Présentation de l'Organisation, incluant ses réalisations <span class="opt">(Optionnel)</span></label>
       <input type="file" name="presentation_organisation_fichier" accept=".pdf,.doc,.docx" style="margin-bottom:8px;">
       <textarea name="presentation_organisation_texte" rows="3" placeholder="…ou rédigez directement la présentation ici"></textarea>
       <div class="help">Téléversez un fichier (PDF/Word) ou rédigez directement le texte ci-dessus.</div>
     </div>
 
     <div class="field">
-      <label>Logo officiel de l'Organisation</label>
+      <label>Logo officiel de l'Organisation <span class="opt">(Optionnel)</span></label>
       <input type="file" name="logo_organisation" accept=".png,.jpg,.jpeg,.svg">
       <div class="help">Format PNG, JPG ou SVG de préférence (haute résolution).</div>
     </div>
