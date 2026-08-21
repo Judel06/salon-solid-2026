@@ -43,7 +43,7 @@ exports.handler = async (event) => {
     const siteUrl = (process.env.URL || 'https://www.salonsolid.com').replace(/\/$/, '');
     const paymentSession = await creerSessionPaiement({
       accreditationId: accreditation.id,
-      nomOrganisation: accreditation.nom_complet,
+      nomOrganisation: (accreditation.data && accreditation.data.nom_organisation) || accreditation.role_label,
       email: accreditation.email,
       siteUrl
     });
