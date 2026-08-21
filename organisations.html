@@ -308,10 +308,25 @@
       var card = document.createElement('div');
       card.style.cssText = 'background:' + style.bg + ';border:1px solid ' + style.border + ';border-radius:12px;padding:16px 18px;';
       card.innerHTML =
-        '<div style="font-weight:700;color:#0a1440;font-size:13.5px;margin-bottom:6px;">' + escapeHtml(s.secteur) + '</div>' +
+        '<div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">' +
+          feuTricoloreHtml(s.couleur, s.message) +
+          '<span style="font-weight:700;color:#0a1440;font-size:13.5px;">' + escapeHtml(s.secteur) + '</span>' +
+        '</div>' +
         '<div style="color:' + style.text + ';font-weight:700;font-size:12.5px;">' + escapeHtml(s.message) + '</div>';
       grid.appendChild(card);
     });
+  }
+
+  // Feu de circulation : rouge/jaune/vert empilés, une seule pastille allumée selon `couleur`.
+  // Vert et jaune clignotent (CSS, voir assets/style.css) ; le rouge reste fixe (secteur fermé).
+  function feuTricoloreHtml(couleur, message) {
+    function lampe(nom) {
+      var on = nom === couleur ? ' on' : '';
+      return '<span class="lampe ' + nom + on + '"></span>';
+    }
+    return '<span class="feu-tricolore" title="' + escapeHtml(message || '') + '" aria-label="' + escapeHtml(message || '') + '">' +
+      lampe('rouge') + lampe('jaune') + lampe('vert') +
+      '</span>';
   }
 })();
 </script>

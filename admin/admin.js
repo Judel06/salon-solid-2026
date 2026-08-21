@@ -91,11 +91,23 @@
       var tr = document.createElement('tr');
       var orgsList = s.organisations.length ? s.organisations.map(escapeHtml).join(', ') : '—';
       tr.innerHTML =
-        '<td><span class="sector-badge ' + s.couleur + '"></span>' + escapeHtml(s.secteur) + '</td>' +
+        '<td><span style="display:inline-flex; align-items:center; gap:8px;">' + feuTricoloreHtml(s.couleur, s.message) + escapeHtml(s.secteur) + '</span></td>' +
         '<td>' + s.count + ' / ' + s.quota + ' <span style="color:var(--muted);">(' + escapeHtml(s.message) + ')</span></td>' +
         '<td class="sector-orgs">' + orgsList + '</td>';
       body.appendChild(tr);
     });
+  }
+
+  // Feu de circulation : rouge/jaune/vert empilés, une seule pastille allumée selon `couleur`.
+  // Vert et jaune clignotent (CSS, voir admin.css) ; le rouge reste fixe (secteur fermé).
+  function feuTricoloreHtml(couleur, message) {
+    function lampe(nom) {
+      var on = nom === couleur ? ' on' : '';
+      return '<span class="lampe ' + nom + on + '"></span>';
+    }
+    return '<span class="feu-tricolore" title="' + escapeHtml(message || '') + '" aria-label="' + escapeHtml(message || '') + '">' +
+      lampe('rouge') + lampe('jaune') + lampe('vert') +
+      '</span>';
   }
 
   loginForm.addEventListener('submit', function (e) {
