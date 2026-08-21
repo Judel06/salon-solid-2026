@@ -29,6 +29,18 @@
     <button class="logout-btn" id="logout-btn">Déconnexion</button>
   </header>
   <main class="admin-main">
+    <div class="sector-panel">
+      <h2>Suivi des Organisations Exposantes par secteur</h2>
+      <p class="sub">25 secteurs de la vie nationale · 8 organisations acceptées par secteur · 200 visées au total</p>
+      <div class="sector-summary" id="sector-summary"></div>
+      <div style="max-height:340px; overflow-y:auto;">
+        <table class="sector-table">
+          <thead><tr><th>Secteur</th><th>Progression</th><th>Organisations acceptées</th></tr></thead>
+          <tbody id="sector-table-body"></tbody>
+        </table>
+      </div>
+    </div>
+
     <div class="stat-row" id="stat-row"></div>
 
     <div class="toolbar">
@@ -38,6 +50,7 @@
         <option>Approuvé</option>
         <option>Refusé</option>
         <option>Accrédité</option>
+        <option>Liste d'attente</option>
       </select>
       <select id="filter-category">
         <option value="">Toutes les catégories</option>

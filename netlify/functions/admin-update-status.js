@@ -7,7 +7,7 @@ const { verifySession } = require('../lib/admin-auth');
 const { getAdminClient } = require('../lib/supabase-admin');
 const { finalizeAccreditation } = require('../lib/accreditation-completion');
 
-const VALID_STATUSES = ["En attente d'approbation", 'Approuvé', 'Refusé', 'Accrédité'];
+const VALID_STATUSES = ["En attente d'approbation", 'Approuvé', 'Refusé', 'Accrédité', "Liste d'attente"];
 
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') {

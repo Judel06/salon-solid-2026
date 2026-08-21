@@ -29,7 +29,7 @@ input,select{font-family:inherit;font-size:13px;padding:9px 11px;border:1px soli
 
 .admin-main{max-width:1280px;margin:0 auto;padding:28px 24px 80px;}
 
-.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px;}
+.stat-row{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:22px;}
 .stat-card{background:#fff;border:1px solid #e7e9f2;border-radius:12px;padding:16px 18px;}
 .stat-card .num{font-size:24px;font-weight:800;color:var(--blue);}
 .stat-card .label{font-size:11.5px;color:var(--muted);font-weight:600;letter-spacing:0.3px;margin-top:2px;}
@@ -53,6 +53,22 @@ tr:last-child td{border-bottom:none;}
 .status-approved{color:#16a34a;}
 .status-refused{color:#b91c1c;}
 .status-active{color:var(--blue);font-weight:700;}
+.status-waitlist{color:#c2410c;font-weight:700;}
+
+.sector-panel{background:#fff;border:1px solid #e7e9f2;border-radius:14px;padding:20px 22px;margin-bottom:22px;}
+.sector-panel h2{font-size:15px;color:#0a1440;margin:0 0 4px;}
+.sector-panel .sub{font-size:12px;color:var(--muted);margin:0 0 16px;}
+.sector-summary{display:flex;gap:18px;flex-wrap:wrap;margin-bottom:16px;font-size:12.5px;}
+.sector-summary span{display:inline-flex;align-items:center;gap:6px;font-weight:700;}
+.sector-summary .dot{width:9px;height:9px;border-radius:50%;display:inline-block;}
+.sector-table{width:100%;border-collapse:collapse;font-size:12.5px;}
+.sector-table th{text-align:left;padding:8px 10px;color:#5b6280;font-size:10.5px;font-weight:700;text-transform:uppercase;border-bottom:1px solid #e7e9f2;}
+.sector-table td{padding:8px 10px;border-bottom:1px solid #f0f1f7;vertical-align:top;}
+.sector-badge{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:middle;}
+.sector-badge.vert{background:#16a34a;}
+.sector-badge.jaune{background:#eab308;}
+.sector-badge.rouge{background:#dc2626;}
+.sector-orgs{color:var(--muted);font-size:11.5px;}
 .row-actions{display:flex;gap:6px;flex-wrap:wrap;}
 .row-actions button{font-size:11px;padding:6px 10px;border-radius:6px;}
 

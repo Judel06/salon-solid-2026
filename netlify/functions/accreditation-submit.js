@@ -12,6 +12,7 @@ const crypto = require('crypto');
 const { getAdminClient } = require('../lib/supabase-admin');
 const { decodeBase64Photo, uploadPhoto } = require('../lib/photo-storage');
 const { sendAccreditationAdminNotification, sendAccreditationAcknowledgment, CATEGORY_LABELS } = require('../lib/accreditation-email');
+const { SECTEURS_NATIONAUX, QUOTA_PAR_SECTEUR, STATUTS_ACCEPTES } = require('../lib/secteurs');
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const MAX_DOC_BYTES = 8 * 1024 * 1024;
@@ -26,7 +27,8 @@ const CATEGORY_CONFIG = {
     getEmail: (f) => f.courriel,
     getTelephone: (f) => f.telephone_personne_ressource || f.telephone,
     getRole: (f) => `Exposant — ${f.nom_organisation || ''}`.trim(),
-    getCivilite: (f) => f.civilite
+    getCivilite: (f) => f.civilite,
+    getSecteurNational: (f) => f.secteur_national
   },
   journaliste: {
     photoField: 'photo_identite',
@@ -101,6 +103,14 @@ exports.handler = async (event) => {
     return { statusCode: 400, body: JSON.stringify({ ok: false, error: 'Adresse email invalide ou manquante.' }) };
   }
 
+  let secteurNational = null;
+  if (category === 'exposant') {
+    secteurNational = String(config.getSecteurNational(fields) || '').trim();
+    if (!SECTEURS_NATIONAUX.includes(secteurNational)) {
+      return { statusCode: 400, body: JSON.stringify({ ok: false, error: 'Secteur de la vie nationale invalide ou manquant.' }) };
+    }
+  }
+
   const photoFile = files[config.photoField];
   const photo = photoFile ? decodeBase64Photo(`data:${photoFile.type};base64,${photoFile.data}`) : null;
   if (!photo) {
@@ -141,6 +151,27 @@ exports.handler = async (event) => {
     documentPaths[fieldName] = docPath;
   }
 
+  // Quota de 8 organisations exposantes par secteur de la vie nationale : si le secteur choisi a
+  // déjà atteint 8 candidatures acceptées (Approuvé/Accrédité), la candidature est automatiquement
+  // mise en liste d'attente plutôt que bloquée — elle reste visible et traitable par l'équipe si
+  // une place se libère.
+  let waitlisted = false;
+  let initialStatus = "En attente d'approbation";
+  if (category === 'exposant') {
+    const { count, error: countError } = await admin
+      .from('accreditations')
+      .select('id', { count: 'exact', head: true })
+      .eq('category', 'exposant')
+      .eq('secteur_national', secteurNational)
+      .in('status', STATUTS_ACCEPTES);
+    if (countError) {
+      console.error('accreditation-submit: échec comptage secteur', countError);
+    } else if ((count || 0) >= QUOTA_PAR_SECTEUR) {
+      waitlisted = true;
+      initialStatus = "Liste d'attente";
+    }
+  }
+
   const row = {
     category,
     nom_complet: nomComplet,
@@ -148,9 +179,10 @@ exports.handler = async (event) => {
     email,
     telephone: telephone || null,
     role_label: roleLabel || category,
+    secteur_national: secteurNational,
     photo_path: photoPath,
     data: { ...fields, document_paths: documentPaths },
-    status: "En attente d'approbation"
+    status: initialStatus
   };
 
   const { data: inserted, error } = await admin.from('accreditations').insert(row).select('id').single();
@@ -172,6 +204,6 @@ exports.handler = async (event) => {
   return {
     statusCode: 201,
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ ok: true, id: inserted.id, categoryLabel: CATEGORY_LABELS[category] })
+    body: JSON.stringify({ ok: true, id: inserted.id, categoryLabel: CATEGORY_LABELS[category], waitlisted })
   };
 };

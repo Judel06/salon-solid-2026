@@ -13,3 +13,6 @@
 
 [functions."admin-bulk-generate"]
   included_files = ["netlify/lib/assets/**"]
+
+[functions."weekly-sector-report"]
+  schedule = "@weekly"

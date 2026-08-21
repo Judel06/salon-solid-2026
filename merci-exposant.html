@@ -26,11 +26,22 @@
     <div style="width:72px; height:72px; border-radius:50%; background:#eafaf0; display:flex; align-items:center; justify-content:center; margin:0 auto 24px;">
       <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.2"><path d="M20 6L9 17l-5-5"></path></svg>
     </div>
-    <h1 style="color:#0a1440; font-size:26px; font-weight:800; margin:0 0 14px;">Inscription bien reçue</h1>
-    <p style="color:#5b6280; font-size:14.5px; line-height:1.7; margin:0 0 20px;">Merci pour votre demande d'inscription comme exposant au <strong style="color:#1a2144;">SALON SOLID 2026</strong>. Notre comité examinera votre dossier et vous recontactera prochainement pour la facturation et la confirmation de votre kiosque.</p>
-    <div style="background:#fdf2f2; border:1px solid #f7c9c9; border-radius:10px; padding:16px 20px; color:#8a2020; font-size:13.5px; line-height:1.6; margin-bottom:28px;">
+    <h1 id="confirm-title" style="color:#0a1440; font-size:26px; font-weight:800; margin:0 0 14px;">Inscription bien reçue</h1>
+    <p id="confirm-text" style="color:#5b6280; font-size:14.5px; line-height:1.7; margin:0 0 20px;">Merci pour votre demande d'inscription comme exposant au <strong style="color:#1a2144;">SALON SOLID 2026</strong>. Notre comité examinera votre dossier et vous recontactera prochainement pour la facturation et la confirmation de votre kiosque.</p>
+    <div id="confirm-note" style="background:#fdf2f2; border:1px solid #f7c9c9; border-radius:10px; padding:16px 20px; color:#8a2020; font-size:13.5px; line-height:1.6; margin-bottom:28px;">
       Places limitées — premier arrivé, premier servi. La réservation de votre kiosque ne sera effective qu'après paiement complet de la facture.
     </div>
+    <script>
+      if (new URLSearchParams(window.location.search).get('attente') === '1') {
+        document.getElementById('confirm-title').textContent = 'Inscription reçue — liste d\'attente';
+        document.getElementById('confirm-text').innerHTML = 'Merci pour votre demande d\'inscription comme exposant au <strong style="color:#1a2144;">SALON SOLID 2026</strong>. Le secteur que vous avez sélectionné a déjà atteint son quota de 8 organisations exposantes : votre candidature a été placée en <strong>liste d\'attente</strong>. Notre comité vous recontactera si une place se libère.';
+        var note = document.getElementById('confirm-note');
+        note.style.background = '#fff8e6';
+        note.style.borderColor = '#f5dfa3';
+        note.style.color = '#8a6b00';
+        note.textContent = 'Votre secteur est actuellement complet. Vous serez contacté(e) en priorité si une organisation se désiste.';
+      }
+    </script>
     <a href="index.html" style="display:inline-block; background:#16247d; color:#fff; padding:13px 28px; border-radius:9px; font-size:14px; font-weight:700;">Retour à l'accueil</a>
   </div>
 </div>

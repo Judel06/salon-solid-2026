@@ -12,8 +12,10 @@
     "En attente d'approbation": 'status-pending',
     'Approuvé': 'status-approved',
     'Refusé': 'status-refused',
-    'Accrédité': 'status-active'
+    'Accrédité': 'status-active',
+    "Liste d'attente": 'status-waitlist'
   };
+  var ALL_STATUSES = ["En attente d'approbation", 'Approuvé', 'Refusé', 'Accrédité', "Liste d'attente"];
 
   var loginScreen = document.getElementById('login-screen');
   var dashboardScreen = document.getElementById('dashboard-screen');
@@ -62,6 +64,42 @@
     loginScreen.style.display = 'none';
     dashboardScreen.style.display = 'block';
     loadList();
+    loadSectorStatus();
+  }
+
+  // ---------- Suivi par secteur (Organisations Exposantes) ----------
+
+  function loadSectorStatus() {
+    fetch('/.netlify/functions/sectors-status')
+      .then(function (res) { return res.json(); })
+      .then(function (data) {
+        if (!data.ok) throw new Error(data.error || 'Erreur');
+        renderSectorStatus(data);
+      })
+      .catch(function () {
+        document.getElementById('sector-table-body').innerHTML = '<tr><td colspan="3" style="color:var(--muted);">Suivi par secteur indisponible pour le moment.</td></tr>';
+      });
+  }
+
+  function renderSectorStatus(data) {
+    var summary = document.getElementById('sector-summary');
+    summary.innerHTML =
+      '<span><span class="dot" style="background:#16a34a;"></span>' + data.resume.vert + ' secteur(s) complet(s)</span>' +
+      '<span><span class="dot" style="background:#eab308;"></span>' + data.resume.jaune + ' secteur(s) partiel(s)</span>' +
+      '<span><span class="dot" style="background:#dc2626;"></span>' + data.resume.rouge + ' secteur(s) vide(s)</span>' +
+      '<span>' + data.resume.totalConfirme + ' / ' + data.resume.objectifTotal + ' organisations confirmées</span>';
+
+    var body = document.getElementById('sector-table-body');
+    body.innerHTML = '';
+    data.secteurs.forEach(function (s) {
+      var tr = document.createElement('tr');
+      var orgsList = s.organisations.length ? s.organisations.map(escapeHtml).join(', ') : '—';
+      tr.innerHTML =
+        '<td><span class="sector-badge ' + s.couleur + '"></span>' + escapeHtml(s.secteur) + '</td>' +
+        '<td>' + s.count + ' / ' + s.quota + '</td>' +
+        '<td class="sector-orgs">' + orgsList + '</td>';
+      body.appendChild(tr);
+    });
   }
 
   loginForm.addEventListener('submit', function (e) {
@@ -113,7 +151,7 @@
 
   function renderStats(rows) {
     var counts = { total: rows.length };
-    ["En attente d'approbation", 'Approuvé', 'Refusé', 'Accrédité'].forEach(function (s) { counts[s] = 0; });
+    ALL_STATUSES.forEach(function (s) { counts[s] = 0; });
     rows.forEach(function (r) { if (counts[r.status] !== undefined) counts[r.status] += 1; });
 
     statRow.innerHTML = '';
@@ -121,7 +159,8 @@
       { label: 'TOTAL', num: counts.total },
       { label: "EN ATTENTE D'APPROBATION", num: counts["En attente d'approbation"] },
       { label: 'APPROUVÉ', num: counts['Approuvé'] },
-      { label: 'ACCRÉDITÉ', num: counts['Accrédité'] }
+      { label: 'ACCRÉDITÉ', num: counts['Accrédité'] },
+      { label: "LISTE D'ATTENTE", num: counts["Liste d'attente"] }
     ].forEach(function (s) {
       var card = document.createElement('div');
       card.className = 'stat-card';
@@ -163,7 +202,7 @@
       var statusCell = tr.querySelector('.status-cell');
       var select = document.createElement('select');
       select.className = 'status-select ' + (STATUS_CLASS[row.status] || '');
-      ["En attente d'approbation", 'Approuvé', 'Refusé', 'Accrédité'].forEach(function (s) {
+      ALL_STATUSES.forEach(function (s) {
         var opt = document.createElement('option');
         opt.value = s;
         opt.textContent = s;
@@ -239,6 +278,7 @@
           showToast('Statut mis à jour.');
         }
         loadList();
+        loadSectorStatus();
       })
       .catch(function (err) { showToast('Erreur : ' + err.message); selectEl.disabled = false; })
       .then(function () { selectEl.disabled = false; });

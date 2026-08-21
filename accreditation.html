@@ -152,6 +152,38 @@
         </div>
       </div>
     </div>
+    <div class="field">
+      <label>Secteur de la vie nationale (participation au Salon) <span class="req">*</span></label>
+      <select name="secteur_national" required>
+        <option value="">Sélectionnez…</option>
+        <option>Santé</option>
+        <option>Éducation et formation</option>
+        <option>Agriculture et sécurité alimentaire</option>
+        <option>Environnement et développement durable</option>
+        <option>Technologie et innovation numérique</option>
+        <option>Diaspora haïtienne</option>
+        <option>Tourisme et hôtellerie</option>
+        <option>Culture, arts et patrimoine</option>
+        <option>Sécurité et protection civile</option>
+        <option>Jeunesse et leadership</option>
+        <option>Entrepreneuriat et PME</option>
+        <option>Femmes et égalité de genre</option>
+        <option>Eau, assainissement et hygiène (WASH)</option>
+        <option>Énergie et infrastructures</option>
+        <option>Droits humains et justice</option>
+        <option>Gouvernance et administration publique</option>
+        <option>Microfinance et inclusion financière</option>
+        <option>Commerce et industrie</option>
+        <option>Urbanisme et logement</option>
+        <option>Transport et logistique</option>
+        <option>Médias et communication</option>
+        <option>Sport</option>
+        <option>Religion et confessions de foi</option>
+        <option>Handicap et inclusion sociale</option>
+        <option>Coopération internationale et bailleurs de fonds</option>
+      </select>
+      <div style="color:#8b93b8; font-size:11.5px; margin-top:6px;">Chaque secteur accueille jusqu'à 8 organisations exposantes. Si votre secteur est déjà complet, votre candidature sera automatiquement placée en liste d'attente.</div>
+    </div>
     <div class="grid-2">
       <div class="field"><label>Civilité <span class="req">*</span></label><select name="civilite" required><option value="">Sélectionner…</option><option value="M.">M.</option><option value="Mme">Mme</option></select></div>
       <div class="field"><label>Personne ressource lors du Salon <span class="req">*</span></label><input type="text" name="personne_ressource_salon" required></div>
@@ -940,7 +972,7 @@
       .then(function (res) {
         return res.json().then(function (data) {
           if (!res.ok || !data.ok) throw new Error(data.error || 'Erreur lors de la soumission.');
-          window.location.href = successUrl;
+          window.location.href = successUrl + (data.waitlisted ? '?attente=1' : '');
         });
       })
       .catch(function (err) {

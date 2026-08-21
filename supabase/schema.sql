@@ -70,3 +70,22 @@ alter table public.accreditations
   add column if not exists civilite text not null default 'M.' check (civilite in ('M.', 'Mme'));
 
 notify pgrst, 'reload schema';
+
+-- ============================================================================================
+-- MIGRATION — suivi des candidatures "Organisations Exposantes" par secteur de la vie nationale
+-- (25 secteurs x 8 organisations = 200 visees, voir netlify/lib/secteurs.js pour la liste figee).
+-- Ajoute `secteur_national` (rempli uniquement pour category = 'exposant') et le statut
+-- "Liste d'attente" (candidature auto-mise en attente si le secteur choisi est deja a 8/8 au
+-- moment de la soumission — voir netlify/functions/accreditation-submit.js).
+-- ============================================================================================
+alter table public.accreditations
+  add column if not exists secteur_national text;
+
+alter table public.accreditations drop constraint if exists accreditations_status_check;
+alter table public.accreditations
+  add constraint accreditations_status_check
+  check (status in ('En attente d''approbation', 'Approuvé', 'Refusé', 'Accrédité', 'Liste d''attente'));
+
+create index if not exists accreditations_secteur_national_idx on public.accreditations (secteur_national);
+
+notify pgrst, 'reload schema';
