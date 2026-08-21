@@ -159,7 +159,7 @@
       var on = nom === couleur ? ' on' : '';
       return '<span class="lampe ' + nom + on + '"></span>';
     }
-    return '<span class="feu-tricolore" title="' + escapeHtml(message || '') + '" aria-label="' + escapeHtml(message || '') + '">' +
+    return '<span class="feu-tricolore" role="img" title="' + escapeHtml(message || '') + '" aria-label="' + escapeHtml(message || '') + '">' +
       lampe('rouge') + lampe('jaune') + lampe('vert') +
       '</span>';
   }

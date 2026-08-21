@@ -17,8 +17,8 @@
   .grid-2{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
   @media (max-width:700px){ .grid-2{grid-template-columns:1fr;} }
   .req{color:#dc2626;}
-  .opt{color:#8b93b8; font-weight:500; font-size:11px; letter-spacing:0.3px;}
-  .help{color:#8b93b8; font-size:12px; margin-top:4px; line-height:1.5;}
+  .opt{color:#5b6280; font-weight:500; font-size:11px; letter-spacing:0.3px;}
+  .help{color:#5b6280; font-size:12px; margin-top:4px; line-height:1.5;}
   .callout{background:#fdf2f2; border:1px solid #f7c9c9; border-radius:10px; padding:16px 18px; color:#8a2020; font-size:13px; line-height:1.6; display:flex; gap:10px; align-items:flex-start;}
   .info-note{background:#eef1fb; border:1px solid #d8e0f7; border-radius:10px; padding:14px 18px; color:#1a2a6b; font-size:13px; line-height:1.6;}
 
@@ -53,7 +53,7 @@
 
   .photo-preview-row{display:flex; align-items:center; gap:14px; margin-top:12px;}
   .photo-preview-circle{width:88px; height:88px; border-radius:50%; object-fit:cover; border:3px solid #16247d; background:#f5f6fb; flex-shrink:0;}
-  .photo-preview-caption{color:#8b93b8; font-size:11.5px; font-style:italic; max-width:220px; line-height:1.5;}
+  .photo-preview-caption{color:#5b6280; font-size:11.5px; font-style:italic; max-width:220px; line-height:1.5;}
 
   .tabs-bar{display:flex; gap:10px; overflow-x:auto; padding:4px 4px 12px;}
   .tab-btn{flex-shrink:0; padding:12px 20px; border-radius:10px; border:2px solid #e7e9f2; background:#fff; color:#3a4166; font-weight:700; font-size:13px; cursor:pointer; white-space:nowrap;}
@@ -89,6 +89,8 @@
     <a href="inscription.html" style="background:#dc2626; color:#fff; border:none; padding:10px 18px; border-radius:8px; font-size:13px; font-weight:700; white-space:nowrap;">Inscrire une Organisation</a>
   </div>
 </header>
+
+<main>
 
 <div style="background:linear-gradient(160deg, #0a0a12 0%, #1a1330 70%, #0a0a12 100%); padding:56px 24px; text-align:center;">
   <div style="display:inline-block; padding:7px 16px; border-radius:999px; background:rgba(255,255,255,0.08); color:#dbe1f7; font-size:11px; font-weight:700; letter-spacing:1.5px; margin-bottom:16px;">SOLID 2026 · 13-15 NOVEMBRE · PÉTION-VILLE</div>
@@ -138,19 +140,19 @@
       <span class="section-title">Identification de l'Exposant</span>
     </div>
 
-    <div class="field"><label>Nom de l'Organisation <span class="req">*</span></label><input type="text" name="nom_organisation" required></div>
+    <div class="field"><label for="f-tab-exposants-nom_organisation">Nom de l'Organisation <span class="req">*</span></label><input id="f-tab-exposants-nom_organisation" type="text" name="nom_organisation" required></div>
     <div class="grid-2">
-      <div class="field"><label>Nom du Contact <span class="req">*</span></label><input type="text" name="nom_contact" required></div>
-      <div class="field"><label>Adresse <span class="req">*</span></label><input type="text" name="adresse" required></div>
+      <div class="field"><label for="f-tab-exposants-nom_contact">Nom du Contact <span class="req">*</span></label><input id="f-tab-exposants-nom_contact" type="text" name="nom_contact" required></div>
+      <div class="field"><label for="f-tab-exposants-adresse">Adresse <span class="req">*</span></label><input id="f-tab-exposants-adresse" type="text" name="adresse" required></div>
     </div>
     <div class="grid-2">
-      <div class="field"><label>Téléphone <span class="req">*</span></label><input type="tel" name="telephone" required></div>
-      <div class="field"><label>Téléphone #2 <span class="opt">(Optionnel)</span></label><input type="tel" name="telephone_2"></div>
+      <div class="field"><label for="f-tab-exposants-telephone">Téléphone <span class="req">*</span></label><input id="f-tab-exposants-telephone" type="tel" name="telephone" required></div>
+      <div class="field"><label for="f-tab-exposants-telephone_2">Téléphone #2 <span class="opt">(Optionnel)</span></label><input id="f-tab-exposants-telephone_2" type="tel" name="telephone_2"></div>
     </div>
     <div class="grid-2">
-      <div class="field"><label>Courriel <span class="req">*</span></label><input type="email" name="courriel" required></div>
+      <div class="field"><label for="f-tab-exposants-courriel">Courriel <span class="req">*</span></label><input id="f-tab-exposants-courriel" type="email" name="courriel" required></div>
       <div class="field">
-        <label>Secteur d'activité <span class="req">*</span></label>
+        <label for="secteur">Secteur d'activité <span class="req">*</span></label>
         <select name="secteur" id="secteur" required onchange="document.getElementById('secteur-autre-wrap').style.display = this.value==='Autre' ? 'block':'none'; document.getElementById('secteur-autre').required = this.value==='Autre';">
           <option value="">Sélectionnez…</option>
           <option>Organisation gouvernementale (OG)</option>
@@ -171,8 +173,8 @@
       </div>
     </div>
     <div class="field">
-      <label>Secteur de la vie nationale (participation au Salon) <span class="req">*</span></label>
-      <select name="secteur_national" required>
+      <label for="f-tab-exposants-secteur_national">Secteur de la vie nationale (participation au Salon) <span class="req">*</span></label>
+      <select id="f-tab-exposants-secteur_national" name="secteur_national" required>
         <option value="">Sélectionnez…</option>
         <option>Santé</option>
         <option>Éducation et formation</option>
@@ -200,14 +202,14 @@
         <option>Handicap et inclusion sociale</option>
         <option>Coopération internationale et bailleurs de fonds</option>
       </select>
-      <div style="color:#8b93b8; font-size:11.5px; margin-top:6px;">Chaque secteur accueille jusqu'à 8 organisations exposantes. Si votre secteur est déjà complet, votre candidature sera automatiquement placée en liste d'attente.</div>
+      <div style="color:#5b6280; font-size:11.5px; margin-top:6px;">Chaque secteur accueille jusqu'à 8 organisations exposantes. Si votre secteur est déjà complet, votre candidature sera automatiquement placée en liste d'attente.</div>
     </div>
     <div class="grid-2">
-      <div class="field"><label>Civilité <span class="req">*</span></label><select name="civilite" required><option value="">Sélectionner…</option><option value="M.">M.</option><option value="Mme">Mme</option></select></div>
-      <div class="field"><label>Personne ressource lors du Salon <span class="req">*</span></label><input type="text" name="personne_ressource_salon" required></div>
+      <div class="field"><label for="f-tab-exposants-civilite">Civilité <span class="req">*</span></label><select id="f-tab-exposants-civilite" name="civilite" required><option value="">Sélectionner…</option><option value="M.">M.</option><option value="Mme">Mme</option></select></div>
+      <div class="field"><label for="f-tab-exposants-personne_ressource_salon">Personne ressource lors du Salon <span class="req">*</span></label><input id="f-tab-exposants-personne_ressource_salon" type="text" name="personne_ressource_salon" required></div>
     </div>
     <div class="grid-2">
-      <div class="field"><label>Téléphone cellulaire de la personne ressource <span class="req">*</span></label><input type="tel" name="telephone_personne_ressource" required></div>
+      <div class="field"><label for="f-tab-exposants-telephone_personne_ressource">Téléphone cellulaire de la personne ressource <span class="req">*</span></label><input id="f-tab-exposants-telephone_personne_ressource" type="tel" name="telephone_personne_ressource" required></div>
     </div>
   </div>
 
@@ -218,10 +220,10 @@
     </div>
     <div class="info-note" style="margin-bottom:22px;">Ces informations serviront à la préparation des outils de communication, des publications officielles et du répertoire des organisations exposantes au SALON SOLID 2026.</div>
 
-    <div class="field"><label>Nom complet de la personne-ressource désignée <span class="opt">(Optionnel)</span></label><input type="text" name="nom_personne_ressource_designee"></div>
+    <div class="field"><label for="f-tab-exposants-nom_personne_ressource_designee">Nom complet de la personne-ressource désignée <span class="opt">(Optionnel)</span></label><input id="f-tab-exposants-nom_personne_ressource_designee" type="text" name="nom_personne_ressource_designee"></div>
 
     <div class="field">
-      <label>Photo de profil <span class="req">*</span></label>
+      <label for="photo-input-exposants">Photo de profil <span class="req">*</span></label>
       <input type="file" name="photo_personne_ressource" id="photo-input-exposants" accept=".jpg,.jpeg,.png" required>
       <div class="help">Cette photo sera utilisée pour votre badge de membre et votre attestation de participation. Format JPG ou PNG, 5 Mo maximum.</div>
       <div class="photo-preview-row" id="photo-preview-row-exposants" style="display:none;">
@@ -231,22 +233,22 @@
     </div>
 
     <div class="field">
-      <label>Notice biographique / présentation professionnelle de la personne-ressource <span class="opt">(Optionnel)</span></label>
-      <input type="file" name="notice_biographique_fichier" accept=".pdf,.doc,.docx" style="margin-bottom:8px;">
-      <textarea name="notice_biographique_texte" rows="3" placeholder="…ou rédigez directement la notice biographique ici"></textarea>
+      <label for="f-tab-exposants-notice_biographique_fichier">Notice biographique / présentation professionnelle de la personne-ressource <span class="opt">(Optionnel)</span></label>
+      <input id="f-tab-exposants-notice_biographique_fichier" type="file" name="notice_biographique_fichier" accept=".pdf,.doc,.docx" style="margin-bottom:8px;">
+      <textarea aria-label="notice biographique texte" name="notice_biographique_texte" rows="3" placeholder="…ou rédigez directement la notice biographique ici"></textarea>
       <div class="help">Téléversez un fichier (PDF/Word) ou rédigez directement le texte ci-dessus.</div>
     </div>
 
     <div class="field">
-      <label>Présentation de l'Organisation, incluant ses réalisations <span class="opt">(Optionnel)</span></label>
-      <input type="file" name="presentation_organisation_fichier" accept=".pdf,.doc,.docx" style="margin-bottom:8px;">
-      <textarea name="presentation_organisation_texte" rows="3" placeholder="…ou rédigez directement la présentation ici"></textarea>
+      <label for="f-tab-exposants-presentation_organisation_fichier">Présentation de l'Organisation, incluant ses réalisations <span class="opt">(Optionnel)</span></label>
+      <input id="f-tab-exposants-presentation_organisation_fichier" type="file" name="presentation_organisation_fichier" accept=".pdf,.doc,.docx" style="margin-bottom:8px;">
+      <textarea aria-label="presentation organisation texte" name="presentation_organisation_texte" rows="3" placeholder="…ou rédigez directement la présentation ici"></textarea>
       <div class="help">Téléversez un fichier (PDF/Word) ou rédigez directement le texte ci-dessus.</div>
     </div>
 
     <div class="field">
-      <label>Logo officiel de l'Organisation <span class="opt">(Optionnel)</span></label>
-      <input type="file" name="logo_organisation" accept=".png,.jpg,.jpeg,.svg">
+      <label for="f-tab-exposants-logo_organisation">Logo officiel de l'Organisation <span class="opt">(Optionnel)</span></label>
+      <input id="f-tab-exposants-logo_organisation" type="file" name="logo_organisation" accept=".png,.jpg,.jpeg,.svg">
       <div class="help">Format PNG, JPG ou SVG de préférence (haute résolution).</div>
     </div>
   </div>
@@ -263,7 +265,7 @@
     </div>
 
     <div class="field">
-      <label>Avez-vous des besoins électriques particuliers autres qu'une prise standard ? <span class="req">*</span></label>
+      <label for="electrique-detail">Avez-vous des besoins électriques particuliers autres qu'une prise standard ? <span class="req">*</span></label>
       <div style="display:flex; gap:12px; margin-top:8px;">
         <label class="radio-pill"><input type="radio" name="besoin_electrique" value="Oui" required onchange="toggleElectrique(true)"><span>Oui</span></label>
         <label class="radio-pill"><input type="radio" name="besoin_electrique" value="Non" required onchange="toggleElectrique(false)"><span>Non</span></label>
@@ -282,7 +284,7 @@
       <span class="section-title">Frais de Participation et Autorisations</span>
     </div>
 
-    <label style="display:block; margin-bottom:12px;">Catégorie de l'organisation <span class="req">*</span></label>
+    <label for="f-tab-exposants-signature" style="display:block; margin-bottom:12px;">Catégorie de l'organisation <span class="req">*</span></label>
     <div style="display:flex; flex-direction:column; gap:12px; margin-bottom:20px;">
       <label class="price-option"><input type="radio" name="categorie" value="ONG et Organisations Internationales — 25 000 gourdes" required>
         <div class="price-card"><span class="price-name">ONG et Organisations Internationales</span><span class="price-amount">25 000 gourdes</span></div>
@@ -312,11 +314,11 @@
     <div class="grid-2" style="margin-top:22px;">
       <div class="field">
         <label>Signature électronique (tapez votre nom complet) <span class="req">*</span></label>
-        <input type="text" name="signature" placeholder="Votre nom complet" required>
+        <input id="f-tab-exposants-signature" type="text" name="signature" placeholder="Votre nom complet" required>
       </div>
       <div class="field">
-        <label>Date <span class="req">*</span></label>
-        <input type="date" name="date_signature" class="date-signature" required>
+        <label for="f-tab-exposants-date_signature">Date <span class="req">*</span></label>
+        <input id="f-tab-exposants-date_signature" type="date" name="date_signature" class="date-signature" required>
       </div>
     </div>
   </div>
@@ -344,17 +346,17 @@
     </div>
 
     <div class="grid-2">
-      <div class="field"><label>Nom du média / organe de presse <span class="req">*</span></label><input type="text" name="nom_media" required></div>
-      <div class="field"><label>Civilité <span class="req">*</span></label><select name="civilite" required><option value="">Sélectionner…</option><option value="M.">M.</option><option value="Mme">Mme</option></select></div>
+      <div class="field"><label for="f-tab-journalistes-nom_media">Nom du média / organe de presse <span class="req">*</span></label><input id="f-tab-journalistes-nom_media" type="text" name="nom_media" required></div>
+      <div class="field"><label for="f-tab-journalistes-civilite">Civilité <span class="req">*</span></label><select id="f-tab-journalistes-civilite" name="civilite" required><option value="">Sélectionner…</option><option value="M.">M.</option><option value="Mme">Mme</option></select></div>
     </div>
     <div class="grid-2">
-      <div class="field"><label>Nom complet du journaliste <span class="req">*</span></label><input type="text" name="nom_journaliste" required></div>
+      <div class="field"><label for="f-tab-journalistes-nom_journaliste">Nom complet du journaliste <span class="req">*</span></label><input id="f-tab-journalistes-nom_journaliste" type="text" name="nom_journaliste" required></div>
     </div>
     <div class="grid-2">
-      <div class="field"><label>Fonction (journaliste, photographe, cameraman, animateur…) <span class="req">*</span></label><input type="text" name="fonction" required></div>
+      <div class="field"><label for="f-tab-journalistes-fonction">Fonction (journaliste, photographe, cameraman, animateur…) <span class="req">*</span></label><input id="f-tab-journalistes-fonction" type="text" name="fonction" required></div>
       <div class="field">
-        <label>Type de média</label>
-        <select name="type_media">
+        <label for="f-tab-journalistes-type_media">Type de média</label>
+        <select id="f-tab-journalistes-type_media" name="type_media">
           <option value="">Sélectionnez…</option>
           <option>Presse écrite</option>
           <option>Radio</option>
@@ -366,11 +368,11 @@
     </div>
 
     <div class="field">
-      <label>Carte de presse ou lettre d'accréditation de l'employeur <span class="req">*</span></label>
-      <input type="file" name="carte_presse" accept=".pdf,.jpg,.jpeg,.png" required>
+      <label for="f-tab-journalistes-carte_presse">Carte de presse ou lettre d'accréditation de l'employeur <span class="req">*</span></label>
+      <input id="f-tab-journalistes-carte_presse" type="file" name="carte_presse" accept=".pdf,.jpg,.jpeg,.png" required>
     </div>
     <div class="field">
-      <label>Photo de profil <span class="req">*</span></label>
+      <label for="photo-input-journalistes">Photo de profil <span class="req">*</span></label>
       <input type="file" name="photo_identite" id="photo-input-journalistes" accept=".jpg,.jpeg,.png" required>
       <div class="help">Cette photo sera utilisée pour votre badge de membre et votre attestation de participation. Format JPG ou PNG, 5 Mo maximum.</div>
       <div class="photo-preview-row" id="photo-preview-row-journalistes" style="display:none;">
@@ -380,12 +382,12 @@
     </div>
 
     <div class="grid-2">
-      <div class="field"><label>Téléphone <span class="req">*</span></label><input type="tel" name="telephone" required></div>
-      <div class="field"><label>Email <span class="req">*</span></label><input type="email" name="email" required></div>
+      <div class="field"><label for="f-tab-journalistes-telephone">Téléphone <span class="req">*</span></label><input id="f-tab-journalistes-telephone" type="tel" name="telephone" required></div>
+      <div class="field"><label for="f-tab-journalistes-email">Email <span class="req">*</span></label><input id="f-tab-journalistes-email" type="email" name="email" required></div>
     </div>
 
     <div class="field">
-      <label>Équipement à apporter</label>
+      <label for="interview-detail">Équipement à apporter</label>
       <div class="chip-group">
         <label class="chip-check"><input type="checkbox" name="equipement" value="Caméra">Caméra</label>
         <label class="chip-check"><input type="checkbox" name="equipement" value="Micro">Micro</label>
@@ -426,12 +428,12 @@
 
     <div class="grid-2" style="margin-top:22px;">
       <div class="field">
-        <label>Signature électronique (tapez votre nom complet) <span class="req">*</span></label>
-        <input type="text" name="signature" placeholder="Votre nom complet" required>
+        <label for="f-tab-journalistes-signature">Signature électronique (tapez votre nom complet) <span class="req">*</span></label>
+        <input id="f-tab-journalistes-signature" type="text" name="signature" placeholder="Votre nom complet" required>
       </div>
       <div class="field">
-        <label>Date <span class="req">*</span></label>
-        <input type="date" name="date_signature" class="date-signature" required>
+        <label for="f-tab-journalistes-date_signature">Date <span class="req">*</span></label>
+        <input id="f-tab-journalistes-date_signature" type="date" name="date_signature" class="date-signature" required>
       </div>
     </div>
   </div>
@@ -457,10 +459,10 @@
     </div>
 
     <div class="grid-2">
-      <div class="field"><label>Nom de l'organisation partenaire <span class="req">*</span></label><input type="text" name="nom_organisation" required></div>
+      <div class="field"><label for="f-tab-partenaires-nom_organisation">Nom de l'organisation partenaire <span class="req">*</span></label><input id="f-tab-partenaires-nom_organisation" type="text" name="nom_organisation" required></div>
       <div class="field">
-        <label>Type de partenariat</label>
-        <select name="type_partenariat">
+        <label for="f-tab-partenaires-type_partenariat">Type de partenariat</label>
+        <select id="f-tab-partenaires-type_partenariat" name="type_partenariat">
           <option value="">Sélectionnez…</option>
           <option>Institutionnel</option>
           <option>Technique</option>
@@ -472,17 +474,17 @@
     </div>
 
     <div class="grid-2">
-      <div class="field"><label>Civilité <span class="req">*</span></label><select name="civilite" required><option value="">Sélectionner…</option><option value="M.">M.</option><option value="Mme">Mme</option></select></div>
-      <div class="field"><label>Nom et fonction du contact désigné <span class="req">*</span></label><input type="text" name="contact_designe" required></div>
+      <div class="field"><label for="f-tab-partenaires-civilite">Civilité <span class="req">*</span></label><select id="f-tab-partenaires-civilite" name="civilite" required><option value="">Sélectionner…</option><option value="M.">M.</option><option value="Mme">Mme</option></select></div>
+      <div class="field"><label for="f-tab-partenaires-contact_designe">Nom et fonction du contact désigné <span class="req">*</span></label><input id="f-tab-partenaires-contact_designe" type="text" name="contact_designe" required></div>
     </div>
 
     <div class="grid-2">
-      <div class="field"><label>Téléphone <span class="req">*</span></label><input type="tel" name="telephone" required></div>
-      <div class="field"><label>Email <span class="req">*</span></label><input type="email" name="email" required></div>
+      <div class="field"><label for="f-tab-partenaires-telephone">Téléphone <span class="req">*</span></label><input id="f-tab-partenaires-telephone" type="tel" name="telephone" required></div>
+      <div class="field"><label for="f-tab-partenaires-email">Email <span class="req">*</span></label><input id="f-tab-partenaires-email" type="email" name="email" required></div>
     </div>
 
     <div class="field">
-      <label>Photo de profil du contact désigné <span class="req">*</span></label>
+      <label for="photo-input-partenaires">Photo de profil du contact désigné <span class="req">*</span></label>
       <input type="file" name="photo_profil" id="photo-input-partenaires" accept=".jpg,.jpeg,.png" required>
       <div class="help">Cette photo sera utilisée pour votre badge de membre et votre attestation de participation. Format JPG ou PNG, 5 Mo maximum.</div>
       <div class="photo-preview-row" id="photo-preview-row-partenaires" style="display:none;">
@@ -492,17 +494,17 @@
     </div>
 
     <div class="field">
-      <label>Logo officiel de l'organisation <span class="req">*</span></label>
-      <input type="file" name="logo_organisation" accept=".png,.jpg,.jpeg,.svg" required>
+      <label for="f-tab-partenaires-logo_organisation">Logo officiel de l'organisation <span class="req">*</span></label>
+      <input id="f-tab-partenaires-logo_organisation" type="file" name="logo_organisation" accept=".png,.jpg,.jpeg,.svg" required>
     </div>
 
     <div class="field">
-      <label>Description de la contribution / nature du partenariat</label>
-      <textarea name="description_contribution" rows="3"></textarea>
+      <label for="f-tab-partenaires-description_contribution">Description de la contribution / nature du partenariat</label>
+      <textarea id="f-tab-partenaires-description_contribution" name="description_contribution" rows="3"></textarea>
     </div>
 
     <div class="field">
-      <label>Visibilité souhaitée</label>
+      <label for="f-tab-partenaires-nombre_representants">Visibilité souhaitée</label>
       <div class="chip-group">
         <label class="chip-check"><input type="checkbox" name="visibilite" value="Bannière sur site">Bannière sur site</label>
         <label class="chip-check"><input type="checkbox" name="visibilite" value="Kiosque">Kiosque</label>
@@ -511,16 +513,16 @@
         <label class="chip-check"><input type="checkbox" name="visibilite" value="Autre" onchange="document.getElementById('visibilite-autre-wrap-p').style.display=this.checked?'block':'none';">Autre</label>
       </div>
       <div id="visibilite-autre-wrap-p" style="display:none; margin-top:8px;">
-        <input type="text" name="visibilite_autre" placeholder="Précisez">
+        <input aria-label="visibilite autre" type="text" name="visibilite_autre" placeholder="Précisez">
       </div>
     </div>
 
     <div class="field">
       <label>Nombre de représentants à accréditer</label>
-      <input type="number" name="nombre_representants" min="0" style="max-width:140px;">
+      <input id="f-tab-partenaires-nombre_representants" type="number" name="nombre_representants" min="0" style="max-width:140px;">
     </div>
     <div class="field">
-      <label>Nom complet de chaque représentant</label>
+      <label for="f-tab-partenaires-signature">Nom complet de chaque représentant</label>
       <div id="reps-partenaires"></div>
       <button type="button" class="add-rep-btn" onclick="addRepresentant('reps-partenaires','representant')">+ Ajouter un représentant</button>
     </div>
@@ -533,11 +535,11 @@
     <div class="grid-2" style="margin-top:22px;">
       <div class="field">
         <label>Signature électronique (tapez votre nom complet) <span class="req">*</span></label>
-        <input type="text" name="signature" placeholder="Votre nom complet" required>
+        <input id="f-tab-partenaires-signature" type="text" name="signature" placeholder="Votre nom complet" required>
       </div>
       <div class="field">
-        <label>Date <span class="req">*</span></label>
-        <input type="date" name="date_signature" class="date-signature" required>
+        <label for="f-tab-partenaires-date_signature">Date <span class="req">*</span></label>
+        <input id="f-tab-partenaires-date_signature" type="date" name="date_signature" class="date-signature" required>
       </div>
     </div>
   </div>
@@ -562,12 +564,12 @@
       <span class="section-title">Bailleurs et Sponsors Officiels</span>
     </div>
 
-    <div class="field"><label>Nom de l'organisation / bailleur <span class="req">*</span></label><input type="text" name="nom_organisation" required></div>
+    <div class="field"><label for="f-tab-bailleurs-nom_organisation">Nom de l'organisation / bailleur <span class="req">*</span></label><input id="f-tab-bailleurs-nom_organisation" type="text" name="nom_organisation" required></div>
 
     <div class="grid-2">
       <div class="field">
-        <label>Type de soutien</label>
-        <select name="type_soutien">
+        <label for="f-tab-bailleurs-type_soutien">Type de soutien</label>
+        <select id="f-tab-bailleurs-type_soutien" name="type_soutien">
           <option value="">Sélectionnez…</option>
           <option>Financier</option>
           <option>Matériel</option>
@@ -576,8 +578,8 @@
         </select>
       </div>
       <div class="field">
-        <label>Niveau de sponsoring</label>
-        <select name="niveau_sponsoring">
+        <label for="f-tab-bailleurs-niveau_sponsoring">Niveau de sponsoring</label>
+        <select id="f-tab-bailleurs-niveau_sponsoring" name="niveau_sponsoring">
           <option value="">Sélectionnez…</option>
           <option>Platine</option>
           <option>Or</option>
@@ -588,22 +590,22 @@
     </div>
 
     <div class="field">
-      <label>Montant ou description de la contribution</label>
-      <textarea name="contribution" rows="2"></textarea>
+      <label for="f-tab-bailleurs-contribution">Montant ou description de la contribution</label>
+      <textarea id="f-tab-bailleurs-contribution" name="contribution" rows="2"></textarea>
     </div>
 
     <div class="grid-2">
-      <div class="field"><label>Civilité <span class="req">*</span></label><select name="civilite" required><option value="">Sélectionner…</option><option value="M.">M.</option><option value="Mme">Mme</option></select></div>
-      <div class="field"><label>Nom et fonction du contact désigné <span class="req">*</span></label><input type="text" name="contact_designe" required></div>
+      <div class="field"><label for="f-tab-bailleurs-civilite">Civilité <span class="req">*</span></label><select id="f-tab-bailleurs-civilite" name="civilite" required><option value="">Sélectionner…</option><option value="M.">M.</option><option value="Mme">Mme</option></select></div>
+      <div class="field"><label for="f-tab-bailleurs-contact_designe">Nom et fonction du contact désigné <span class="req">*</span></label><input id="f-tab-bailleurs-contact_designe" type="text" name="contact_designe" required></div>
     </div>
 
     <div class="grid-2">
-      <div class="field"><label>Téléphone <span class="req">*</span></label><input type="tel" name="telephone" required></div>
-      <div class="field"><label>Email <span class="req">*</span></label><input type="email" name="email" required></div>
+      <div class="field"><label for="f-tab-bailleurs-telephone">Téléphone <span class="req">*</span></label><input id="f-tab-bailleurs-telephone" type="tel" name="telephone" required></div>
+      <div class="field"><label for="f-tab-bailleurs-email">Email <span class="req">*</span></label><input id="f-tab-bailleurs-email" type="email" name="email" required></div>
     </div>
 
     <div class="field">
-      <label>Photo de profil du contact désigné <span class="req">*</span></label>
+      <label for="photo-input-bailleurs">Photo de profil du contact désigné <span class="req">*</span></label>
       <input type="file" name="photo_profil" id="photo-input-bailleurs" accept=".jpg,.jpeg,.png" required>
       <div class="help">Cette photo sera utilisée pour votre badge de membre et votre attestation de participation. Format JPG ou PNG, 5 Mo maximum.</div>
       <div class="photo-preview-row" id="photo-preview-row-bailleurs" style="display:none;">
@@ -613,12 +615,12 @@
     </div>
 
     <div class="field">
-      <label>Logo officiel haute résolution <span class="req">*</span></label>
-      <input type="file" name="logo_organisation" accept=".png,.jpg,.jpeg,.svg" required>
+      <label for="f-tab-bailleurs-logo_organisation">Logo officiel haute résolution <span class="req">*</span></label>
+      <input id="f-tab-bailleurs-logo_organisation" type="file" name="logo_organisation" accept=".png,.jpg,.jpeg,.svg" required>
     </div>
 
     <div class="field">
-      <label>Avantages et visibilité attendus</label>
+      <label for="f-tab-bailleurs-nombre_representants">Avantages et visibilité attendus</label>
       <div class="chip-group">
         <label class="chip-check"><input type="checkbox" name="avantages" value="Mention sur supports imprimés">Mention sur supports imprimés</label>
         <label class="chip-check"><input type="checkbox" name="avantages" value="Kiosque VIP">Kiosque VIP</label>
@@ -627,16 +629,16 @@
         <label class="chip-check"><input type="checkbox" name="avantages" value="Autre" onchange="document.getElementById('avantages-autre-wrap').style.display=this.checked?'block':'none';">Autre</label>
       </div>
       <div id="avantages-autre-wrap" style="display:none; margin-top:8px;">
-        <input type="text" name="avantages_autre" placeholder="Précisez">
+        <input aria-label="avantages autre" type="text" name="avantages_autre" placeholder="Précisez">
       </div>
     </div>
 
     <div class="field">
       <label>Nombre de représentants à accréditer</label>
-      <input type="number" name="nombre_representants" min="0" style="max-width:140px;">
+      <input id="f-tab-bailleurs-nombre_representants" type="number" name="nombre_representants" min="0" style="max-width:140px;">
     </div>
     <div class="field">
-      <label>Nom complet de chaque représentant</label>
+      <label for="f-tab-bailleurs-signature">Nom complet de chaque représentant</label>
       <div id="reps-bailleurs"></div>
       <button type="button" class="add-rep-btn" onclick="addRepresentant('reps-bailleurs','representant')">+ Ajouter un représentant</button>
     </div>
@@ -649,11 +651,11 @@
     <div class="grid-2" style="margin-top:22px;">
       <div class="field">
         <label>Signature électronique (tapez votre nom complet) <span class="req">*</span></label>
-        <input type="text" name="signature" placeholder="Votre nom complet" required>
+        <input id="f-tab-bailleurs-signature" type="text" name="signature" placeholder="Votre nom complet" required>
       </div>
       <div class="field">
-        <label>Date <span class="req">*</span></label>
-        <input type="date" name="date_signature" class="date-signature" required>
+        <label for="f-tab-bailleurs-date_signature">Date <span class="req">*</span></label>
+        <input id="f-tab-bailleurs-date_signature" type="date" name="date_signature" class="date-signature" required>
       </div>
     </div>
   </div>
@@ -680,12 +682,12 @@
     <div class="info-note" style="margin-bottom:22px;">Réservé au personnel interne, bénévoles, agents de sécurité et équipe logistique.</div>
 
     <div class="grid-2">
-      <div class="field"><label>Civilité <span class="req">*</span></label><select name="civilite" required><option value="">Sélectionner…</option><option value="M.">M.</option><option value="Mme">Mme</option></select></div>
-      <div class="field"><label>Nom complet <span class="req">*</span></label><input type="text" name="nom_complet" required></div>
+      <div class="field"><label for="f-tab-organisateurs-civilite">Civilité <span class="req">*</span></label><select id="f-tab-organisateurs-civilite" name="civilite" required><option value="">Sélectionner…</option><option value="M.">M.</option><option value="Mme">Mme</option></select></div>
+      <div class="field"><label for="f-tab-organisateurs-nom_complet">Nom complet <span class="req">*</span></label><input id="f-tab-organisateurs-nom_complet" type="text" name="nom_complet" required></div>
     </div>
     <div class="grid-2">
       <div class="field">
-        <label>Rôle</label>
+        <label for="role-organisateur">Rôle</label>
         <select name="role" id="role-organisateur" onchange="document.getElementById('role-autre-wrap').style.display = this.value==='Autre' ? 'block':'none';">
           <option value="">Sélectionnez…</option>
           <option>Organisateur</option>
@@ -697,20 +699,20 @@
           <option>Autre</option>
         </select>
         <div id="role-autre-wrap" style="display:none; margin-top:8px;">
-          <input type="text" name="role_autre" placeholder="Précisez le rôle">
+          <input aria-label="role autre" type="text" name="role_autre" placeholder="Précisez le rôle">
         </div>
       </div>
     </div>
 
-    <div class="field"><label>Organisation ou département de rattachement</label><input type="text" name="organisation_rattachement"></div>
+    <div class="field"><label for="f-tab-organisateurs-organisation_rattachement">Organisation ou département de rattachement</label><input id="f-tab-organisateurs-organisation_rattachement" type="text" name="organisation_rattachement"></div>
 
     <div class="grid-2">
-      <div class="field"><label>Téléphone <span class="req">*</span></label><input type="tel" name="telephone" required></div>
-      <div class="field"><label>Email <span class="req">*</span></label><input type="email" name="email" required></div>
+      <div class="field"><label for="f-tab-organisateurs-telephone">Téléphone <span class="req">*</span></label><input id="f-tab-organisateurs-telephone" type="tel" name="telephone" required></div>
+      <div class="field"><label for="f-tab-organisateurs-email">Email <span class="req">*</span></label><input id="f-tab-organisateurs-email" type="email" name="email" required></div>
     </div>
 
     <div class="field">
-      <label>Photo de profil <span class="req">*</span></label>
+      <label for="photo-input-organisateurs">Photo de profil <span class="req">*</span></label>
       <input type="file" name="photo_identite" id="photo-input-organisateurs" accept=".jpg,.jpeg,.png" required>
       <div class="help">Cette photo sera utilisée pour votre badge de membre et votre attestation de participation. Format JPG ou PNG, 5 Mo maximum.</div>
       <div class="photo-preview-row" id="photo-preview-row-organisateurs" style="display:none;">
@@ -720,7 +722,7 @@
     </div>
 
     <div class="field">
-      <label>Zone(s) d'accès requise(s)</label>
+      <label for="plaque">Zone(s) d'accès requise(s)</label>
       <div class="chip-group">
         <label class="chip-check"><input type="checkbox" name="zones_acces" value="Kiosques">Kiosques</label>
         <label class="chip-check"><input type="checkbox" name="zones_acces" value="Scène">Scène</label>
@@ -755,18 +757,18 @@
     </div>
 
     <div class="grid-2">
-      <div class="field"><label>Contact d'urgence — Nom</label><input type="text" name="urgence_nom"></div>
-      <div class="field"><label>Contact d'urgence — Téléphone</label><input type="tel" name="urgence_telephone"></div>
+      <div class="field"><label for="f-tab-organisateurs-urgence_nom">Contact d'urgence — Nom</label><input id="f-tab-organisateurs-urgence_nom" type="text" name="urgence_nom"></div>
+      <div class="field"><label for="f-tab-organisateurs-urgence_telephone">Contact d'urgence — Téléphone</label><input id="f-tab-organisateurs-urgence_telephone" type="tel" name="urgence_telephone"></div>
     </div>
 
     <div class="grid-2" style="margin-top:22px;">
       <div class="field">
-        <label>Signature du responsable de service (tapez le nom complet) <span class="req">*</span></label>
-        <input type="text" name="signature" placeholder="Nom complet du responsable" required>
+        <label for="f-tab-organisateurs-signature">Signature du responsable de service (tapez le nom complet) <span class="req">*</span></label>
+        <input id="f-tab-organisateurs-signature" type="text" name="signature" placeholder="Nom complet du responsable" required>
       </div>
       <div class="field">
-        <label>Date <span class="req">*</span></label>
-        <input type="date" name="date_signature" class="date-signature" required>
+        <label for="f-tab-organisateurs-date_signature">Date <span class="req">*</span></label>
+        <input id="f-tab-organisateurs-date_signature" type="date" name="date_signature" class="date-signature" required>
       </div>
     </div>
   </div>
@@ -778,6 +780,8 @@
 </form>
 </div>
 
+</main>
+
 <footer style="background:#0a1024; padding:48px 48px 28px;">
   <div style="max-width:1200px; margin:0 auto; display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:40px;">
     <div>
@@ -787,14 +791,14 @@
         </div>
         <span style="color:#fff; font-weight:800; font-size:16px;">ADIS-HAITI</span>
       </div>
-      <div style="color:#8b93b8; font-size:13px; line-height:1.6;">Ensemble pour le développement durable d'Haïti.</div>
+      <div style="color:#5b6280; font-size:13px; line-height:1.6;">Ensemble pour le développement durable d'Haïti.</div>
     </div>
     <div>
       <div style="color:#fff; font-weight:700; font-size:13px; margin-bottom:14px;">Informations de Contact</div>
       <div style="display:flex; flex-direction:column; gap:12px;">
-        <div style="color:#c7cff0; font-size:13px;"><span style="color:#8b93b8; display:block; font-size:11px; letter-spacing:0.5px;">EMAIL</span>admin@salonsolid.com</div>
-        <div style="color:#c7cff0; font-size:13px;"><span style="color:#8b93b8; display:block; font-size:11px; letter-spacing:0.5px;">TÉLÉPHONE</span>+509 4245-4545</div>
-        <div style="color:#c7cff0; font-size:13px;"><span style="color:#8b93b8; display:block; font-size:11px; letter-spacing:0.5px;">ADRESSE</span>Port-au-Prince, Haïti</div>
+        <div style="color:#c7cff0; font-size:13px;"><span style="color:#5b6280; display:block; font-size:11px; letter-spacing:0.5px;">EMAIL</span>admin@salonsolid.com</div>
+        <div style="color:#c7cff0; font-size:13px;"><span style="color:#5b6280; display:block; font-size:11px; letter-spacing:0.5px;">TÉLÉPHONE</span>+509 4245-4545</div>
+        <div style="color:#c7cff0; font-size:13px;"><span style="color:#5b6280; display:block; font-size:11px; letter-spacing:0.5px;">ADRESSE</span>Port-au-Prince, Haïti</div>
       </div>
     </div>
     <div>
